@@ -299,7 +299,7 @@ export default {
         pickupPhoneNumber: parsedRequestPayload.pickupData.phoneNumber,
         fee: this.amount
       };
-
+      
       // post to the API of the confirm Order
       return this.$store
         .dispatch("confirmOrder", payload)
