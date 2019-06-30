@@ -1,0 +1,79 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "deploy": "aws s3 sync ./dist s3://web.mypasel.com"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.18",
+    "@fortawesome/free-solid-svg-icons": "^5.8.2",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "bootstrap": "^4.3.1",
+    "core-js": "^2.6.5",
+    "firebase": "^6.2.0",
+    "js-cookie": "^2.2.0",
+    "v-offline": "^1.1.0",
+    "vee-validate": "^2.2.9",
+    "vue": "^2.6.10",
+    "vue-cookie": "^1.1.4",
+    "vue-ctk-date-time-picker": "^2.1.1",
+    "vue-phone-number-input": "^0.2.0",
+    "vue-promise-btn": "^2.0.2",
+    "vue-router": "^3.0.3",
+    "vue-star-rating": "^1.6.1",
+    "vue-tour": "^1.1.0",
+    "vue2-google-maps": "^0.10.6",
+    "vuex": "^3.1.1",
+    "vuex-persistedstate": "^2.5.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack-bundle-analyzer": "^3.3.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/airbnb"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "description": "## Project setup ``` npm install ```",
+  "main": "babel.config.js",
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluedistro/mypasel-web-gh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bluedistro/mypasel-web-gh/issues"
+  },
+  "homepage": "https://github.com/bluedistro/mypasel-web-gh#readme"
+}

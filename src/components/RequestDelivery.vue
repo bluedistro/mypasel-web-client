@@ -1,0 +1,349 @@
+<template>
+  <div class="">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+          <!-- forms side -->
+          <div class="row">
+              <div class="col-md-5 col-sm-12 col-12 col-lg-5 formSide">
+                    <pickup-form @set_markers="getPickupMarker"
+                                 @pickup_details="getPickupInfo" data-v-step="0">
+                    </pickup-form>
+                    <drop-off-form v-bind:minimumDropOffs="minimumDropOffForm"
+                                   v-bind:maximumDropOffs="maximumDropOffForm"
+                                   @set_markers="getDropOffMarkers"
+                                   @dropoff_details="getDropOffInfo" data-v-step="1">
+                    </drop-off-form>
+                  <div class="checkPricingDiv">
+                      <div class="row">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                          <button type="button" v-promise-btn
+                                  class="btn btn-info btn-sm checkPricingBtn" data-v-step="3"
+                                  name="button" @click.prevent="checkPricing">Check pricing</button>
+                        </div>
+                      </div>
+                  </div>
+                  <pricing-results v-bind:pricingDetails="pricingDetails" data-v-step="4"
+                                   @selected_pricing_option = "getSelectedPricingChoice">
+                  </pricing-results>
+                  <div class="row">
+                      <div class="col-md-12 col-lg-12 col-12 col-sm-12">
+                          <delivery-date @selected_delivery_option="get_selected_delivery_option" data-v-step="5"></delivery-date>
+                      </div>
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 proceedBtnDiv">
+                    <button type="button" @click="proceedToPayment"
+                            class="btn btn-info btn-sm checkPricingBtn" data-v-step="6"
+                            name="button">
+                              Proceed to payment
+                            </button>
+                  </div>
+              </div>
+              <!-- maps side -->
+              <div class="col-md-4 col-lg-4 googleMapsDiv">
+                  <google-maps v-bind:pickupMarker="pickupMarker" data-v-step="2"
+                               v-bind:dropOffMarkers="dropOffMarkers">
+                  </google-maps>
+                  <!-- check internet connection -->
+                  <internet-connection-check></internet-connection-check>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- trouble with request delivery -->
+    <div>
+      <b-modal no-close-on-backdrop hide-header-close no-close-on-esc ref="request-delivery-error-modal"
+               size="sm" id="request-delivery-error-modal" v-model="incompleteRequestDelivery" title="Incomplete Information">
+        <p class="request-delivery-error-modal-text">{{ errorModalMessage }}</p>
+        <template slot="modal-footer" slot-scope="{ok}">
+          <b-button size="sm" variant="warning" @click="RequestDeliveryErrorModalHide" >Okay.</b-button>
+        </template>
+      </b-modal>
+    </div>
+    <v-tour name="myTour" :steps="steps"></v-tour>
+  </div>
+</template>
+
+<script>
+// lazy load imports
+const GoogleMaps = () => import('./RequestDeliveryGoogleMaps');
+const PickupForm = () => import('./RequestDeliveryPickupForm');
+const DropOffForm = () => import('./RequestDeliveryDropOffForm');
+const PricingResults = () => import('./RequestDeliveryPricingResults');
+const InternetConnectivity = () => import('./InternetConnection');
+const DeliveryDate = () => import('./RequestDeliveryDate');
+const Navbar = () => import('./RequestDeliveryNavbar');
+
+import axios from 'axios';
+
+  export default {
+    name: 'RequestDelivery',
+    components: {
+      'navbar' : Navbar,
+      'google-maps' : GoogleMaps,
+      'pickup-form' : PickupForm,
+      'drop-off-form' : DropOffForm,
+      'pricing-results' : PricingResults,
+      'internet-connection-check': InternetConnectivity,
+      'delivery-date': DeliveryDate,
+    },
+    data() {
+      return {
+          loaderBarControl: true,
+          // control rd error
+          incompleteRequestDelivery: false,
+          errorModalMessage: '',
+
+          minimumDropOffForm: 1,
+          maximumDropOffForm: 5,
+          componentRestrictions: {
+            country: ['gh']
+          },
+          pickupMarker: [],
+          dropOffMarkers: [],
+          //
+          emittedFormData: {
+            pickupData: null,
+            dropOffData: null,
+          },
+          pricingDetails: {},
+          selectedPricingOption: null,
+          selectedDeliveryOption: null,
+          //
+          steps: [
+            {
+              target: '[data-v-step="0"]',  // We're using document.querySelector() under the hood
+              content: `Hi, Welcome to <strong>MyPasel Web</strong>! In order to request a delivery, Kindly complete the pickup details form.
+                        When typing in the location in the pickup and dropoff form, kindly select your corresponding location from the autocomplete
+                        suggestions`,
+              params: {
+                placement: 'right'
+              }
+            },
+            {
+              target: '[data-v-step="1"]',
+              content: 'Go ahead and provide the provide the dropoff information as well. This will help make delivery easier for the courier'
+            },
+            {
+              target: '[data-v-step="2"]',
+              content: 'All locations entered in the pickup and dropoff forms are pinned on the map for you to be sure of them',
+              params: {
+                placement: 'left'
+              }
+            },
+            {
+              target: '[data-v-step="3"]',
+              content: 'Use this button to check the pricing of your delivery request. And oh by the way!, we have the most affordable delivery pricing nationwide',
+              params: {
+                placement: 'top'
+              }
+            },
+            {
+              target: '[data-v-step="4"]',
+              content: 'Our Pricing list will show up here for you to select your mode of delivery after clicking on the check pricing button',
+              params: {
+                placement: 'top'
+              }
+            },
+            {
+              target: '[data-v-step="5"]',
+              content: `Now, select the date and time you want the delivery to be made. You can also click on the button "<bold>Now</bold>" for instant delivery`,
+              params: {
+                placement: 'right'
+              }
+            },
+            {
+              target: '[data-v-step="6"]',
+              content: 'Finally, click on this button when all information has been correctly provided to make payment and start courier search',
+              params: {
+                placement: 'top'
+              }
+            },
+          ],
+      }
+    },
+    methods: {
+      // control error with booking details
+      get_selected_delivery_option(deliveryTime){
+        this.selectedDeliveryOption = deliveryTime;
+      },
+      RequestDeliveryErrorModalHide(){
+        this.$refs['request-delivery-error-modal'].hide();
+      },
+      getSelectedPricingChoice(evt){
+        this.selectedPricingOption = evt;
+      },
+      getDropOffInfo(evt){
+        this.emittedFormData.dropOffData = evt;
+      },
+      // get emitted pickup info
+      getPickupInfo(evt){
+        this.emittedFormData.pickupData = evt;
+      },
+      // get the emitted pickup marker point and set them to the corresponding data variable
+      getPickupMarker(pickupMarker, data){
+        // updating the pick up data for redundancy'
+        this.emittedFormData.pickupData = data;
+        this.pickupMarker = pickupMarker;
+      },
+      // get the emitted drop off marker points and set them to the corresponding data variable
+      getDropOffMarkers(dropOffMarkers, data){
+        // updating the dropoff data for redundancy
+        this.emittedFormData.dropOffData = data;
+        this.dropOffMarkers = dropOffMarkers;
+      },
+      checkPricing(evt){
+        evt.preventDefault();
+        return this.$store.dispatch('getPricing', this.emittedFormData)
+                   .then(response => {
+                     this.pricingDetails = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY));
+                     this.pricingDetails.walking = 'N/A'
+                   })
+                   .catch(error => {
+                     this.errorModalMessage = 'Please complete pick up and dropoff information'
+                     this.incompleteRequestDelivery = true;
+                   })
+
+      },
+
+      proceedToPayment(evt){
+        let item = this.selectedPricingOption
+        let price_validator = this.pricingDetails[item]
+        if(!isNaN(price_validator) && this.selectedDeliveryOption){
+          this.$cookie.set(this.$cookeys.DELIVERY_MODE, item, {expires: this.$cookeys.cookie_expire})
+          this.$cookie.set(this.$cookeys.DELIVERY_TIME, this.selectedDeliveryOption, {expires: this.$cookeys.cookie_expire})
+          this.$router.push({name: 'RequestPayment'})
+        }else{
+          this.errorModalMessage = 'Please complete pick up and dropoff information and select a delivery mode and time to proceed'
+          this.incompleteRequestDelivery = true;
+          this.$router.push({name: 'RequestDelivery'})
+        }
+
+      }
+    },
+    // watch for changes in selected pricing choice
+    watch: {
+
+    },
+    created(){
+
+    },
+    mounted(){
+      // start tour
+      // this.$tours['myTour'].start()
+      // update the FCM token
+      const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
+      const updatePayload = {
+        id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
+        fcmToken: token
+      }
+      this.$store.dispatch('updateFCMToken', updatePayload)
+                 .then((resp) => {
+
+                 })
+                 .catch((err) => {
+
+                 })
+
+    },
+  }
+</script>
+
+<style media="screen" scoped>
+
+.container-fluid {
+  margin-top: 60px;
+}
+
+.formSide{
+  background-color: #f2faff;
+  /* height: 100%; */
+}
+
+.proceedBtnText {
+  text-decoration: none;
+  color: #fff;
+}
+
+.courierNeedTimeHeader {
+  /* text-align: right; */
+  margin-bottom: 5px;
+  font-size: 80%;
+  color: #4286f4;
+  /* font-weight: bold; */
+}
+
+.checkPricingBtn{
+  width: 100%;
+  border-radius: 1px;
+}
+
+.checkPricingDiv{
+  margin-bottom: 10px;
+}
+
+.addDropOffBtn{
+  border-radius: 0;
+  padding-top: 7px;
+  margin-right: 50px;
+  padding-bottom: 7px;
+}
+
+.nowDeliveryBtn{
+  border-radius: 1px;
+  padding: 7px 15px;
+}
+
+.laterDeliveryBtn{
+  border-radius: 1px;
+  padding: 7px 15px;
+  margin-left: 15px;
+}
+
+.courierTimeBtnsDiv{
+  display: inline-block;
+}
+
+.googleMapsDiv {
+  position: fixed;
+  left: 41%;
+  /* border: solid black 1px; */
+}
+
+.courierNeedDiv{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.proceedBtnDiv {
+  margin-bottom: 30px;
+}
+
+/* courier urgency switch */
+/*  */
+
+/* for smaller devices (mobile display) */
+@media screen and (max-width: 759px){
+   .googleMapsDiv {
+     display: none;
+   }
+
+   .formSide{
+     background-color: #f2faff;
+     margin-top: 15px;
+   }
+
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width: 1224px) {
+  /* Styles */
+  .formSide{
+    background-color: #f2faff;
+    margin-top: 10px;
+  }
+}
+
+
+</style>
