@@ -1,34 +1,47 @@
 <template lang="html">
   <div>
-  <navbar :hidden="hideTabs"></navbar>
-      <div class="loader-icon">
-         <div class="ds">
+    <navbar :hidden="hideTabs"></navbar>
+    <div class="loader-icon">
+      <div class="ds">
+        <div class="ds">
+          <div class="ds">
             <div class="ds">
-                <div class="ds">
-                  <div class="ds">
-                    <div class="ds">
-                      <div class="ds"></div>
-                    </div>
-                  </div>
-                </div>
+              <div class="ds">
+                <div class="ds"></div>
+              </div>
             </div>
-         </div>
+          </div>
+        </div>
       </div>
-      <div class='loader'>
-         <div class='loader--text'></div>
-         <button type="button" class="btn btn-outline-danger btn-sm cancel-order"
-                 name="button" @click="cancelOrder">Cancel Order</button>
-      </div>
-      <!-- cancel booking -->
-      <div>
-        <b-modal no-close-on-backdrop hide-header-close no-close-on-esc ref="booking-cancellation-error-form-modal"
-                 id="booking-cancellation-error-form-modal" v-model="bookingCancellationFormModal"
-                 title="Order Cancellation Form">
-          <!-- <p class="booking-cancellation-error-modal-text">Transaction cancellation unsuccessful</p> -->
-          <form ref="form" @submit.stop.prevent="handleSubmit">
+    </div>
+    <div class="loader">
+      <div class="loader--text"></div>
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-sm cancel-order"
+        name="button"
+        @click="cancelOrder"
+      >
+        Cancel Order
+      </button>
+    </div>
+    <!-- cancel booking -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="booking-cancellation-error-form-modal"
+        id="booking-cancellation-error-form-modal"
+        v-model="bookingCancellationFormModal"
+        title="Order Cancellation Form"
+      >
+        <!-- <p class="booking-cancellation-error-modal-text">Transaction cancellation unsuccessful</p> -->
+        <form ref="form" @submit.stop.prevent="handleSubmit">
           <b-form-group
             label="Can you please let us know your reason for cancelling?"
-            label-for="name-input">
+            label-for="name-input"
+          >
             <b-form-textarea
               id="name-input"
               v-model="cancellationReason"
@@ -38,57 +51,90 @@
             ></b-form-textarea>
           </b-form-group>
         </form>
-          <template slot="modal-footer" slot-scope="{ok, cancel}">
-            <b-button v-promise-btn variant="outline-danger" @click="bookingCancellationErrorModalTry" >Cancel order</b-button>
-            <b-button  variant="outline-dark" @click="stopCancellationProcess" >Ignore</b-button>
-          </template>
-        </b-modal>
-      </div>
-      <!-- Unable to cancel booking -->
-      <div>
-        <b-modal no-close-on-backdrop hide-header-close no-close-on-esc ref="booking-cancellation-error-modal"
-                 size="sm" id="booking-cancellation-error-modal" v-model="unsuccessfulBookingModal" title="Booking Cancellation Status">
-          <p class="booking-error-modal-text">Sorry, we were unable to cancel your order.</p>
-          <template slot="modal-footer" slot-scope="{ok}">
-            <b-button size="sm" variant="outline-danger" @click="bookingErrorModalHide" >Okay</b-button>
-          </template>
-        </b-modal>
-      </div>
-      <!-- Successful booking cancellation -->
-      <div>
-        <b-modal no-close-on-backdrop hide-header-close no-close-on-esc ref="booking-cancellation-success-modal"
-                 size="sm" id="booking-cancellation-success-modal" v-model="successfulBookingModal" title="Booking Cancellation Status">
-          <p class="booking-success-modal-text">Order cancellation successful.</p>
-          <template slot="modal-footer" slot-scope="{ok}">
-            <b-button size="sm" variant="outline-success" @click="bookingErrorCancellationSuccessModalHide" >Back to request delivery</b-button>
-          </template>
-        </b-modal>
-      </div>
-      <!-- Courier found -->
-      <div>
-        <b-modal no-close-on-backdrop hide-header-close no-close-on-esc ref="courier-found-modal"
-                 size="sm" id="courier-found-modal" v-model="courierFoundModal" title="Courier Found">
-          <p class="courier-found-modal-text">Continue to view courier profile.</p>
-          <template slot="modal-footer" slot-scope="{ok}">
-            <b-button size="sm" variant="outline-success" @click="courierDetails" >Continue</b-button>
-          </template>
-        </b-modal>
-      </div>
+        <template slot="modal-footer" slot-scope="{ ok, cancel }">
+          <b-button v-promise-btn variant="outline-danger" @click="bookingCancellationErrorModalTry"
+            >Cancel order</b-button
+          >
+          <b-button variant="outline-dark" @click="stopCancellationProcess">Ignore</b-button>
+        </template>
+      </b-modal>
+    </div>
+    <!-- Unable to cancel booking -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="booking-cancellation-error-modal"
+        size="sm"
+        id="booking-cancellation-error-modal"
+        v-model="unsuccessfulBookingModal"
+        title="Booking Cancellation Status"
+      >
+        <p class="booking-error-modal-text">Sorry, we were unable to cancel your order.</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button size="sm" variant="outline-danger" @click="bookingErrorModalHide"
+            >Okay</b-button
+          >
+        </template>
+      </b-modal>
+    </div>
+    <!-- Successful booking cancellation -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="booking-cancellation-success-modal"
+        size="sm"
+        id="booking-cancellation-success-modal"
+        v-model="successfulBookingModal"
+        title="Booking Cancellation Status"
+      >
+        <p class="booking-success-modal-text">Order cancellation successful.</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button
+            size="sm"
+            variant="outline-success"
+            @click="bookingErrorCancellationSuccessModalHide"
+            >Back to request delivery</b-button
+          >
+        </template>
+      </b-modal>
+    </div>
+    <!-- Courier found -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="courier-found-modal"
+        size="sm"
+        id="courier-found-modal"
+        v-model="courierFoundModal"
+        title="Courier Found"
+      >
+        <p class="courier-found-modal-text">Continue to view courier profile.</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button size="sm" variant="outline-success" @click="courierDetails">Continue</b-button>
+        </template>
+      </b-modal>
+    </div>
   </div>
 </template>
 
 <script>
-const Navbar = () => import('./RequestDeliveryNavbar');
-const firebase = () => import('firebase');
+const Navbar = () => import("./RequestDeliveryNavbar");
+const firebase = () => import("firebase");
 
 export default {
-  name: 'CourierSearchLoader',
+  name: "CourierSearchLoader",
   components: {
-    navbar: Navbar,
+    navbar: Navbar
   },
-  data(){
+  data() {
     return {
-      cancellationReason: '',
+      cancellationReason: "",
       hideTabs: true,
       courierFoundModal: false,
       successfulBookingModal: false,
@@ -98,62 +144,63 @@ export default {
       //
       deliveryMode: null,
       fcm: this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY),
-      courierFoundStatus: false,
-    }
+      courierFoundStatus: false
+    };
   },
   methods: {
     //courier details
-    courierDetails(){
-      this.$refs['courier-found-modal'].hide();
-      this.$router.push({name: 'CourierFound'})
+    courierDetails() {
+      this.$refs["courier-found-modal"].hide();
+      this.$router.push({ name: "CourierFound" });
     },
     // stop the cancellation process
-    stopCancellationProcess(){
+    stopCancellationProcess() {
       this.bookingCancellationFormModal = false;
     },
     // modal control message display for successful order cancellation
-    bookingErrorCancellationSuccessModalHide(){
-      this.$refs['booking-cancellation-success-modal'].hide();
+    bookingErrorCancellationSuccessModalHide() {
+      this.$refs["booking-cancellation-success-modal"].hide();
       // redirect back
-      this.$router.push({name: 'RequestDelivery'})
+      this.$router.push({ name: "RequestDelivery" });
     },
     // form collection for order cancellation
-    bookingErrorModalHide(){
-      this.$refs['booking-cancellation-error-modal'].hide();
+    bookingErrorModalHide() {
+      this.$refs["booking-cancellation-error-modal"].hide();
     },
     // Whole control operation for booking cancellation
-    bookingCancellationErrorModalTry(){
+    bookingCancellationErrorModalTry() {
       const id = JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId;
       const payload = {
         cancelId: id,
         reason: this.cancellationReason
-      }
+      };
       // hide form
-      this.$refs['booking-cancellation-error-form-modal'].hide();
+      this.$refs["booking-cancellation-error-form-modal"].hide();
       // make a call to the order cancellation action in store
-      return this.$store.dispatch('cancelTransaction', payload)
-                 .then((resp) => {
-                   this.successfulBookingModal = true;
-                 })
-                 .catch((err) => {
-                   this.unsuccessfulBookingModal = true;
-                 })
+      return this.$store
+        .dispatch("cancelTransaction", payload)
+        .then(resp => {
+          this.successfulBookingModal = true;
+        })
+        .catch(err => {
+          this.unsuccessfulBookingModal = true;
+        });
     },
     // kick starter function for order cancellation procedure
-    cancelOrder(evt){
-       this.bookingCancellationFormModal = true;
-    },
+    cancelOrder(evt) {
+      this.bookingCancellationFormModal = true;
+    }
   },
-  created(){
+  created() {
     // if routed before due time, initiate forceful redirect to payment page
-    if(!this.search){
-      this.$router.push({name: 'RequestPayment'})
+    if (!this.search) {
+      this.$router.push({ name: "RequestPayment" });
     }
 
     this.deliveryMode = this.$cookie.get(this.$cookeys.DELIVERY_MODE);
     // prepare payload for courier search api
-    const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY)
-    const parsedRequestPayload = JSON.parse(requestPayload)
+    const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
+    const parsedRequestPayload = JSON.parse(requestPayload);
 
     const payload = {
       senderID: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
@@ -165,40 +212,42 @@ export default {
       modeOfDelivery: this.deliveryMode,
       startingPoint: parsedRequestPayload.pickupData.searchAddress.formatted_address,
       cityOfDelivery: parsedRequestPayload.dropOffData[0].searchAddress.formatted_address,
-      pickUpCoordinates: parsedRequestPayload.pickupData.searchAddress.location.lat + "," + parsedRequestPayload.pickupData.searchAddress.location.lng,
-      destinationCoordinates: parsedRequestPayload.dropOffData[0].searchAddress.location.lat + "," + parsedRequestPayload.dropOffData[0].searchAddress.location.lng,
+      pickUpCoordinates:
+        parsedRequestPayload.pickupData.searchAddress.location.lat +
+        "," +
+        parsedRequestPayload.pickupData.searchAddress.location.lng,
+      destinationCoordinates:
+        parsedRequestPayload.dropOffData[0].searchAddress.location.lat +
+        "," +
+        parsedRequestPayload.dropOffData[0].searchAddress.location.lng,
       sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId,
-      distance: ''
-    }
+      distance: ""
+    };
 
     // console.log(payload)
     // test firebase
-   this.$store.dispatch('getCourier', payload)
-              .then((resp) => {
-                // nothing is returned
-
-              })
-              .catch((err) => {
-                console.log(err)
-                console.log('Searching courier error')
-              })
-
-      this.$messaging.onMessage((payload) => {
-          if(payload.data.activity == 'Courier found'){
-            this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {expires: this.$cookeys.cookie_expire})
-            this.courierFoundModal = true;
-          }
+    this.$store
+      .dispatch("getCourier", payload)
+      .then(resp => {
+        // nothing is returned
       })
+      .catch(err => {
+        console.log(err);
+        console.log("Searching courier error");
+      });
 
-
+    this.$messaging.onMessage(payload => {
+      if (payload.data.activity == "Courier found") {
+        this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
+          expires: this.$cookeys.cookie_expire
+        });
+        this.courierFoundModal = true;
+      }
+    });
   },
-  mounted(){
-
-  },
-  beforeDestroy(){
-
-  }
-}
+  mounted() {},
+  beforeDestroy() {}
+};
 </script>
 
 <style lang="css" scoped>

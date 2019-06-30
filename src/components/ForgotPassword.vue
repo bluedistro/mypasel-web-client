@@ -1,60 +1,77 @@
 <template lang="html">
   <!-- <div class="form-gap"></div> -->
- <div class="container">
- 	<div class="row">
- 		<div class="col-md-12 col-sm-10 col-lg-6 form-body">
-             <div class="panel panel-default">
-               <div class="panel-body">
-                 <div class="text-center">
-                   <h3>
-                     <font-awesome-icon icon="lock" size="2x" />
-                   </h3>
-                   <h2 class="text-center">Forgot Password?</h2>
-                   <p>You can reset your password here.</p>
-                   <div class="panel-body">
-                     <form @submit="getNewPassword" v-promise-btn="{action: 'submit'}" id="register-form">
-                       <div class="form-group">
-                         <div class="input-group">
-                           <input id="email" name="email" placeholder="email address *" class="form-control"  type="email">
-                         </div>
-                       </div>
-                       <div class="form-group col-md-4 reset-btn">
-                         <input name="recover-submit" class="btn btn-md btn-outline-dark" value="Reset Password" type="submit">
-                       </div>
-                       <input type="hidden" class="hide" name="token" id="token" value="">
-                     </form>
-                      <div>
-                        <div class="border-line"></div>
-                        <a href="#">
-                          <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }">Back to login page</router-link>
-                          <router-link class="createAccountBtn" :to="{ name: 'Register', params: {} }">Create new account</router-link>
-                        </a>
-                      </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
- 	</div>
- </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-10 col-lg-6 form-body">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="text-center">
+              <h3>
+                <font-awesome-icon icon="lock" size="2x" />
+              </h3>
+              <h2 class="text-center">Forgot Password?</h2>
+              <p>You can reset your password here.</p>
+              <div class="panel-body">
+                <form
+                  @submit="getNewPassword"
+                  v-promise-btn="{ action: 'submit' }"
+                  id="register-form"
+                >
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input
+                        id="email"
+                        name="email"
+                        placeholder="email address *"
+                        class="form-control"
+                        type="email"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4 reset-btn">
+                    <input
+                      name="recover-submit"
+                      class="btn btn-md btn-outline-dark"
+                      value="Reset Password"
+                      type="submit"
+                    />
+                  </div>
+                  <input type="hidden" class="hide" name="token" id="token" value="" />
+                </form>
+                <div>
+                  <div class="border-line"></div>
+                  <a href="#">
+                    <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
+                      >Back to login page</router-link
+                    >
+                    <router-link class="createAccountBtn" :to="{ name: 'Register', params: {} }"
+                      >Create new account</router-link
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-export default {
-  name: 'ForgotPassword',
-  data(){
-    return {
+import axios from "axios";
 
-    }
+export default {
+  name: "ForgotPassword",
+  data() {
+    return {};
   },
   methods: {
-    getNewPassword(evt){
+    getNewPassword(evt) {
       evt.preventDefault();
     }
   }
-
-}
+};
 </script>
 
 <style lang="css" scoped>

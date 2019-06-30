@@ -1,39 +1,39 @@
 <template lang="html">
   <div class="root">
-      <div class="container">
-          <ul class="progressbar">
-              <li :class="step1" :key="i">
-                <div class="" v-if="step1 === 'active'">
-                 <!-- {{ message1 }} -->
-                </div>
-              </li>
-              <li :class="step2">
-                <div class="" v-if="step2 === 'active'">
-                  <!-- {{ message2 }} -->
-                </div>
-              </li>
-              <li :class="step3">
-                <div class="" v-if="step3 === 'active'">
-                  <!-- {{ message3 }} -->
-                </div>
-              </li>
-              <!-- <li :class="step4">
+    <div class="container">
+      <ul class="progressbar">
+        <li :class="step1" :key="i">
+          <div class="" v-if="step1 === 'active'">
+            <!-- {{ message1 }} -->
+          </div>
+        </li>
+        <li :class="step2">
+          <div class="" v-if="step2 === 'active'">
+            <!-- {{ message2 }} -->
+          </div>
+        </li>
+        <li :class="step3">
+          <div class="" v-if="step3 === 'active'">
+            <!-- {{ message3 }} -->
+          </div>
+        </li>
+        <!-- <li :class="step4">
                 <div class="" v-if="step4 === 'active'">
                   {{ message4 }}
                 </div>
               </li> -->
-          </ul>
-      </div>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ProgressSteps',
+  name: "ProgressSteps",
   props: {
     step1: null,
     step2: null,
-    step3: null,
+    step3: null
     // step4: null,
     // message1: null,
     // message2: null,
@@ -41,12 +41,10 @@ export default {
     // message4: null,
     // length: null,
   },
-  data(){
-    return {
-
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
@@ -122,5 +120,4 @@ ul {
 .progressbar li:first-child:after{
  content: none;
 }
-
 </style>

@@ -1,18 +1,18 @@
 <template lang="html">
-   <div class="mb-2">
-      <span class="no-activity-text">{{ message }}</span>
-   </div>
+  <div class="mb-2">
+    <span class="no-activity-text">{{ message }}</span>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'NoActivity',
+  name: "NoActivity",
   props: {
     message: {
-      type: String,
+      type: String
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
@@ -33,5 +33,4 @@ export default {
   font-variant: normal;
   text-transform: none;
 }
-
 </style>

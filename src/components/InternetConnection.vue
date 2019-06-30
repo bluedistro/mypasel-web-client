@@ -1,47 +1,49 @@
 <template lang="html">
   <!-- check internet connection -->
   <div class="internetCheckerOverlay" v-show="!onLine">
-    <v-offline online-class="online"
-               offline-class="offline"
-               @detected-condition="handleConnectivityChange">
-               <template v-slot:[onlineSlot] :slot-name="onlineSlot">
-                      {{ message }}
-               </template>
-               <template v-slot:[offlineSlot] :slot-name="offlineSlot">
-                      {{ message }}
-               </template>
+    <v-offline
+      online-class="online"
+      offline-class="offline"
+      @detected-condition="handleConnectivityChange"
+    >
+      <template v-slot:[onlineSlot] :slot-name="onlineSlot">
+        {{ message }}
+      </template>
+      <template v-slot:[offlineSlot] :slot-name="offlineSlot">
+        {{ message }}
+      </template>
     </v-offline>
   </div>
 </template>
 
 <script>
-import VOffline from 'v-offline';
+import VOffline from "v-offline";
+
 export default {
   components: {
-    VOffline,
+    VOffline
   },
-  name: 'InternetConnectivity',
-  data(){
+  name: "InternetConnectivity",
+  data() {
     return {
       onLine: null,
-      message: '',
-      onlineSlot: 'online',
-      offlineSlot: 'offline',
-    }
+      message: "",
+      onlineSlot: "online",
+      offlineSlot: "offline"
+    };
   },
-  methods : {
-    handleConnectivityChange(status){
+  methods: {
+    handleConnectivityChange(status) {
       this.onLine = status;
-      if(this.onLine){
-        this.message = 'Online'
-      }else{
-        this.message = 'Offline'
+      if (this.onLine) {
+        this.message = "Online";
+      } else {
+        this.message = "Offline";
       }
     }
   },
-  watch: {
-  }
-}
+  watch: {}
+};
 </script>
 
 <style lang="css" scoped>
@@ -79,6 +81,4 @@ div.internetCheckerOverlay {
   background-color: #00b712;
   background-image: linear-gradient(315deg, #00b712 0%, #5aff15 74%);
 }
-
-
 </style>

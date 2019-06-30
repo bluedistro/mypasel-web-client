@@ -31,30 +31,29 @@ COURIER_DETAILS_KEY: Contains the information about the courier which responded
 to a particular delivery request
 */
 
-const user = 'MPSL140GH'
-const token_key = 'MPSL250GH'
-const request_delivery_payload = 'MPSL3140GH'
-const pricing = 'MPSL470GH'
-const booking_success_payload = 'MPSL5190GH'
-const ongoing_transactions_payload = 'MPSL6200GH'
-const fcm_token = 'MPSL790GH'
-const delivery_time = 'MPSL8130GH'
-const delivery_mode = 'MPSL9130GH'
-const courier_details_key = 'MPSL10150GH'
-
+const user = "MPSL140GH";
+const token_key = "MPSL250GH";
+const request_delivery_payload = "MPSL3140GH";
+const pricing = "MPSL470GH";
+const booking_success_payload = "MPSL5190GH";
+const ongoing_transactions_payload = "MPSL6200GH";
+const fcm_token = "MPSL790GH";
+const delivery_time = "MPSL8130GH";
+const delivery_mode = "MPSL9130GH";
+const courier_details_key = "MPSL10150GH";
 
 const cookeys = {
-  USER_DATA_KEY : user,
-  TOKEN_KEY : token_key,
-  REQUEST_DELIVERY_PAYLOAD_KEY : request_delivery_payload,
-  PRICING_KEY : pricing,
-  BOOKING_SUCCESS_PAYLOAD_KEY : booking_success_payload,
-  ONGOING_TRANSACTIONS_DATA_KEY : ongoing_transactions_payload,
-  FCM_TOKEN_KEY : fcm_token,
+  USER_DATA_KEY: user,
+  TOKEN_KEY: token_key,
+  REQUEST_DELIVERY_PAYLOAD_KEY: request_delivery_payload,
+  PRICING_KEY: pricing,
+  BOOKING_SUCCESS_PAYLOAD_KEY: booking_success_payload,
+  ONGOING_TRANSACTIONS_DATA_KEY: ongoing_transactions_payload,
+  FCM_TOKEN_KEY: fcm_token,
   DELIVERY_TIME: delivery_time,
   DELIVERY_MODE: delivery_mode,
-  COURIER_DETAILS_KEY : courier_details_key,
-  cookie_expire: 30, // 30 days duration for cookie
-}
+  COURIER_DETAILS_KEY: courier_details_key,
+  cookie_expire: 30 // 30 days duration for cookie
+};
 
 export default cookeys;

@@ -1,123 +1,132 @@
 <template lang="html">
-
   <div class="container">
     <!-- <loader-bar v-show="loaderBarControl"></loader-bar> -->
-      <div class="col-sm-12 col-xl-8 col-md-8 col-lg-12" id="logreg-forms">
-        <form class="form-signin" v-promise-btn="{action: 'submit'}" @submit.prevent="login">
-            <div class="row">
-                <div class="col-md-9 col-6">
-                  <h1 class="h3 mb-3 font-weight-normal login-header" style="text-align: center">MyPasel</h1>
-                </div>
-                <div class="col-md-3 col-sm-6 col-lg-3 col-6">
-                  <!-- <p>Don't have an account!</p>  -->
-                  <button class="btn btn-outline-dark btn-sm btn-block"
-                          type="button"
-                          id="btn-signup"
-                          v-on:click="createNewAccount">
-                          Register
-                  </button>
-                </div>
-            </div>
-            <span class="login-error" v-if="unsuccessfulLogin">{{ errorMessage }}</span>
-
-           <vue-phone-number-input v-model="loginData.phoneNumber" autofocus
-                                   :default-country-code="phoneField.defaultCode"
-                                   :clearable="phoneField.clearable" required
-                                   :preferred-countries="phoneField.preferred"
-                                   name="inputPhoneNumber"
-                                   id="inputPhoneNumber"/>
-
-            <input type="password"
-                   id="inputPassword"
-                   class="form-control passwordField"
-                   placeholder="Password"
-                   required=""
-                   v-model="loginData.password">
-
-            <button class="btn btn-outline-dark btn-sm btn-block col-md-3 col-lg-3 col-4 col-sm-3"
-                    type="submit">
-                    Sign in
+    <div class="col-sm-12 col-xl-8 col-md-8 col-lg-12" id="logreg-forms">
+      <form class="form-signin" v-promise-btn="{ action: 'submit' }" @submit.prevent="login">
+        <div class="row">
+          <div class="col-md-9 col-6">
+            <h1 class="h3 mb-3 font-weight-normal login-header" style="text-align: center">
+              MyPasel
+            </h1>
+          </div>
+          <div class="col-md-3 col-sm-6 col-lg-3 col-6">
+            <!-- <p>Don't have an account!</p>  -->
+            <button
+              class="btn btn-outline-dark btn-sm btn-block"
+              type="button"
+              id="btn-signup"
+              v-on:click="createNewAccount"
+            >
+              Register
             </button>
-            <a href="#" id="forgot_pswd">
-              <router-link :to="{ name: 'ForgotPassword', params: {} }">Forgot password?</router-link>
-            </a>
-            <hr>
-        </form>
-      </div>
-  </div>
+          </div>
+        </div>
+        <span class="login-error" v-if="unsuccessfulLogin">{{ errorMessage }}</span>
 
+        <vue-phone-number-input
+          v-model="loginData.phoneNumber"
+          autofocus
+          :default-country-code="phoneField.defaultCode"
+          :clearable="phoneField.clearable"
+          required
+          :preferred-countries="phoneField.preferred"
+          name="inputPhoneNumber"
+          id="inputPhoneNumber"
+        />
+
+        <input
+          type="password"
+          id="inputPassword"
+          class="form-control passwordField"
+          placeholder="Password"
+          required=""
+          v-model="loginData.password"
+        />
+
+        <button
+          class="btn btn-outline-dark btn-sm btn-block col-md-3 col-lg-3 col-4 col-sm-3"
+          type="submit"
+        >
+          Sign in
+        </button>
+        <a href="#" id="forgot_pswd">
+          <router-link :to="{ name: 'ForgotPassword', params: {} }">Forgot password?</router-link>
+        </a>
+        <hr />
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
-import LoaderBar from './LoaderBar.vue';
+import LoaderBar from "./LoaderBar.vue";
 
 export default {
-  name: 'Login',
+  name: "Login",
   components: {
-    'loader-bar' : LoaderBar,
+    "loader-bar": LoaderBar
   },
-  data(){
+  data() {
     return {
-        errorMessage: '',
-        loaderBarControl: false,
-        loginData: {
-          phoneNumber: '',
-          password: '',
-        },
-        unsuccessfulLogin: false,
-        phoneField: {
-          defaultCode: 'GH',
-          preferred: ['GH'],
-          clearable: true,
-        },
-    }
+      errorMessage: "",
+      loaderBarControl: false,
+      loginData: {
+        phoneNumber: "",
+        password: ""
+      },
+      unsuccessfulLogin: false,
+      phoneField: {
+        defaultCode: "GH",
+        preferred: ["GH"],
+        clearable: true
+      }
+    };
   },
   methods: {
-    createNewAccount(evt){
-      this.$router.push({name: 'Register'})
+    createNewAccount(evt) {
+      this.$router.push({ name: "Register" });
     },
-    login(evt){
+    login(evt) {
       evt.preventDefault();
       this.loaderBarControl = true;
       this.unsuccessfulLogin = false;
       let user = {
-        phoneNumber : this.loginData.phoneNumber.replace(/\s/g, ''),
-        password : this.loginData.password
-      }
+        phoneNumber: this.loginData.phoneNumber.replace(/\s/g, ""),
+        password: this.loginData.password
+      };
 
       // access Vuex to perform login transaction
-      return this.$store.dispatch('login', user)
-                 .then(response => {
-                   this.$router.push({name: 'RequestDelivery'})
-                 })
-                 .catch(error => {
-                   // console.log(error.response.status)
-                   if(error.response.status == 400){
-                      this.errorMessage = 'Incorrect phone number or password. Please try again';
-                   }
+      return this.$store
+        .dispatch("login", user)
+        .then(response => {
+          this.$router.push({ name: "RequestDelivery" });
+        })
+        .catch(error => {
+          // console.log(error.response.status)
+          if (error.response.status == 400) {
+            this.errorMessage = "Incorrect phone number or password. Please try again";
+          } else if (error.response.status == 503) {
+            this.errorMessage =
+              "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
+          } else {
+            this.errorMessage =
+              "Unable to log you in due to a technical glitch we are currently experiencing. Please try again later";
+          }
 
-                   else if(error.response.status == 503){
-                     this.errorMessage = 'Service temporarily unavailable. We are working very hard to get it back as soon as possible'
-                   }
-
-                   else {
-                     this.errorMessage = 'Unable to log you in due to a technical glitch we are currently experiencing. Please try again later'
-                   }
-
-                   // this.errorMessage = 'Incorrect phone number or password. Please try again';
-                   this.unsuccessfulLogin = true;
-                   this.loaderBarControl = false;
-                 })
+          // this.errorMessage = 'Incorrect phone number or password. Please try again';
+          this.unsuccessfulLogin = true;
+          this.loaderBarControl = false;
+        });
     }
   },
-  created(){
+  created() {
     this.loaderBarControl = false;
     // check for token availability and redirect to dashboard if true
-    if(this.$cookie.get(this.$cookeys.TOKEN_KEY)){
-      this.$router.push({name: 'RequestDelivery'})
+    if (this.$cookie.get(this.$cookeys.TOKEN_KEY)) {
+      this.$router.push({ name: "RequestDelivery" });
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
@@ -233,6 +242,4 @@ export default {
         content:'Google+';
     }
 }
-
-
 </style>

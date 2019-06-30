@@ -1,7 +1,7 @@
 <template lang="html">
-      <div class="courierNeedDiv">
-        <h6 class="courierNeedTimeHeader">When do you need the courier?</h6>
-        <!-- <div class="radio-btn-group">
+  <div class="courierNeedDiv">
+    <h6 class="courierNeedTimeHeader">When do you need the courier?</h6>
+    <!-- <div class="radio-btn-group">
           <div class="radio">
             <input type="radio" name="deliveryDateOption" value="now" checked v-model="deliveryDateOption" id="now"/>
             <label for="now">Now</label>
@@ -14,61 +14,60 @@
     <!-- <h5 class="show m-t-2">Currently checked value: <span>{{ deliveryDateOption }}</span></h5> -->
     <!-- date picker -->
     <div class="dateSelect">
-      <vue-ctk-date-time-picker v-model="selectedDate"
-                                :min-date="dateOptions.minimumDate"
-                                :no-weekends-days="dateOptions.noWeekendDays"
-                                :label="dateOptions.label"
-                                :minute-interval="dateOptions.minuteInterval"
-                                :error-hint="dateOptions.errorHint">
+      <vue-ctk-date-time-picker
+        v-model="selectedDate"
+        :min-date="dateOptions.minimumDate"
+        :no-weekends-days="dateOptions.noWeekendDays"
+        :label="dateOptions.label"
+        :minute-interval="dateOptions.minuteInterval"
+        :error-hint="dateOptions.errorHint"
+      >
       </vue-ctk-date-time-picker>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'DeliveryDate',
-  data(){
+  name: "DeliveryDate",
+  data() {
     return {
-        selectedDate: '', // format is: 2019-06-23 03:00 am
-        dateOptions: {
-          minimumDate: this.getCorrectISODate(),
-          noWeekendDays: false,
-          label: 'Select preferred delivery date and time',
-          minuteInterval: 5,
-          errorHint: true,
-        },
-        finalData: null,
-    }
+      selectedDate: "", // format is: 2019-06-23 03:00 am
+      dateOptions: {
+        minimumDate: this.getCorrectISODate(),
+        noWeekendDays: false,
+        label: "Select preferred delivery date and time",
+        minuteInterval: 5,
+        errorHint: true
+      },
+      finalData: null
+    };
   },
   methods: {
     // get the correct ISO date to set the minimum date
-    getCorrectISODate(){
+    getCorrectISODate() {
       var today = new Date();
-      var dd =today.getDate();
-      var mm = today.getMonth()+1;
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
       var yyyy = today.getFullYear();
-      if(dd<10){
-        dd='0'+dd;
+      if (dd < 10) {
+        dd = "0" + dd;
       }
-      if(mm<10){
-        mm='0'+mm;
+      if (mm < 10) {
+        mm = "0" + mm;
       }
-      today = yyyy+'-'+mm+'-'+dd;
+      today = yyyy + "-" + mm + "-" + dd;
       return today;
     }
   },
   watch: {
-    selectedDate: function(date){
-        const dateData = Date.parse(date)
-        this.$emit('selected_delivery_option', dateData);
-
+    selectedDate: function(date) {
+      const dateData = Date.parse(date);
+      this.$emit("selected_delivery_option", dateData);
     }
   },
-  created(){
-  }
-}
+  created() {}
+};
 </script>
 
 <style lang="css" scoped>

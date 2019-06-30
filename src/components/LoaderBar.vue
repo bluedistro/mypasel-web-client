@@ -4,13 +4,11 @@
 
 <script>
 export default {
-  name: 'LoaderBar',
-  data(){
-    return {
-
-    }
+  name: "LoaderBar",
+  data() {
+    return {};
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
