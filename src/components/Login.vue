@@ -110,7 +110,7 @@ export default {
               "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
           } else {
             this.errorMessage =
-              "Unable to log you in due to a technical glitch we are currently experiencing. Please try again later";
+              "Unable to login. Please check credentials and try again";
           }
 
           // this.errorMessage = 'Incorrect phone number or password. Please try again';
