@@ -243,7 +243,12 @@ export default {
           this.pricingDetails.walking = "N/A";
         })
         .catch(error => {
-          this.errorModalMessage = "Please complete pick up and dropoff information";
+          if(error.response.status == 503 || error.response.status == 500){
+            this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
+          }else{
+            this.errorModalMessage = "Please complete pick up and dropoff information";
+          }
+          
           this.incompleteRequestDelivery = true;
         });
     },
