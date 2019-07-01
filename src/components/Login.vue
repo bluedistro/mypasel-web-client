@@ -108,7 +108,10 @@ export default {
           } else if (error.response.status == 503) {
             this.errorMessage =
               "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
-          } else {
+          } else if(error.response.status == 404){
+            this.errorMessage = error.response.data.message;
+          }
+           else {
             this.errorMessage =
               "Unable to login. Please check credentials and try again";
           }
