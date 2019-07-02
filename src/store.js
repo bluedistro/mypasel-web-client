@@ -148,6 +148,12 @@ export default new Vuex.Store({
     },
     transactions_history_error(state) {
       state.status = "transactions_history_error";
+    },
+    profile_image_retrieve_success(state){
+      state.status = "profile_image_retrieve_successfully"
+    },
+    profile_image_retrieve_error(state){
+      state.status = "profile_image_retrieve_error"
     }
   },
 
@@ -268,14 +274,19 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         // assuming there are two different paths for single and multiple dropoff requests
         // for single DropOff request
-        if (requestPayload.dropOffData.length == 1) {
+        const destinations = []
+        for(let i = 0; i < requestPayload.dropOffData.length; i++){
+          const dest_loc = requestPayload.dropOffData[i].searchAddress.location.lat() + "," + requestPayload.dropOffData[i].searchAddress.location.lng()
+          destinations.push(dest_loc)
+        }
+
+        // if (requestPayload.dropOffData.length == 1) {
           // send payload to single request api and set the return payload to the pricing store state
-          const path = "https://api.desymal.com/v1/route/get";
+          const path = "https://api.desymal.com/v2/route/get";
           const params = {
-            source: requestPayload.pickupData.searchAddress.place_id,
-            isSourceID: "t",
-            destination: requestPayload.dropOffData[0].searchAddress.place_id,
-            isDestID: "t"
+            source: requestPayload.pickupData.searchAddress.location.lat() + "," + requestPayload.pickupData.searchAddress.location.lng(),
+            destinations: destinations,
+            sourceID: requestPayload.pickupData.searchAddress.place_id
           };
 
           // Store the user request data to be saved after transaction is over
@@ -287,6 +298,8 @@ export default new Vuex.Store({
             .get(path, { params: params })
             .then(resp => {
               const pricing = resp.data.pricing;
+              // add currency to pricing
+              pricing.currency = "GHS"
               // check for negative values and rectify as such
               for (var key in pricing) {
                 if (pricing[key] < 0) {
@@ -303,9 +316,7 @@ export default new Vuex.Store({
               commit("pricing_error");
               reject(error);
             });
-        } else if (requestPayload.dropOffData.length > 1) {
-          // send payload to multiple request api and set the return payload to the pricing store state
-        }
+        // }
       });
     },
 
@@ -470,8 +481,33 @@ export default new Vuex.Store({
             reject(error);
           });
       });
-    }
+    },
+
+    saveImage({commit}, payload){
+      return new Promise((resolve, reject) => {
+        const path = "https://api.desymal.com/user/" + String(payload.id) + "/uploadavatar";
+        // axios.post(path, payload.file)
+      })
+    },
+
+    getProfileImage({commit}, id){
+      return new Promise((resolve, reject) => {
+        const path = "https://api.desymal.com/user/" + String(id) + "/avatar";
+        axios.get(path)
+             .then((resp) => {
+               commit('profile_image_retrieve_success')
+               resolve(resp)
+             })
+             .catch((error) => {
+               commit('profile_image_retrieve_error')
+               reject(error)
+             })
+      })
+    },
+
+
   },
+
 
   getters: {
     loggedIn(state) {

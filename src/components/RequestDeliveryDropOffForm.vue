@@ -114,11 +114,11 @@ export default {
   // minimum and maximum number of drop off forms to create
   props: {
     minimumDropOffs: Number,
-    maximumDropOffs: Number
+    maximumDropOffs: Number,
+    disableMultiDropOffs: Boolean,
   },
   data() {
     return {
-      disableMultiDropOffs: true,
       searchingAddressLoader: null,
       counter: 0,
       // due to the dynamic nature of the drop off form, I use

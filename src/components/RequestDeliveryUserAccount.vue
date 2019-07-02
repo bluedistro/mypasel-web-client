@@ -15,8 +15,8 @@
           ></b-img>
         </div>
         <div class="row upload-btn-wrapper">
-          <button class="imagebtn">Upload image</button>
-          <input type="file" @change="previewImage" accept="image/*" name="my-file" />
+          <button class="imagebtn" @click.prevent="submit">Upload image</button>
+          <input type="file" @change="previewImage" accept="image/*" name="image" id="image" />
         </div>
         <div class="row user-identity">
           {{ fullName }}
@@ -273,10 +273,12 @@ export default {
       fullName: "",
       country: "",
       sex: "",
-      aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
+      aviImage: '',
+      // aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
     };
   },
   methods: {
+    // preview image
     previewImage(event) {
       var input = event.target;
       var file = input.files[0];
@@ -311,6 +313,9 @@ export default {
         };
         reader.readAsDataURL(file);
       }
+    },
+    submit(){
+
     },
     infoChangeStatusFunction(evt) {
       this.$refs["info-change-status-modal"].hide();
@@ -425,7 +430,20 @@ export default {
         return strongRegex.test(value);
       }
     });
+
+
+    // retrieve prfile image
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+    return this.$store.dispatch('getProfileImage', id)
+                      .then((resp) => {
+                        console.log(resp)
+                      })
+                      .catch((error) => {
+
+                      })
+
   }
+
 };
 </script>
 

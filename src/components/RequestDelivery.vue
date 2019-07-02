@@ -15,6 +15,7 @@
               <drop-off-form
                 v-bind:minimumDropOffs="minimumDropOffForm"
                 v-bind:maximumDropOffs="maximumDropOffForm"
+                v-bind:disableMultiDropOffs="disableMultiDropOffs"
                 @set_markers="getDropOffMarkers"
                 @dropoff_details="getDropOffInfo"
                 data-v-step="1"
@@ -127,12 +128,13 @@ export default {
   data() {
     return {
       loaderBarControl: true,
+      disableMultiDropOffs: false,
       // control rd error
       incompleteRequestDelivery: false,
       errorModalMessage: "",
 
       minimumDropOffForm: 1,
-      maximumDropOffForm: 5,
+      maximumDropOffForm: 1,
       componentRestrictions: {
         country: ["gh"]
       },
@@ -247,14 +249,17 @@ export default {
             this.pricingDetails.walking = "N/A";
           })
           .catch(error => {
-            if(error.response.status == 503 || error.response.status == 500){
-              this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
+            if(error){
+              if(error.response.status == 503 || error.response.status == 500){
+                this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
+              }else{
+                this.errorModalMessage = "Please complete pick up and dropoff information";
+              }
             }else{
-              this.errorModalMessage = "Please complete pick up and dropoff information";
+              this.errorModalMessage = "Unable to get pricing";
             }
-
             this.incompleteRequestDelivery = true;
-          });  
+          });
       }
     },
 
