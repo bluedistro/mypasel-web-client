@@ -284,7 +284,11 @@ export default {
   },
   // watch for changes in selected pricing choice
   watch: {},
-  created() {},
+  created() {
+    if(this.$cookie.get(this.$cookeys.TOKEN_KEY == null)){
+      this.$router.push({name: 'Login'})
+    }
+  },
   mounted() {
     // start tour
     // this.$tours['myTour'].start()

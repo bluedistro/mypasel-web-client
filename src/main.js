@@ -220,13 +220,13 @@ router.beforeEach((to, from, next) => {
     }
   }
   // take user directly to dashboard if logged in already
-  if(to.matched.some(record => record.name=="Login")){
-      if(store.getters.loggedIn){
-        next({
-          name: "RequestDelivery"
-        })
-      }
-  }
+  // if(to.matched.some(record => record.name=="Login")){
+  //     if(store.getters.loggedIn){
+  //       next({
+  //         name: "RequestDelivery"
+  //       })
+  //     }
+  // }
 });
 
 new Vue({
