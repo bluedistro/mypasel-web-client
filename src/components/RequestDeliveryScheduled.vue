@@ -79,6 +79,7 @@ export default {
 .scheduled-header {
   text-align: left;
   margin-top: 20px;
+  margin-left: 10px;
   border-bottom: solid #ccc 1px;
 }
 
