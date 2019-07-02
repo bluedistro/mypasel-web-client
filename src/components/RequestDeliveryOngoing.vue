@@ -141,7 +141,6 @@ export default {
         const isoDate = new Date(parseInt(time));
         const timeData = isoDate.toGMTString();
         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-        console.log(ongoing_txns_data);
         ongoing_txns_data.forEach(function(txns, index) {
           if (txns.sendID == parseInt(payload.data.sendID)) {
             txns.step = payload.data.step;

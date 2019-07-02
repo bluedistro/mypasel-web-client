@@ -212,12 +212,20 @@ router.beforeEach((to, from, next) => {
     next();
   }
   // prevent users from navigating directly to courier found page
-  if (to.fullPath == "/courier-found") {
+  if (to.matched.some(record => record.name == "CourierFound")) {
     if (store.state.rawRouteGuards == true) {
       next({
         name: "RequestDelivery"
       });
     }
+  }
+  // take user directly to dashboard if logged in already
+  if(to.matched.some(record => record.name=="Login")){
+      if(store.getters.loggedIn){
+        next({
+          name: "RequestDelivery"
+        })
+      }
   }
 });
 

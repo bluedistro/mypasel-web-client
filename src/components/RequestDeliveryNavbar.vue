@@ -6,9 +6,9 @@
           <b-img-lazy
             rounded="circle"
             class="brand-logo"
-            src="https://picsum.photos/50/50?grayscale"
+            src="https://lh3.googleusercontent.com/C49t3XyUftk6mV63EKR9oUX8rioUCV1HqEfD5LxQJfUC52tsYZBCdx7hsWiR7vKKrA"
             fluid
-            alt="Responsive image"
+            alt="brand logo"
           >
           </b-img-lazy>
           MyPasel

@@ -12,7 +12,3 @@ var config = {
 
 firebase.initializeApp(config);
 const messaging = firebase.messaging();
-// messaging.setBackgroundMessageHandler((payload) => {
-// 	console.log('message here too')
-// 	console.log(payload)
-// })

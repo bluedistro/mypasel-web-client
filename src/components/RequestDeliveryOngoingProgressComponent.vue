@@ -2,7 +2,7 @@
   <div class="root">
     <div class="container">
       <ul class="progressbar">
-        <li :class="step1" :key="i">
+        <li :class="step1">
           <div class="" v-if="step1 === 'active'">
             <!-- {{ message1 }} -->
           </div>

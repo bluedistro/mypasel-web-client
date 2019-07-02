@@ -124,10 +124,6 @@ export default {
   },
   created() {
     this.loaderBarControl = false;
-    // check for token availability and redirect to dashboard if true
-    if (this.$cookie.get(this.$cookeys.TOKEN_KEY)) {
-      this.$router.push({ name: "RequestDelivery" });
-    }
   }
 };
 </script>
