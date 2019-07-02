@@ -236,21 +236,26 @@ export default {
     },
     checkPricing(evt) {
       evt.preventDefault();
-      return this.$store
-        .dispatch("getPricing", this.emittedFormData)
-        .then(response => {
-          this.pricingDetails = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY));
-          this.pricingDetails.walking = "N/A";
-        })
-        .catch(error => {
-          if(error.response.status == 503 || error.response.status == 500){
-            this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
-          }else{
-            this.errorModalMessage = "Please complete pick up and dropoff information";
-          }
-          
-          this.incompleteRequestDelivery = true;
-        });
+      if(this.emittedFormData.pickupData == null || this.emittedFormData.dropOffData == null){
+        this.errorModalMessage = "Please provide both pickup and dropoff information"
+        this.incompleteRequestDelivery = true;
+      }else{
+        return this.$store
+          .dispatch("getPricing", this.emittedFormData)
+          .then(response => {
+            this.pricingDetails = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY));
+            this.pricingDetails.walking = "N/A";
+          })
+          .catch(error => {
+            if(error.response.status == 503 || error.response.status == 500){
+              this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
+            }else{
+              this.errorModalMessage = "Please complete pick up and dropoff information";
+            }
+
+            this.incompleteRequestDelivery = true;
+          });  
+      }
     },
 
     proceedToPayment(evt) {
