@@ -232,8 +232,8 @@ export default {
 
 .transaction-history-header {
   margin-bottom: 20px;
+  margin-left: 2px;
   border-bottom: solid #ccc 1px;
-  margin-left: 10px;
   padding: 3px;
   /* div */
   /* position: sticky;

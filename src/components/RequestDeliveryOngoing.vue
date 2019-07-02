@@ -210,12 +210,12 @@ export default {
     border-bottom: solid 1px #ccc;
     margin-bottom: 10px;
     text-align: left;
-    margin-left: 10px;
+    margin-left: 2px;
   }
 
   .ongoing-header-alt {
     text-align: left;
-    margin-left: 10px;
+    margin-left: 2px;
     /* margin-top: 20px; */
     border-bottom: solid #ccc 1px;
   }
