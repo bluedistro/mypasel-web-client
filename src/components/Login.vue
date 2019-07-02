@@ -103,17 +103,21 @@ export default {
         })
         .catch(error => {
           // console.log(error.response.status)
-          if (error.response.status == 400) {
-            this.errorMessage = "Incorrect phone number or password. Please try again";
-          } else if (error.response.status == 503) {
-            this.errorMessage =
-              "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
-          } else if(error.response.status == 404){
-            this.errorMessage = error.response.data.message;
-          }
-           else {
-            this.errorMessage =
-              "Unable to login. Please check credentials and try again";
+          if(error.response.status){
+            if (error.response.status == 400) {
+              this.errorMessage = "Incorrect phone number or password. Please try again";
+            } else if (error.response.status == 503) {
+              this.errorMessage =
+                "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
+            } else if(error.response.status == 404){
+              this.errorMessage = error.response.data.message;
+            }
+             else {
+              this.errorMessage =
+                "Unable to login. Please check credentials and try again";
+            }
+          }else{
+            this.errorModalMessage = "Unable to login due to a technical error. Kindly try again later."
           }
 
           // this.errorMessage = 'Incorrect phone number or password. Please try again';
