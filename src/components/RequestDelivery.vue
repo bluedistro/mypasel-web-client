@@ -134,7 +134,7 @@ export default {
       errorModalMessage: "",
 
       minimumDropOffForm: 1,
-      maximumDropOffForm: 1,
+      maximumDropOffForm: 3,
       componentRestrictions: {
         country: ["gh"]
       },

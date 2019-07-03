@@ -163,9 +163,7 @@ navigator.serviceWorker
   });
 
 // get the FCM token right here
-firebase
-  .messaging()
-  .requestPermission()
+firebase.messaging().requestPermission()
   .then(() => firebase.messaging().getToken())
   .then(token => {
     // ste fcm token in localStorage to be used

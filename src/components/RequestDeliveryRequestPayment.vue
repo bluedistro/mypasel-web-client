@@ -275,31 +275,39 @@ export default {
       // prepare payload
       const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
       const parsedRequestPayload = JSON.parse(requestPayload);
+      const dropoffs = []
+      for(let i = 0; i < parsedRequestPayload.dropOffData.length; i++){
+        const d_o = {
+          name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
+          latitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lat,
+          longitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lng,
+          contact: {
+            name: parsedRequestPayload.dropOffData[i].fullName,
+            phone: parsedRequestPayload.dropOffData[i].phoneNumber,
+          },
+          additionalInformation: ""
+        }
+        dropoffs.push(d_o);
+      }
 
       const payload = {
         sender: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
-        sourceCountry: this.sourceCountry,
-        targetCountry: this.targetCountry,
-        sourceLocation: JSON.stringify({
+        pickup: {
           name: parsedRequestPayload.pickupData.searchAddress.formatted_address,
           latitude: parsedRequestPayload.pickupData.searchAddress.location.lat,
-          longitude: parsedRequestPayload.pickupData.searchAddress.location.lng
-        }),
-        targetLocation: JSON.stringify({
-          name: parsedRequestPayload.dropOffData[0].searchAddress.formatted_address,
-          latitude: parsedRequestPayload.dropOffData[0].searchAddress.location.lat,
-          longitude: parsedRequestPayload.dropOffData[0].searchAddress.location.lng
-        }),
+          longitude: parsedRequestPayload.pickupData.searchAddress.location.lng,
+          contact: {
+            name: parsedRequestPayload.pickupData.fullName,
+            phone: parsedRequestPayload.pickupData.phoneNumber,
+          },
+          additionalInformation: parsedRequestPayload.pickupData.details
+        },
+        dropoffs: dropoffs,
         deliveryDate: JSON.parse(this.$cookie.get(this.$cookeys.DELIVERY_TIME)),
         modeOfDelivery: this.deliveryMode,
-        description: parsedRequestPayload.pickupData.details,
-        fullName: parsedRequestPayload.dropOffData[0].fullName,
-        phoneNumber: parsedRequestPayload.dropOffData[0].phoneNumber,
-        pickupFullName: parsedRequestPayload.pickupData.fullName,
-        pickupPhoneNumber: parsedRequestPayload.pickupData.phoneNumber,
         fee: this.amount
       };
-      
+
       // post to the API of the confirm Order
       return this.$store
         .dispatch("confirmOrder", payload)

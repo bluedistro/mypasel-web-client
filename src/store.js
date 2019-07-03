@@ -343,7 +343,7 @@ export default new Vuex.Store({
       // payload might to be received might be the amount alone since the rest can be obtained in the store already
       return new Promise((resolve, reject) => {
         // API to book transaction
-        const path = "https://api.desymal.com/v1/user/sends/create";
+        const path = "https://api.desymal.com/v3/user/sends/create";
         axios
           .post(path, payload)
           .then(resp => {

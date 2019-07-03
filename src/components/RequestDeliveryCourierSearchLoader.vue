@@ -197,6 +197,7 @@ export default {
       this.$router.push({ name: "RequestPayment" });
     }
 
+    console.log(this.fcm);
     this.deliveryMode = this.$cookie.get(this.$cookeys.DELIVERY_MODE);
     // prepare payload for courier search api
     const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);

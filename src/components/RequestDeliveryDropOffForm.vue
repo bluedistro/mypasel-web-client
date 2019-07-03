@@ -3,7 +3,12 @@
   <div>
     <!-- drop off element controls -->
     <div class="row">
-      <div id="multiDropOffDiv" class="col-md-12 dropOffBtnDiv">
+      <!-- <div class="col-md-4 col-lg-4 col-sm-1 col-1 dropoff-notice">
+          <div class="col-md-12 col-sm-6 col-6">
+               ({{ counter + 1}})
+          </div>
+      </div> -->
+      <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-11 col-11 dropOffBtnDiv">
         <button
           type="button"
           :disabled="disableMultiDropOffs"
@@ -24,7 +29,7 @@
         </button>
       </div>
       <b-tooltip
-        v-show="disableMultiDropOffs"
+        v-if="disableMultiDropOffs"
         target="multiDropOffDiv"
         placement="top"
         title="Multiple Dropoff is disabled"
@@ -260,5 +265,9 @@ export default {
     margin-bottom: 20px;
     margin-top: 10px;
     border-color: #d4d8dd;
+  }
+
+  .dropoff-notice {
+    text-align: left;
   }
 </style>
