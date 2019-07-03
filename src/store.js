@@ -158,6 +158,19 @@ export default new Vuex.Store({
   },
 
   actions: {
+    // check for presence of token
+    checkFCMTokenPresence({commit}){
+       return new Promise((resolve, reject) => {
+         const fcm_token = VueCookie.get(cookeys.FCM_TOKEN_KEY);
+         if(fcm_token != null){
+           resolve(fcm_token);
+         }else{
+           const error = "Unable to retrieve FCM token";
+           reject(error);
+         }
+       })
+    },
+
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         const params = {

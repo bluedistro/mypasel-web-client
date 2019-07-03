@@ -1,6 +1,5 @@
 <template lang="html">
   <div class="container">
-    <!-- <loader-bar v-show="loaderBarControl"></loader-bar> -->
     <div class="col-sm-12 col-xl-8 col-md-8 col-lg-12" id="logreg-forms">
       <form class="form-signin" v-promise-btn="{ action: 'submit' }" @submit.prevent="login">
         <div class="row">
@@ -59,12 +58,10 @@
 </template>
 
 <script>
-import LoaderBar from "./LoaderBar.vue";
-
 export default {
   name: "Login",
   components: {
-    "loader-bar": LoaderBar
+
   },
   data() {
     return {
@@ -99,7 +96,7 @@ export default {
       return this.$store
         .dispatch("login", user)
         .then(response => {
-          this.$router.push({ name: "RequestDelivery" });
+          this.$router.push({ name: "SystemSetup" });
         })
         .catch(error => {
           // console.log(error.response.status)

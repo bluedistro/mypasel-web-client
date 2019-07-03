@@ -26,6 +26,14 @@ const routes = [
   },
 
   {
+    path: "/setup",
+    name: "SystemSetup",
+    component: () =>
+      import(/* webpackChunkName: 'RequestDelivery' */ "./components/SystemSetup.vue"),
+    meta: { requiresAuth: true }
+  },
+
+  {
     path: "/ongoing",
     name: "Ongoing",
     component: () =>
