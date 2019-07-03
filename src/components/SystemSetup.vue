@@ -8,24 +8,6 @@
           </div>
        </div>
     </div>
-    <!-- unable to set firebase token modal -->
-    <div>
-      <b-modal
-        no-close-on-backdrop
-        hide-header-close
-        no-close-on-esc
-        ref="reset-fcm-modal"
-        size="sm"
-        id="reset-fcm-modal"
-        v-model="resetFCMModal"
-        title="System Setup Failure"
-      >
-        <p class="reset-fcm-text">{{ errorMessage }}</p>
-        <template slot="modal-footer" slot-scope="{ ok }">
-          <b-button size="sm" variant="info" @click="resetFCMModalHide">Resolve Issue</b-button>
-        </template>
-      </b-modal>
-    </div>
   </div>
 </template>
 
@@ -41,16 +23,21 @@ export default {
   },
   methods: {
     // call function to get newly generated FCM token and set it up as cookie
-    async resetFCMModalHide(){
+    async resolveFCMIssue(){
       const tokenExpect = await this.generateFCM();
       if(tokenExpect != null || tokenExpect != 'error'){
-        this.$cookie.set(this.$cookeys.FCM_TOKEN_KEY, tokenExpect, {expires: this.$cookeys.cookie_expire})
-        this.$router.push({name: 'RequestDelivery'});
+          // after resolve
+         setTimeout(() => {
+           this.$cookie.set(this.$cookeys.FCM_TOKEN_KEY, tokenExpect, {expires: this.$cookeys.cookie_expire})
+           this.$router.push({name: 'RequestDelivery'});
+         }, 2000);
       }else if(tokenExpect == 'error'){
-        this.errorMessage = "System issue could not be resolved. Please accept notificatons for this site if you haven't and try logging in again.";
-        this.$router.push({name: 'Login'});
+          this.setupMessage="System issue could not be resolved. \
+           Please accept notificatons for this site if you haven't and try logging in again."
+           setTimeout(() => {
+             this.$router.push({name: 'Login'})
+           }, 5000);
       }
-      this.$refs["reset-fcm-modal"].hide();
     },
     // try to generate FCM token again on first try failure
     generateFCM(){
@@ -75,9 +62,8 @@ export default {
                  this.$router.push({name: 'RequestDelivery'});
                })
                .catch((error) => {
-                 this.setupMessage = "Still setting up..."
-                // show failure modal
-                this.resetFCMModal = true;
+                // try resolving issue
+                this.resolveFCMIssue();
                })
 
       },
