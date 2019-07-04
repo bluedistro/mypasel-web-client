@@ -4,68 +4,69 @@
       <h4>Transaction History</h4>
     </div>
     <div class="row">
-      <!--  if no history -->
-      <div class="col-md-12 col-12 col-lg-12 col-sm-12" v-if="historyContent.length <= 0">
-        <no-activity v-bind:message="message"></no-activity>
-      </div>
-      <!-- else -->
-      <div
-        class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
-        v-if="historyContent.length > 0"
-      >
-        <!-- search filter -->
-        <div class="row search-filter">
-          <!-- search form input and ticker -->
-          <div class="col-md-9 col-sm-9 col-9 col-lg-9 search-input">
-            <input
-              class="form-control"
-              v-model="txnsHistorySearch"
-              placeholder="filter transaction history with pickup search"
-            />
-          </div>
-          <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
-              <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
-              <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
-          </div>
-          <b-tooltip
-            target="tickers"
-            placement="left"
-            title="Sort by transaction date"
-          ></b-tooltip>
-          <div
-            class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-message"
-            v-if="txnsHistorySearch != ''"
-          >
-            Showing filtered results with pickup
-            <span class="search-slot">{{ txnsHistorySearch }}</span>
-          </div>
-          <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
+      <transition name="historyChange" mode="in-out">
+        <!--  if no history -->
+        <div class="col-md-12 col-12 col-lg-12 col-sm-12" v-if="historyContent.length <= 0" key="no-history">
+          <no-activity v-bind:message="message"></no-activity>
         </div>
-        <!-- history data -->
-        <div v-for="(txns, index) in filteredHistory" :key="index" class="historyDataContainer">
-          <div class="row">
-            <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
-              <div class="row">
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-header">
-                  {{ txns.transactionNumber }}
+        <!-- else -->
+        <div
+          class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
+          v-if="historyContent.length > 0" key="history">
+          <!-- search filter -->
+          <div class="row search-filter">
+            <!-- search form input and ticker -->
+            <div class="col-md-9 col-sm-9 col-9 col-lg-9 search-input">
+              <input
+                class="form-control"
+                v-model="txnsHistorySearch"
+                placeholder="filter transaction history with pickup search"
+              />
+            </div>
+            <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
+                <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
+                <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
+            </div>
+            <b-tooltip
+              target="tickers"
+              placement="left"
+              title="Sort by transaction date"
+            ></b-tooltip>
+            <div
+              class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-message"
+              v-if="txnsHistorySearch != ''"
+            >
+              Showing filtered results with pickup
+              <span class="search-slot">{{ txnsHistorySearch }}</span>
+            </div>
+            <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
+          </div>
+          <!-- history data -->
+          <div v-for="(txns, index) in filteredHistory" :key="index" class="historyDataContainer">
+            <div class="row">
+              <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
+                <div class="row">
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-header">
+                    {{ txns.transactionNumber }}
+                  </div>
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-timeStamp">
+                    {{ txns.timeStamp }}
+                  </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-timeStamp">
-                  {{ txns.timeStamp }}
+                <div class="row">
+                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
+                    <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
+                    <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">GHS {{ txns.fee }}</div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
-                  <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
-                </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
-                  <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
-                </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">GHS {{ txns.fee }}</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
     <div>
       <b-modal
@@ -291,5 +292,17 @@ export default {
     margin-left: 13px;
   }
 
+}
+
+
+.historyChange-enter-active {
+  transition: all .2s ease;
+}
+.historyChange-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.historyChange-enter, .historyChange-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

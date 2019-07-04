@@ -35,80 +35,82 @@
         title="Multiple Dropoff is disabled"
       ></b-tooltip>
     </div>
-    <div v-for="dropOff in dropOffData" :key="dropOff.id">
-      <div class="card dropOff-card">
-        <!-- <h6 class="dropOffForm-header">Dropoff</h6> -->
-        <div class="row">
-          <div class="col-md-9 col-9 col-sm-9 col-lg-9">
-            <h6 class="dropOffForm-header">Dropoff</h6>
+    <transition-group name="add-dropOff">
+      <div v-for="dropOff in dropOffData" :key="dropOff.id">
+        <div class="card dropOff-card">
+          <!-- <h6 class="dropOffForm-header">Dropoff</h6> -->
+          <div class="row">
+            <div class="col-md-9 col-9 col-sm-9 col-lg-9">
+              <h6 class="dropOffForm-header">Dropoff</h6>
+            </div>
+            <div class="col-md-3 col-3 col-lg-3 col-sm-3 searchPinger">
+              <b-spinner
+                :id="dropOff.searchId"
+                label="Large Spinner"
+                :ref="dropOff.searchId"
+                v-if="searchingAddressLoader == dropOff.searchId"
+                variant="success"
+                type="grow"
+              >
+              </b-spinner>
+            </div>
           </div>
-          <div class="col-md-3 col-3 col-lg-3 col-sm-3 searchPinger">
-            <b-spinner
-              :id="dropOff.searchId"
-              label="Large Spinner"
-              :ref="dropOff.searchId"
-              v-if="searchingAddressLoader == dropOff.searchId"
-              variant="success"
-              type="grow"
-            >
-            </b-spinner>
-          </div>
+          <b-form>
+            <b-form-group id="input-group-1">
+              <gmap-autocomplete
+                @place_changed="getDropOffAddressData($event, dropOff.searchId)"
+                :id="dropOff.searchId"
+                ref="searchData"
+                class="form-control search-slt"
+                required
+                placeholder="Recipient search address"
+                :options="autoCompleteOptions"
+                v-on:focus="addressSearchLoader(dropOff.searchId)"
+                v-on:blur="sendInfo"
+              >
+              </gmap-autocomplete>
+            </b-form-group>
+
+            <b-form-group id="input-group-2">
+              <b-form-input
+                required
+                v-on:blur="sendInfo"
+                :id="dropOff.fullName"
+                placeholder="Recipient full name"
+                v-model="dropOff.fullName"
+              >
+              </b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-1">
+              <vue-phone-number-input
+                v-model="dropOff.phoneNumber"
+                :default-country-code="phoneField.defaultCode"
+                :clearable="phoneField.clearable"
+                :preferred-countries="phoneField.preferred"
+                name="phoneNumber"
+                required
+                v-on:blur="sendInfo"
+                :id="dropOff.phoneId"
+              />
+            </b-form-group>
+
+            <b-form-group id="input-group-2">
+              <b-form-textarea
+                required
+                :id="dropOff.detailId"
+                rows="2"
+                max-rows="4"
+                v-on:blur="sendInfo"
+                v-model="dropOff.details"
+                placeholder="Add details for courier"
+              >
+              </b-form-textarea>
+            </b-form-group>
+          </b-form>
         </div>
-        <b-form>
-          <b-form-group id="input-group-1">
-            <gmap-autocomplete
-              @place_changed="getDropOffAddressData($event, dropOff.searchId)"
-              :id="dropOff.searchId"
-              ref="searchData"
-              class="form-control search-slt"
-              required
-              placeholder="Recipient search address"
-              :options="autoCompleteOptions"
-              v-on:focus="addressSearchLoader(dropOff.searchId)"
-              v-on:blur="sendInfo"
-            >
-            </gmap-autocomplete>
-          </b-form-group>
-
-          <b-form-group id="input-group-2">
-            <b-form-input
-              required
-              v-on:blur="sendInfo"
-              :id="dropOff.fullName"
-              placeholder="Recipient full name"
-              v-model="dropOff.fullName"
-            >
-            </b-form-input>
-          </b-form-group>
-
-          <b-form-group id="input-group-1">
-            <vue-phone-number-input
-              v-model="dropOff.phoneNumber"
-              :default-country-code="phoneField.defaultCode"
-              :clearable="phoneField.clearable"
-              :preferred-countries="phoneField.preferred"
-              name="phoneNumber"
-              required
-              v-on:blur="sendInfo"
-              :id="dropOff.phoneId"
-            />
-          </b-form-group>
-
-          <b-form-group id="input-group-2">
-            <b-form-textarea
-              required
-              :id="dropOff.detailId"
-              rows="2"
-              max-rows="4"
-              v-on:blur="sendInfo"
-              v-model="dropOff.details"
-              placeholder="Add details for courier"
-            >
-            </b-form-textarea>
-          </b-form-group>
-        </b-form>
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -270,4 +272,19 @@ export default {
   .dropoff-notice {
     text-align: left;
   }
+
+  /* Enter and leave animations can use different */
+  /* durations and timing functions.              */
+  .add-dropOff-enter-active {
+    transition: all .3s ease;
+  }
+  .add-dropOff-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .add-dropOff-enter, .add-dropOff-leave-to
+  /* .add-dropOff-leave-active below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
 </style>

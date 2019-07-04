@@ -4,73 +4,75 @@
       <h4>Ongoing Transactions</h4>
     </div>
     <div class="row">
-      <!-- if no transactions at the moment -->
-      <div class="col-md-12 col-12 col-lg-12 col-sm-12" v-if="ongoingTransactions.length <= 0">
-        <no-activity v-bind:message="message"></no-activity>
-      </div>
-      <!-- else -->
-      <div class="col-md-12 col-12  col-lg-12 col-sm-12" v-if="ongoingTransactions.length > 0">
-        <div class="ongoings-header">
-          <div class="row">
-            <div class="col-md-10 col-lg-10 col-8 col-sm-8">
-              <h3>Ongoing Transactions</h3>
-            </div>
-            <div class="col-md-2 col-lg-2 col-4 col-sm-4 totalTransactions">
-              {{ ongoingTransactions.length }} Transaction(s)
-            </div>
+        <transition name="ongoingChange" mode="in-out">
+          <!-- if no transactions at the moment -->
+          <div class="col-md-12 col-12 col-lg-12 col-sm-12" v-if="ongoingTransactions.length <= 0" key="no-ongoing">
+            <no-activity v-bind:message="message"></no-activity>
           </div>
-        </div>
-        <div class="row item-container" v-for="(i, index) in ongoingTransactions" :key="index">
-          <div class="col-md-10 col-sm-10 col-9 col-lg-10 transaction">
-            <progress-steps v-bind:step1="i.step0" v-bind:step2="i.step1" v-bind:step3="i.step2">
-            </progress-steps>
-            <div class="status">
-              {{ i.status }}
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-2 col-3 col-lg-2 moreBtn">
-            <button
-              type="button"
-              class="btn-sm btn-outline-dark form-control"
-              @click="showMoreFunc(index)"
-              name="button"
-            >
-              More
-            </button>
-          </div>
-          <div class="row courierFullDetailsDiv" v-if="showMore == index && showIndex">
-            <div class="courierTextDetailsDiv col-md-9 col-lg-9 col-9 col-sm-9" :id="index">
-              <div class="details-header">
-                <h6 class="">Transaction Details</h6>
-              </div>
-              <div class="details-text">Transaction ID: {{ i.transactionNumber }}</div>
-              <div class="details-text">Courier Name: {{ i.travellerName }}</div>
-              <div class="details-text">Contact: {{ i.travellerPhone }}</div>
-              <div class="details-text">Delivery Mode: {{ i.modeOfDelivery }}</div>
-              <div class="details-text">Delivery Update: {{ i.update }}</div>
-              <div class="details-text">
-                <span v-if="i.isTimeStamp" class="timeStamp"> {{ i.timeStamp }}</span>
+          <!-- else -->
+          <div class="col-md-12 col-12  col-lg-12 col-sm-12" v-if="ongoingTransactions.length > 0" key="ongoing">
+            <div class="ongoings-header">
+              <div class="row">
+                <div class="col-md-10 col-lg-10 col-8 col-sm-8">
+                  <h3>Ongoing Transactions</h3>
+                </div>
+                <div class="col-md-2 col-lg-2 col-4 col-sm-4 totalTransactions">
+                  {{ ongoingTransactions.length }} Transaction(s)
+                </div>
               </div>
             </div>
-            <div class="col-md-3 col-lg-3 col-3 col-sm-3 courierDetailsImage">
-              <!-- <img src="../assets/tc.jpeg" class="cImage" height="148px"
-                           width="209px" alt="courier image"> -->
-              <b-img-lazy
-                :show="true"
-                right
-                :src="i.travellerImage"
-                height="125px"
-                width="125px"
-                class="courierImage"
-                rounded="circle"
-                thumbnail
-                fluid
-                alt="Right image"
-              ></b-img-lazy>
+            <div class="row item-container" v-for="(i, index) in ongoingTransactions" :key="index">
+              <div class="col-md-10 col-sm-10 col-9 col-lg-10 transaction">
+                <progress-steps v-bind:step1="i.step0" v-bind:step2="i.step1" v-bind:step3="i.step2">
+                </progress-steps>
+                <div class="status">
+                  {{ i.status }}
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-2 col-3 col-lg-2 moreBtn">
+                <button
+                  type="button"
+                  class="btn-sm btn-outline-dark form-control"
+                  @click="showMoreFunc(index)"
+                  name="button"
+                >
+                  More
+                </button>
+              </div>
+              <div class="row courierFullDetailsDiv" v-if="showMore == index && showIndex">
+                <div class="courierTextDetailsDiv col-md-9 col-lg-9 col-9 col-sm-9" :id="index">
+                  <div class="details-header">
+                    <h6 class="">Transaction Details</h6>
+                  </div>
+                  <div class="details-text">Transaction ID: {{ i.transactionNumber }}</div>
+                  <div class="details-text">Courier Name: {{ i.travellerName }}</div>
+                  <div class="details-text">Contact: {{ i.travellerPhone }}</div>
+                  <div class="details-text">Delivery Mode: {{ i.modeOfDelivery }}</div>
+                  <div class="details-text">Delivery Update: {{ i.update }}</div>
+                  <div class="details-text">
+                    <span v-if="i.isTimeStamp" class="timeStamp"> {{ i.timeStamp }}</span>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-3 col-sm-3 courierDetailsImage">
+                  <!-- <img src="../assets/tc.jpeg" class="cImage" height="148px"
+                               width="209px" alt="courier image"> -->
+                  <b-img-lazy
+                    :show="true"
+                    right
+                    :src="i.travellerImage"
+                    height="125px"
+                    width="125px"
+                    class="courierImage"
+                    rounded="circle"
+                    thumbnail
+                    fluid
+                    alt="Right image"
+                  ></b-img-lazy>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </transition>
     </div>
   </div>
 </template>
@@ -93,7 +95,7 @@ export default {
     return {
       showMore: null,
       showIndex: false,
-      ongoingTransactions: JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY)),
+      ongoingTransactions: '',
       // test data, to be deleted soon
       message: "You have no ongoing transactions",
       // set to true if no transaction is going on
@@ -274,4 +276,16 @@ export default {
 .timeStamp {
   font-weight: bold;
 }
+
+.ongoingChange-enter-active {
+  transition: all .2s ease;
+}
+.ongoingChange-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.ongoingChange-enter, .ongoingChange-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 </style>
