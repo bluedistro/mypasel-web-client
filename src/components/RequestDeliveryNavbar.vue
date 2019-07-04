@@ -144,21 +144,15 @@ export default {
           width: 80
       })
 
-      setTimeout(() => {
-        loader.hide();
-      }, 3000);
-
-      // this.$store
-      //   .dispatch("logout")
-      //   .then(response => {
-      //     // delete cookie and redirect to login page
-      //     // this.$cookie.delete('vuex')
-      //     this.$router.push({ name: "Login" });
-      //     loader.hide();
-      //   })
-      //   .catch(error => {
-      //     console.log("error");
-      //   });
+      this.$store
+        .dispatch("logout")
+        .then(response => {
+          this.$router.push({ name: "Login" });
+          loader.hide();
+        })
+        .catch(error => {
+          console.log("error");
+        });
     }
   },
   mounted() {},
