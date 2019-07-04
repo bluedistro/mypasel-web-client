@@ -16,18 +16,22 @@
         <!-- search filter -->
         <div class="row search-filter">
           <!-- search form input and ticker -->
-          <div class="col-md-10 col-sm-12 col-12 col-lg-10 search-input">
+          <div class="col-md-9 col-sm-9 col-9 col-lg-9 search-input">
             <input
               class="form-control"
               v-model="txnsHistorySearch"
               placeholder="filter transaction history with pickup search"
             />
           </div>
-          <!-- TODO: Working on sorting the data by date too -->
-          <!-- <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers">
-              <a href="#"><font-awesome-icon icon="angle-up" /></a> <br/>
-              <a href="#"><font-awesome-icon icon="angle-down" /></a>
-          </div> -->
+          <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
+              <a href="#" @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
+              <a href="#" @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
+          </div>
+          <b-tooltip
+            target="tickers"
+            placement="left"
+            title="Sort by transaction date"
+          ></b-tooltip>
           <div
             class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-message"
             v-if="txnsHistorySearch != ''"
@@ -63,6 +67,23 @@
         </div>
       </div>
     </div>
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="history-fetch-error-modal"
+        size="sm"
+        id="history-fetch-error-modal"
+        v-model="historyFetchErrorModal"
+        title="Unable to fetch history"
+      >
+        <p class="success-modal-text">{{ errorMessage }}</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button size="sm" variant="info" @click="historyFetchError">Okay</b-button>
+        </template>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -78,8 +99,21 @@ export default {
     return {
       txnsHistorySearch: "",
       message: "You have no transaction history",
-      historyContent: []
+      historyContent: [],
+      errorMessage: "Unable to fetch history due to a technical failure. Please refresh page to try again",
+      historyFetchErrorModal: false,
     };
+  },
+  methods: {
+    historyFetchError(){
+      this.$refs["history-fetch-error-modal"].hide();
+    },
+    sortDateAscending(){
+      this.historyContent = this.historyContent.sort((a, b) => a.rawTime - b.rawTime);
+    },
+    sortDateDescending(){
+      this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
+    }
   },
   computed: {
     // filter history data using pickup location
@@ -105,8 +139,17 @@ export default {
           }
         });
         this.historyContent = resp.data;
+        // sort the data
+        this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime)
       })
-      .catch(error => {});
+      .catch(error => {
+        if(error.response.status == 503){
+          this.errorMessage = 'Our servers failed while retrieving your history. Kindly refresh page to try again';
+        }else if(error.response.status == 500){
+          this.errorMessage = 'Sorry, we experienced a technical glitch while fetching your history data. Please refresh page to try again';
+        }
+        this.historyFetchErrorModal = true;
+      });
   }
 };
 </script>
