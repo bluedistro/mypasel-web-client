@@ -63,7 +63,7 @@
                 ref="searchData"
                 class="form-control search-slt"
                 required
-                placeholder="Recipient search address"
+                placeholder="Recipient address"
                 :options="autoCompleteOptions"
                 v-on:focus="addressSearchLoader(dropOff.searchId)"
                 v-on:blur="sendInfo"

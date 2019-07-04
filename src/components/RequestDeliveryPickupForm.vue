@@ -24,7 +24,7 @@
           id="pickupMap"
           ref="pickupAddress"
           class="form-control search-slt"
-          placeholder="Sender search address"
+          placeholder="Sender address"
           :options="autoCompleteOptions"
           v-on:blur="sendInfo"
           required
@@ -171,4 +171,9 @@ export default {
   margin-top: 20px;
   border-color: #d4d8dd;
 }
+
+.form-control.search-slt {
+  content: "\1F50E";
+}
+
 </style>

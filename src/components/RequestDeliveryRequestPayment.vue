@@ -285,7 +285,7 @@ export default {
             name: parsedRequestPayload.dropOffData[i].fullName,
             phone: parsedRequestPayload.dropOffData[i].phoneNumber,
           },
-          additionalInformation: ""
+          additionalInformation: parsedRequestPayload.dropOff[i].details
         }
         dropoffs.push(d_o);
       }

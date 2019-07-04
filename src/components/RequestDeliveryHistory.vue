@@ -42,29 +42,31 @@
             <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
           </div>
           <!-- history data -->
-          <div v-for="(txns, index) in filteredHistory" :key="index" class="historyDataContainer">
-            <div class="row">
-              <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
-                <div class="row">
-                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-header">
-                    {{ txns.transactionNumber }}
+          <transition-group name="sortList" tag="div">
+            <div v-for="(txns, index) in filteredHistory" :key="index" class="historyDataContainer">
+              <div class="row">
+                <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-header">
+                      {{ txns.transactionNumber }}
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-timeStamp">
+                      {{ txns.timeStamp }}
+                    </div>
                   </div>
-                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-timeStamp">
-                    {{ txns.timeStamp }}
+                  <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
+                      <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
+                      <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">GHS {{ txns.fee }}</div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
-                    <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
-                  </div>
-                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
-                    <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
-                  </div>
-                  <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">GHS {{ txns.fee }}</div>
                 </div>
               </div>
             </div>
-          </div>
+          </transition-group>
         </div>
       </transition>
     </div>
@@ -305,4 +307,9 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 }
+
+.sortList-move {
+  transition: transform 1s;
+}
+
 </style>
