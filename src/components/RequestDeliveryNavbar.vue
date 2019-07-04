@@ -19,25 +19,17 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-if="!hidden" class="nav-item">
-            <router-link class="nav-item" :to="{ name: 'RequestDelivery', params: {} }"
-              >Request delivery</router-link
-            >
+          <b-nav-item v-if="!hidden" class="nav-item" @click="requestDeliveryRedirect">
+              Request Delivery
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item">
-            <router-link class="nav-item" :to="{ name: 'Ongoing', params: {} }"
-              >Ongoing</router-link
-            >
+          <b-nav-item v-if="!hidden" class="nav-item" @click="ongoingRedirect">
+              Ongoing
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item">
-            <router-link class="nav-item" :to="{ name: 'Scheduled', params: {} }"
-              >Scheduled</router-link
-            >
+          <b-nav-item v-if="!hidden" class="nav-item" @click="scheduledRedirect">
+              Scheduled
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item">
-            <router-link class="nav-item" :to="{ name: 'History', params: {} }"
-              >History</router-link
-            >
+          <b-nav-item v-if="!hidden" class="nav-item" @click="historyRedirect">
+              History
           </b-nav-item>
         </b-navbar-nav>
 
@@ -54,11 +46,9 @@
             </b-dropdown-item>
             <div class="user-profile-dropdown-border"></div>
             <b-dropdown-item>
-              <span class="user-profile-dropdown">
-                <font-awesome-icon icon="pencil-alt" />
-                <router-link class="account-edit" :to="{ name: 'UserAccount', params: {} }"
-                  >Edit profile</router-link
-                >
+              <span class="user-profile-dropdown" @click="userAccountRedirect">
+                <font-awesome-icon icon="pencil-alt" class="account-edit" />
+                  Edit profile
               </span>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -95,17 +85,80 @@ export default {
     };
   },
   methods: {
+    userAccountRedirect(evt){
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+      this.$router.push({name: 'UserAccount'});
+      loader.hide();
+    },
+    requestDeliveryRedirect(){
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+      this.$router.push({name: 'RequestDelivery'});
+      loader.hide();
+    },
+    scheduledRedirect(){
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+      this.$router.push({name: 'Scheduled'});
+      loader.hide();
+    },
+    historyRedirect(){
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+      this.$router.push({name: 'History'});
+      loader.hide();
+    },
+    ongoingRedirect(){
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+      this.$router.push({name: 'Ongoing'});
+      loader.hide();
+    },
     logOut(evt) {
-      this.$store
-        .dispatch("logout")
-        .then(response => {
-          // delete cookie and redirect to login page
-          // this.$cookie.delete('vuex')
-          this.$router.push({ name: "Login" });
-        })
-        .catch(error => {
-          console.log("error");
-        });
+      // set up loader overlay
+      let loader = this.$loading.show({
+          loader: 'bars',
+          color: '#00bcd4',
+          height: 80,
+          width: 80
+      })
+
+      setTimeout(() => {
+        loader.hide();
+      }, 3000);
+
+      // this.$store
+      //   .dispatch("logout")
+      //   .then(response => {
+      //     // delete cookie and redirect to login page
+      //     // this.$cookie.delete('vuex')
+      //     this.$router.push({ name: "Login" });
+      //     loader.hide();
+      //   })
+      //   .catch(error => {
+      //     console.log("error");
+      //   });
     }
   },
   mounted() {},

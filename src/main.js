@@ -23,6 +23,10 @@ import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import VueTour from "vue-tour";
 import * as VueGoogleMaps from "vue2-google-maps";
 
+// loading overlay
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 // font awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -81,6 +85,7 @@ Vue.component("vue-phone-number-input", VuePhoneNumberInput);
 Vue.use(VueCookie);
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
+Vue.use(Loading);
 
 Vue.prototype.$http = axios;
 const token = VueCookie.get(cookeys.TOKEN_KEY);

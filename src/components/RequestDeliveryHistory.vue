@@ -24,8 +24,8 @@
             />
           </div>
           <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
-              <a href="#" @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
-              <a href="#" @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
+              <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
+              <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
           </div>
           <b-tooltip
             target="tickers"

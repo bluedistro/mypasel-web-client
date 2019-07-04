@@ -48,6 +48,7 @@
     "vue": "^2.6.10",
     "vue-cookie": "^1.1.4",
     "vue-ctk-date-time-picker": "^2.1.1",
+    "vue-loading-overlay": "^3.2.0",
     "vue-phone-number-input": "^0.2.0",
     "vue-promise-btn": "^2.0.2",
     "vue-router": "^3.0.3",

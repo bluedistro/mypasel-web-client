@@ -273,8 +273,7 @@ export default {
       fullName: "",
       country: "",
       sex: "",
-      aviImage: '',
-      // aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
+      aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
     };
   },
   methods: {
