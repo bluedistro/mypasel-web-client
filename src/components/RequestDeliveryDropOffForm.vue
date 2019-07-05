@@ -11,7 +11,7 @@
       <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-11 col-11 dropOffBtnDiv">
         <button
           type="button"
-          :disabled="disableMultiDropOffs"
+          :disabled="disableRemoveDropOffs"
           class="btn btn btn-warning
                     btn-sm  removeDropOffBtn"
           @click="removeDropOff"
@@ -20,7 +20,7 @@
         </button>
         <button
           type="button"
-          :disabled="disableMultiDropOffs"
+          :disabled="disableAddDropOffs"
           class="btn btn-success
                     btn-sm addDropOffBtn"
           @click="addDropOff"
@@ -122,10 +122,11 @@ export default {
   props: {
     minimumDropOffs: Number,
     maximumDropOffs: Number,
-    disableMultiDropOffs: Boolean,
   },
   data() {
     return {
+      disableAddDropOffs: false,
+      disableRemoveDropOffs: true,
       searchingAddressLoader: null,
       counter: 0,
       // due to the dynamic nature of the drop off form, I use
@@ -181,6 +182,7 @@ export default {
           detailId: `detail ${counterInc}`
         });
       }
+
     },
     // remove one drop off form and update drop off markers array.
     // Emit these values to the parent component
@@ -190,6 +192,8 @@ export default {
         this.searchAddress.pop();
         --this.counter;
       }
+
+
       this.markers = [];
       for (var i = 0; i < this.dropOffData.length; i++) {
         this.markers.push({
@@ -232,6 +236,22 @@ export default {
     },
     displaySpinner() {},
     noResultsFound() {}
+  },
+  watch: {
+    dropOffData: function(do_data){
+
+      if(do_data.length == 1){
+        this.disableRemoveDropOffs = true;
+      }else{
+        this.disableRemoveDropOffs = false;
+      }
+
+      if(do_data.length == this.maximumDropOffs){
+        this.disableAddDropOffs = true;
+      }else{
+        this.disableAddDropOffs = false;
+      }
+    }
   }
 };
 </script>

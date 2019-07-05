@@ -15,7 +15,6 @@
               <drop-off-form
                 v-bind:minimumDropOffs="minimumDropOffForm"
                 v-bind:maximumDropOffs="maximumDropOffForm"
-                v-bind:disableMultiDropOffs="disableMultiDropOffs"
                 @set_markers="getDropOffMarkers"
                 @dropoff_details="getDropOffInfo"
                 data-v-step="1"
@@ -151,7 +150,6 @@ export default {
   data() {
     return {
       loaderBarControl: true,
-      disableMultiDropOffs: false,
       // control rd error
       incompleteRequestDelivery: false,
       errorModalMessage: "",
