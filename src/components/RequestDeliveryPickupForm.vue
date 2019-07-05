@@ -26,6 +26,7 @@
           class="form-control search-slt"
           :placeholder="senderAddressPlaceholder"
           :options="autoCompleteOptions"
+          :disabled="disablePickupAddress"
           v-on:blur="sendInfo"
           required
           v-on:focus="addressSearchLoader"
@@ -78,6 +79,9 @@ export default {
   name: "PickupForm",
   components: {
     // 'vue-google-autocomplete': VueGoogleAutocomplete,
+  },
+  props: {
+    disablePickupAddress: Boolean,
   },
   data() {
     return {
@@ -171,6 +175,9 @@ export default {
     if(searchAddress != null){
       this.searchAddress = searchAddress;
       this.senderAddressPlaceholder = searchAddress.formatted_address;
+      this.disablePickupAddress = true;
+    }else{
+      this.disablePickupAddress = false;
     }
   }
 };

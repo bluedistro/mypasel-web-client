@@ -9,6 +9,7 @@
               <pickup-form
                 @set_markers="getPickupMarker"
                 @pickup_details="getPickupInfo"
+                v-bind:disablePickupAddress="disablePickupAddress"
                 data-v-step="0"
               >
               </pickup-form>
@@ -35,6 +36,7 @@
                   <b-toast id="example-toast" title="Using address book" static no-auto-hide>
                     Activating this button will save your current pickup address location during the
                     course of this session. A saved address will be lost when you log out or change again yourself.
+                    <b-badge variant="dark">Beta Test</b-badge>
                   </b-toast>
                 </div>
                 <b-tooltip
@@ -149,6 +151,7 @@ export default {
   },
   data() {
     return {
+      disablePickupAddress: false,
       loaderBarControl: true,
       // control rd error
       incompleteRequestDelivery: false,
@@ -324,6 +327,13 @@ export default {
       }else if(!choice){
         localStorage.removeItem('savedPickUpData');
       }
+
+      if(choice){
+        this.disablePickupAddress = true;
+      }else{
+        this.disablePickupAddress = false;
+      }
+
     }
   },
   created() {
