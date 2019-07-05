@@ -256,6 +256,10 @@ export default new Vuex.Store({
             VueCookie.delete(cookeys[key]);
           }
         }
+        // remove saved addresses
+        if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
+          localStorage.removeItem('savedPickUpData');
+        }
 
         delete axios.defaults.headers.common["Authorization"];
         commit("logout");

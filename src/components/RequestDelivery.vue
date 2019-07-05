@@ -22,13 +22,27 @@
               >
               </drop-off-form>
               <div class="row pickupSave">
-                <div class="col-md-6 col-sm-6 col-6 col-lg-6">
-                    <span class="pickupSave text">Save pickup address</span>
+                <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
                     <label class="switch">
                         <input type="checkbox" v-model="savePickup">
                         <span class="slider"></span>
                     </label>
+                    <span class="pickupSave text">Save to address book</span>
                 </div>
+                <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
+                    <font-awesome-icon icon="question-circle" id="saveHelp" @click="$bvToast.show('example-toast')" />
+                </div>
+                <div class="save-help-note">
+                  <b-toast id="example-toast" title="Using address book" static no-auto-hide>
+                    Activating this button will save your current pickup address location during the
+                    course of this session. A saved address will be lost when you log out or change again yourself.
+                  </b-toast>
+                </div>
+                <b-tooltip
+                  target="saveHelp"
+                  placement="left"
+                  title="Help">
+                </b-tooltip>
               </div>
               <div class="checkPricingDiv">
                 <div class="row">
@@ -418,9 +432,9 @@ export default {
 }
 .switch {
     display:inline-block;
-    width:60px;
-    height:25px;
-    margin-left:5px;
+    width:40px;
+    height:20px;
+    /* margin-left:2px; */
     transform:translateY(50%);
     position:relative;
 }
@@ -432,19 +446,19 @@ export default {
     left:0;
     right:0;
     border-radius:30px;
-    box-shadow:0 0 0 2px #777, 0 0 4px #777;
+    box-shadow:0 0 0 1px #777, 0 0 1px #777;
     cursor:pointer;
-    border:4px solid transparent;
+    border:2px solid transparent;
     overflow:hidden;
      transition:.4s;
 }
 .slider:before {
     position:absolute;
     content:"";
-    width:50%;
+    width:80%;
     height:100%;
     background:#777;
-    border-radius:30px;
+    border-radius:999px;
     transform:translateX(-30px);
     transition:.4s;
 }
@@ -454,18 +468,32 @@ input:checked + .slider:before {
     background:#42d1f5;
 }
 input:checked + .slider {
-    box-shadow:0 0 0 2px #42d1f5,0 0 2px #42d1f5;
+    box-shadow:0 0 0 1px #42d1f5,0 0 1px #42d1f5;
 }
 
 /* end of save pickup info switch */
 
 .pickupSave {
   margin-bottom: 20px;
+  margin-right: 10px;
 }
 
 .pickupSave.text {
   font-size: 100%;
-  margin-right: 10px;
+  margin-left: 20px;
+  /* float: left; */
+  text-align: left;
+  /* vertical-align: sub; */
+}
+
+.save-help {
+  text-align: right;
+  color: #42d1f5;
+}
+
+.save-help-note {
+  justify-content: center;
+  margin-left: 20px;
 }
 
 /* courier urgency switch */

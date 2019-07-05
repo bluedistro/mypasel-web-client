@@ -3,7 +3,7 @@
     <h5 class="pricing-header">Pricing</h5>
       <div class="row">
         <!-- motorcycle -->
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 col-lg-4 col-sm-6 col-6">
           <input
             type="radio"
             name="deliveryMode"
@@ -15,17 +15,17 @@
           />
           <label for="bike">
               <div class="row dm-price-container">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-6">
                     <img class="dm-image" fluid src="../assets/motorcycle.png" height="40px" width="100px" />
                   </div>
-                  <div class="col-md-6 dm-price">
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
                      <span>{{ pricingDetails.currency }} {{ pricingDetails.bike }}</span>
                   </div>
               </div>
           </label>
         </div>
         <!-- bicycle -->
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
           <input
             type="radio"
             name="deliveryMode"
@@ -37,17 +37,17 @@
           />
           <label for="bicycle">
             <div class="row dm-price-container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
                   <img class="dm-image" fluid src="../assets/bicycle.png" height="40px" width="100px" />
                 </div>
-                <div class="col-md-6 dm-price">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
                    <span>{{ pricingDetails.currency }} {{ pricingDetails.bicycle }}</span>
                 </div>
             </div>
           </label>
         </div>
         <!-- sedan car model -->
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
           <input
             type="radio"
             name="deliveryMode"
@@ -59,17 +59,17 @@
           />
           <label for="car">
             <div class="row dm-price-container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
                   <img class="dm-image" fluid src="../assets/sedan-car-model.png" height="40px" width="100px" />
                 </div>
-                <div class="col-md-6 dm-price">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
                    <span>{{ pricingDetails.currency }} {{ pricingDetails.car }}</span>
                 </div>
             </div>
           </label>
         </div>
         <!-- delivery van -->
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
           <input
             type="radio"
             name="deliveryMode"
@@ -81,10 +81,10 @@
           />
           <label for="van">
             <div class="row dm-price-container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
                   <img class="dm-image" fluid src="../assets/delivery-truck.png" height="40px" width="100px" />
                 </div>
-                <div class="col-md-6 dm-price">
+                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
                    <span>{{ pricingDetails.currency }} {{ pricingDetails.van }}</span>
                 </div>
             </div>
@@ -175,7 +175,7 @@ text-align: left;
   /* input radio */
   input[type=radio] + label {
     /* border: 1px dashed #444; */
-    width: 130px;
+    /* width: 130px; */
     height: 60px;
     border: solid #ccc 1px;
     border-radius: 1px;
