@@ -535,7 +535,7 @@ export default new Vuex.Store({
 
   getters: {
     loggedIn(state) {
-      if (state.token != "") {
+      if (state.token != "" || state.token != null) {
         return true;
       } else {
         return false;

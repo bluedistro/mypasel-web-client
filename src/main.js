@@ -201,6 +201,9 @@ const router = new VueRouter({
   mode: "history"
 });
 
+console.log('store getters');
+console.log(store.getters.loggedIn);
+
 // set navigation guard for login protected pages
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -223,13 +226,13 @@ router.beforeEach((to, from, next) => {
     }
   }
   // take user directly to dashboard if logged in already
-  // if(to.matched.some(record => record.name=="Login")){
-  //     if(store.getters.loggedIn){
-  //       next({
-  //         name: "RequestDelivery"
-  //       })
-  //     }
-  // }
+  if(to.matched.some(record => record.name=="Login")){
+      if(store.getters.loggedIn){
+        next({
+          name: "RequestDelivery"
+        })
+      }
+  }
 });
 
 new Vue({
