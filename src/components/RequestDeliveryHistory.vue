@@ -13,9 +13,10 @@
         <div
           class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
           v-if="historyContent.length > 0" key="history">
+          <!-- NOTE: The commented section is for the search filter. Might activate it someday -->
+
           <!-- search filter -->
-          <div class="row search-filter">
-            <!-- search form input and ticker -->
+          <!-- <div class="row search-filter">
             <div class="col-md-9 col-sm-9 col-9 col-lg-9 search-input">
               <input
                 class="form-control"
@@ -23,15 +24,6 @@
                 placeholder="filter transaction history with pickup search"
               />
             </div>
-            <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
-                <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
-                <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
-            </div>
-            <b-tooltip
-              target="tickers"
-              placement="left"
-              title="Sort by transaction date"
-            ></b-tooltip>
             <div
               class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-message"
               v-if="txnsHistorySearch != ''"
@@ -40,10 +32,12 @@
               <span class="search-slot">{{ txnsHistorySearch }}</span>
             </div>
             <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
-          </div>
+          </div> -->
+
+
           <!-- history data -->
           <transition-group name="sortList" tag="div">
-            <div v-for="(txns, index) in filteredHistory" :key="index" class="historyDataContainer">
+            <div v-for="(txns, index) in lists" :key="index" id="historyDataId" class="historyDataContainer">
               <div class="row">
                 <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
                   <div class="row">
@@ -67,6 +61,25 @@
               </div>
             </div>
           </transition-group>
+          <!-- pagination -->
+          <div class="row">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="historyDataId">
+              </b-pagination>
+              <!-- sorts -->
+            <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
+                <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
+                <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
+            </div>
+            <b-tooltip
+              target="tickers"
+              placement="left"
+              title="Sort by transaction date"
+            ></b-tooltip>
+          </div>
         </div>
       </transition>
     </div>
@@ -100,6 +113,8 @@ export default {
   },
   data() {
     return {
+      perPage: 10,
+      currentPage: 1,
       txnsHistorySearch: "",
       message: "You have no transaction history",
       historyContent: [],
@@ -124,6 +139,19 @@ export default {
       return this.historyContent.filter(txns => {
         return txns.pickup.toLowerCase().match(this.txnsHistorySearch.toLowerCase());
       });
+    },
+
+    lists () {
+      const items = this.historyContent
+      // Return just page of items needed
+      return items.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage
+      )
+    },
+
+    rows() {
+      return this.historyContent.length
     }
   },
   mounted() {
