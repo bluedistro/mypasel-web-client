@@ -24,7 +24,7 @@
           />
           <label for="cash">
             Cash
-            <img src="../assets/cedi.jpg" height="40px" width="100px" />
+            <img src="../assets/cash.png" class="paymentModeIconSize" />
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -39,7 +39,7 @@
           />
           <label for="momo">
             Mobile Money
-            <img src="../assets/mobile-money.jpg" height="40px" width="100px" />
+            <img src="../assets/momo.png" class="paymentModeIconSize" />
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -54,7 +54,7 @@
           />
           <label for="prepaid">
             Prepaid
-            <img src="../assets/prepaid.jpeg" height="40px" width="100px" />
+            <img src="../assets/prepaid.png" class="paymentModeIconSize" />
           </label>
         </div>
       </div>
@@ -285,7 +285,7 @@ export default {
             name: parsedRequestPayload.dropOffData[i].fullName,
             phone: parsedRequestPayload.dropOffData[i].phoneNumber,
           },
-          additionalInformation: parsedRequestPayload.dropOff[i].details
+          additionalInformation: ''
         }
         dropoffs.push(d_o);
       }
@@ -307,6 +307,8 @@ export default {
         modeOfDelivery: this.deliveryMode,
         fee: this.amount
       };
+
+      console.log(payload);
 
       // post to the API of the confirm Order
       return this.$store
@@ -364,7 +366,7 @@ input[type=radio] + label {
 }
 
 input[type=radio]:checked + label>img {
-  border: 1px dashed green;
+  border: 1px solid #42d1f5;
   -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
 -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
 box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
@@ -390,6 +392,12 @@ text-align: left;
 
 .promo-code-entry {
   text-align: right;
+}
+
+.paymentModeIconSize {
+  height: 50px;
+  width: 100px;
+
 }
 
 .promo-code-btn {

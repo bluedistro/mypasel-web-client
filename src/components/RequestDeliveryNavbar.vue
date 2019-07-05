@@ -19,16 +19,16 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-if="!hidden" class="nav-item" @click="requestDeliveryRedirect">
+          <b-nav-item v-if="!hidden" v-bind:class="rdClassStyle" @click="requestDeliveryRedirect">
               Request Delivery
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item" @click="ongoingRedirect">
+          <b-nav-item v-if="!hidden" v-bind:class="orClassStyle" @click="ongoingRedirect">
               Ongoing
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item" @click="scheduledRedirect">
+          <b-nav-item v-if="!hidden" v-bind:class="srClassStyle" @click="scheduledRedirect">
               Scheduled
           </b-nav-item>
-          <b-nav-item v-if="!hidden" class="nav-item" @click="historyRedirect">
+          <b-nav-item v-if="!hidden" v-bind:class="hrClassStyle" @click="historyRedirect">
               History
           </b-nav-item>
         </b-navbar-nav>
@@ -81,7 +81,12 @@ export default {
   },
   data() {
     return {
-      userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY))
+      userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)),
+      // handle individual nav-link border
+      rdClassStyle: 'nav-item active-link',
+      orClassStyle: 'nav-item',
+      srClassStyle: 'nav-item',
+      hrClassStyle: 'nav-item',
     };
   },
   methods: {
@@ -103,6 +108,11 @@ export default {
           width: 80
       })
       this.$router.push({name: 'RequestDelivery'});
+      // handle individual nav-link border
+      this.rdClassStyle = 'nav-item active-link'
+      this.orClassStyle = 'nav-item',
+      this.srClassStyle ='nav-item',
+      this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     scheduledRedirect(){
@@ -113,6 +123,11 @@ export default {
           width: 80
       })
       this.$router.push({name: 'Scheduled'});
+      // handle individual nav-link border
+      this.rdClassStyle = 'nav-item'
+      this.orClassStyle = 'nav-item',
+      this.srClassStyle ='nav-item active-link',
+      this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     historyRedirect(){
@@ -123,6 +138,11 @@ export default {
           width: 80
       })
       this.$router.push({name: 'History'});
+      // handle individual nav-link border
+      this.rdClassStyle = 'nav-item'
+      this.orClassStyle = 'nav-item',
+      this.srClassStyle ='nav-item',
+      this.hrClassStyle = 'nav-item active-link',
       loader.hide();
     },
     ongoingRedirect(){
@@ -133,6 +153,11 @@ export default {
           width: 80
       })
       this.$router.push({name: 'Ongoing'});
+      // handle individual nav-link border
+      this.rdClassStyle = 'nav-item'
+      this.orClassStyle = 'nav-item active-link',
+      this.srClassStyle ='nav-item',
+      this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     logOut(evt) {
@@ -181,6 +206,10 @@ export default {
 .nav-item {
   color: #fff;
   text-decoration: none;
+}
+
+.active-link {
+  border-bottom: solid white 1px;
 }
 
 .navbar .navbar-nav .nav-item .nav-link{
@@ -261,4 +290,6 @@ font-family: "Lucida Console", Monaco, monospace;
   margin-left: 4px;
   text-decoration: none;
 }
+
+
 </style>

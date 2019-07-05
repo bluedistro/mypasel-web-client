@@ -211,7 +211,7 @@ export default {
       // gather needed information from maps
       let infoToReturn = place.geometry;
       infoToReturn["place_id"] = place.place_id;
-      infoToReturn["formatted_address"] = place.formatted_address;
+      infoToReturn["formatted_address"] = place.name;
       infoToReturn["reference"] = place.reference;
       infoToReturn["vicinity"] = place.vicinity;
       // return needed information

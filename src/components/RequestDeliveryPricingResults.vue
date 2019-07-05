@@ -1,79 +1,96 @@
 <template lang="html">
   <div class="pricing-div">
     <h5 class="pricing-header">Pricing</h5>
-    <div class="row v-pricing-row">
-      <div class="col-md-6 col-8 v-name-container">
-        <div class="row">
-          <div class="col-3 v-name" v-bind:style="{ color: activeColor }">
-            <font-awesome-icon icon="walking" size="2x" />
-          </div>
-          <div class="col-9 v-price">
-            {{ pricingDetails.currency }} {{ pricingDetails.walking }}
-          </div>
+      <div class="row">
+        <!-- motorcycle -->
+        <div class="col-md-4 col-4">
+          <input
+            type="radio"
+            name="deliveryMode"
+            id="bike"
+            class="input-hidden"
+            value="bike"
+            :disabled="disabled"
+            v-model="pricing"
+          />
+          <label for="bike">
+              <div class="row dm-price-container">
+                  <div class="col-md-6">
+                    <img class="dm-image" fluid src="../assets/motorcycle.png" height="40px" width="100px" />
+                  </div>
+                  <div class="col-md-6 dm-price">
+                     <span>{{ pricingDetails.currency }} {{ pricingDetails.bike }}</span>
+                  </div>
+              </div>
+          </label>
+        </div>
+        <!-- bicycle -->
+        <div class="col-md-4 col-4">
+          <input
+            type="radio"
+            name="deliveryMode"
+            id="bicycle"
+            class="input-hidden"
+            value="bicycle"
+            :disabled="disabled"
+            v-model="pricing"
+          />
+          <label for="bicycle">
+            <div class="row dm-price-container">
+                <div class="col-md-6">
+                  <img class="dm-image" fluid src="../assets/bicycle.png" height="40px" width="100px" />
+                </div>
+                <div class="col-md-6 dm-price">
+                   <span>{{ pricingDetails.currency }} {{ pricingDetails.bicycle }}</span>
+                </div>
+            </div>
+          </label>
+        </div>
+        <!-- sedan car model -->
+        <div class="col-md-4 col-4">
+          <input
+            type="radio"
+            name="deliveryMode"
+            id="car"
+            class="input-hidden"
+            value="car"
+            :disabled="disabled"
+            v-model="pricing"
+          />
+          <label for="car">
+            <div class="row dm-price-container">
+                <div class="col-md-6">
+                  <img class="dm-image" fluid src="../assets/sedan-car-model.png" height="40px" width="100px" />
+                </div>
+                <div class="col-md-6 dm-price">
+                   <span>{{ pricingDetails.currency }} {{ pricingDetails.car }}</span>
+                </div>
+            </div>
+          </label>
+        </div>
+        <!-- delivery van -->
+        <div class="col-md-4 col-4">
+          <input
+            type="radio"
+            name="deliveryMode"
+            id="van"
+            class="input-hidden"
+            value="van"
+            :disabled="disabled"
+            v-model="pricing"
+          />
+          <label for="van">
+            <div class="row dm-price-container">
+                <div class="col-md-6">
+                  <img class="dm-image" fluid src="../assets/delivery-truck.png" height="40px" width="100px" />
+                </div>
+                <div class="col-md-6 dm-price">
+                   <span>{{ pricingDetails.currency }} {{ pricingDetails.van }}</span>
+                </div>
+            </div>
+          </label>
         </div>
       </div>
-      <div class="col-md-6 col-4 v-button-container">
-        <input type="radio" v-model="pricing" :disabled="disabled" name="pricing" value="walk" />
-      </div>
-    </div>
-    <!-- bicycle -->
-    <div class="row v-pricing-row">
-      <div class="col-md-6 col-8 v-name-container">
-        <div class="row">
-          <div class="col-3 v-name" v-bind:style="{ color: activeColor }">
-            <font-awesome-icon icon="bicycle" size="2x" />
-          </div>
-          <div class="col-9 v-price">
-            {{ pricingDetails.currency }} {{ pricingDetails.bicycle }}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-4 v-button-container">
-        <input type="radio" name="pricing" :disabled="disabled" value="bicycle" v-model="pricing" />
-      </div>
-    </div>
-    <!-- motor -->
-    <div class="row v-pricing-row">
-      <div class="col-md-6 col-8 v-name-container">
-        <div class="row">
-          <div class="col-3 v-name" v-bind:style="{ color: activeColor }">
-            <font-awesome-icon icon="motorcycle" size="2x" />
-          </div>
-          <div class="col-9 v-price">{{ pricingDetails.currency }} {{ pricingDetails.bike }}</div>
-        </div>
-      </div>
-      <div class="col-md-6 col-4 v-button-container">
-        <input type="radio" name="pricing" :disabled="disabled" value="bike" v-model="pricing" />
-      </div>
-    </div>
-    <!-- sedan -->
-    <div class="row v-pricing-row">
-      <div class="col-md-6 col-8 v-name-container">
-        <div class="row">
-          <div class="col-3 v-name" v-bind:style="{ color: activeColor }">
-            <font-awesome-icon icon="shuttle-van" size="2x" />
-          </div>
-          <div class="col-9 v-price">{{ pricingDetails.currency }} {{ pricingDetails.van }}</div>
-        </div>
-      </div>
-      <div class="col-md-6 col-4 v-button-container">
-        <input type="radio" name="pricing" :disabled="disabled" value="van" v-model="pricing" />
-      </div>
-    </div>
-    <!-- pick up -->
-    <div class="row v-pricing-row">
-      <div class="col-md-6 col-8 v-name-container">
-        <div class="row">
-          <div class="col-3 v-name" v-bind:style="{ color: activeColor }">
-            <font-awesome-icon icon="truck-pickup" size="2x" />
-          </div>
-          <div class="col-9 v-price">{{ pricingDetails.currency }} {{ pricingDetails.truck }}</div>
-        </div>
-      </div>
-      <div class="col-md-6 col-4 v-button-container">
-        <input type="radio" :disabled="disabled" name="pricing" value="truck" v-model="pricing" />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -87,7 +104,6 @@ export default {
     return {
       pricing: null,
       disabled: true,
-      activeColor: "#d0d3d8"
     };
   },
   methods: {},
@@ -155,4 +171,40 @@ text-align: left;
     padding: 12px;
     margin-bottom: 15px;
   }
+
+  /* input radio */
+  input[type=radio] + label {
+    /* border: 1px dashed #444; */
+    width: 130px;
+    height: 60px;
+    border: solid #ccc 1px;
+    border-radius: 1px;
+  }
+
+  .input-hidden {
+    position: absolute;
+    left: -9999px;
+  }
+
+  input[type=radio]:checked + label {
+    border: 1px solid #42d1f5;
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+  box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+  }
+
+.dm-image {
+  height: 50px;
+  width: 50px;
+}
+
+.dm-price-container {
+  padding: 5px;
+}
+
+.dm-price {
+  padding-top: 5px;
+  font-size: 90%;
+  color: green;
+}
 </style>

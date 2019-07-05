@@ -24,7 +24,7 @@
           id="pickupMap"
           ref="pickupAddress"
           class="form-control search-slt"
-          placeholder="Sender address"
+          :placeholder="senderAddressPlaceholder"
           :options="autoCompleteOptions"
           v-on:blur="sendInfo"
           required
@@ -81,6 +81,7 @@ export default {
   },
   data() {
     return {
+      senderAddressPlaceholder: 'Sender address',
       searchingAddressLoader: false,
       phoneField: {
         defaultCode: "GH",
@@ -110,14 +111,35 @@ export default {
         searchAddress: this.searchAddress,
         fullName: this.fullName
       };
-      // console.log('pick data is emitting');
+      // to enable the getPickupAddressData to fire
+      if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
+        this.getPickupAddressData(this.searchAddress);
+      }
       this.$emit("pickup_details", data);
     },
     getPickupAddressData(place) {
       // gather needed information from maps
-      let infoToReturn = place.geometry;
+
+      // handle information from two different sources
+      var infoToReturn;
+      var lat;
+      var lng;
+      // search data straight from google autocomplete
+      if(place.geometry){
+        infoToReturn = place.geometry;
+        infoToReturn["source"] = 'saved';
+        lat = infoToReturn.location.lat();
+        lng = infoToReturn.location.lng();
+        // search data coming from localStorage saved data
+      }else{
+        infoToReturn = place;
+        infoToReturn["source"] = 'direct';
+        lat = infoToReturn.location.lat;
+        lng = infoToReturn.location.lng;
+      }
+      // let infoToReturn = place.geometry;
       infoToReturn["place_id"] = place.place_id;
-      infoToReturn["formatted_address"] = place.formatted_address;
+      infoToReturn["formatted_address"] = place.name;
       infoToReturn["reference"] = place.reference;
       infoToReturn["vicinity"] = place.vicinity;
       // return needed information
@@ -127,8 +149,8 @@ export default {
         this.markers = [];
         this.markers.push({
           position: {
-            lat: infoToReturn.location.lat(),
-            lng: infoToReturn.location.lng()
+            lat: lat,
+            lng: lng
           }
         });
       }
@@ -140,11 +162,16 @@ export default {
         fullName: this.fullName
       };
       this.$emit("set_markers", this.markers, data);
-      // console.log('Pick up address');
-      // console.log(this.searchAddress)
     },
     displaySpinner() {},
     noResultsFound() {}
+  },
+  created(){
+    const searchAddress = JSON.parse(localStorage.getItem('savedPickUpData'));
+    if(searchAddress != null){
+      this.searchAddress = searchAddress;
+      this.senderAddressPlaceholder = searchAddress.formatted_address;
+    }
   }
 };
 </script>

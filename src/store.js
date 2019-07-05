@@ -296,8 +296,15 @@ export default new Vuex.Store({
         // if (requestPayload.dropOffData.length == 1) {
           // send payload to single request api and set the return payload to the pricing store state
           const path = "https://api.desymal.com/v2/route/get";
+          // check for the source of the data whether it is coming from the raw google autocomplete or a saved info and act accordingly
+          var source;
+          if(requestPayload.pickupData.searchAddress.source == "saved"){
+            source = requestPayload.pickupData.searchAddress.location.lat() + "," + requestPayload.pickupData.searchAddress.location.lng();
+          }else if(requestPayload.pickupData.searchAddress.source == "direct"){
+            source = requestPayload.pickupData.searchAddress.location.lat + "," + requestPayload.pickupData.searchAddress.location.lng;
+          }
           const params = {
-            source: requestPayload.pickupData.searchAddress.location.lat() + "," + requestPayload.pickupData.searchAddress.location.lng(),
+            source: source,
             destinations: destinations,
             sourceID: requestPayload.pickupData.searchAddress.place_id
           };

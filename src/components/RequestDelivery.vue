@@ -21,6 +21,15 @@
                 data-v-step="1"
               >
               </drop-off-form>
+              <div class="row pickupSave">
+                <div class="col-md-6 col-sm-6 col-6 col-lg-6">
+                    <span class="pickupSave text">Save pickup address</span>
+                    <label class="switch">
+                        <input type="checkbox" v-model="savePickup">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+              </div>
               <div class="checkPricingDiv">
                 <div class="row">
                   <div class="col-md-12 col-lg-12 col-sm-12 col-12">
@@ -148,6 +157,10 @@ export default {
       pricingDetails: {},
       selectedPricingOption: null,
       selectedDeliveryOption: null,
+      // to save pickup address data
+      savedPickUpData: null,
+      // decision model
+      savePickup: '',
       //
       steps: [
         {
@@ -222,10 +235,18 @@ export default {
     },
     // get emitted pickup info
     getPickupInfo(evt) {
+      // set saved to false once this function is triggered
+      this.savePickup = false;
+      // store pickup searchAddress info temporarily
+      this.savedPickUpData = evt.searchAddress;
       this.emittedFormData.pickupData = evt;
     },
     // get the emitted pickup marker point and set them to the corresponding data variable
     getPickupMarker(pickupMarker, data) {
+      // set saved to false once this function is triggered
+      this.savePickup = false;
+      // store pickup searchAddress info temporarily
+      this.savedPickUpData = data.searchAddress
       // updating the pick up data for redundancy'
       this.emittedFormData.pickupData = data;
       this.pickupMarker = pickupMarker;
@@ -283,7 +304,16 @@ export default {
     }
   },
   // watch for changes in selected pricing choice
-  watch: {},
+  watch: {
+    // save the pick up address if opted to do so
+    savePickup: function(choice){
+      if(choice && this.savedPickUpData != null){
+        localStorage.setItem('savedPickUpData', JSON.stringify(this.savedPickUpData));
+      }else if(!choice){
+        localStorage.removeItem('savedPickUpData');
+      }
+    }
+  },
   created() {
     if(this.$cookie.get(this.$cookeys.TOKEN_KEY == null)){
       this.$router.push({name: 'Login'})
@@ -292,6 +322,12 @@ export default {
   mounted() {
     // start tour
     // this.$tours['myTour'].start()
+
+    // if savedAddress is not null, check in savedAddress
+    if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
+      this.savePickup = true;
+    }
+
     // update the FCM token
     const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY);
     const updatePayload = {
@@ -373,6 +409,63 @@ export default {
 
 .proceedBtnDiv {
   margin-bottom: 30px;
+}
+
+/* save pickup info switch */
+
+.switch input {
+    display:none;
+}
+.switch {
+    display:inline-block;
+    width:60px;
+    height:25px;
+    margin-left:5px;
+    transform:translateY(50%);
+    position:relative;
+}
+
+.slider {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    border-radius:30px;
+    box-shadow:0 0 0 2px #777, 0 0 4px #777;
+    cursor:pointer;
+    border:4px solid transparent;
+    overflow:hidden;
+     transition:.4s;
+}
+.slider:before {
+    position:absolute;
+    content:"";
+    width:50%;
+    height:100%;
+    background:#777;
+    border-radius:30px;
+    transform:translateX(-30px);
+    transition:.4s;
+}
+
+input:checked + .slider:before {
+    transform:translateX(3px);
+    background:#42d1f5;
+}
+input:checked + .slider {
+    box-shadow:0 0 0 2px #42d1f5,0 0 2px #42d1f5;
+}
+
+/* end of save pickup info switch */
+
+.pickupSave {
+  margin-bottom: 20px;
+}
+
+.pickupSave.text {
+  font-size: 100%;
+  margin-right: 10px;
 }
 
 /* courier urgency switch */
