@@ -23,7 +23,7 @@
               Request Delivery
           </b-nav-item>
           <b-nav-item v-if="!hidden" v-bind:class="orClassStyle" @click="ongoingRedirect">
-              Ongoing
+              Ongoing <b-badge variant="light" v-if="totalOngoings > 0">{{ totalOngoings }}</b-badge>
           </b-nav-item>
           <b-nav-item v-if="!hidden" v-bind:class="srClassStyle" @click="scheduledRedirect">
               Scheduled
@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)),
+      totalOngoings: 0,
       // handle individual nav-link border
       rdClassStyle: 'nav-item active-link',
       orClassStyle: 'nav-item',
@@ -180,7 +181,12 @@ export default {
         });
     }
   },
-  mounted() {},
+  mounted() {
+    const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+    if (ongoingLength && ongoingLength.length > 0){
+      this.totalOngoings = ongoingLength.length;
+    }
+  },
   created() {}
 };
 </script>
