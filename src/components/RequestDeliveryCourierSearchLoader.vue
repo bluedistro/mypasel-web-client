@@ -283,7 +283,7 @@ width: 280px;
   margin-top: -10px;
 }
 
-@media screen and (max-width:300px){
+@media screen and (max-width:500px){
   .cancel-order{
     height: 50px;
     width: 300px;
@@ -291,7 +291,7 @@ width: 280px;
     top: 65%;
     left: 50%;
     margin-left: -150px;
-    margin-top: -10px;
+    margin-top: -5px;
   }
 
 
