@@ -291,7 +291,7 @@ width: 280px;
     top: 65%;
     left: 50%;
     margin-left: -150px;
-    margin-top: -15px;
+    margin-top: 50px;
   }
 
 
