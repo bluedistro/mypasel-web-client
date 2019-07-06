@@ -117,7 +117,7 @@ export default {
       };
       // to enable the getPickupAddressData to fire
       if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
-        this.getPickupAddressData(this.searchAddress);
+        this.getPickupAddressData(JSON.parse(localStorage.getItem('savedPickUpData')) );
       }
       this.$emit("pickup_details", data);
     },
@@ -172,13 +172,13 @@ export default {
   },
   created(){
     const searchAddress = JSON.parse(localStorage.getItem('savedPickUpData'));
+
     if(searchAddress != null){
       this.searchAddress = searchAddress;
       this.senderAddressPlaceholder = searchAddress.formatted_address;
-      this.disablePickupAddress = true;
-    }else{
-      this.disablePickupAddress = false;
+
     }
+
   }
 };
 </script>

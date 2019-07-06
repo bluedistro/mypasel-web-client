@@ -36,8 +36,8 @@
 
 
           <!-- history data -->
-          <transition-group name="sortList" tag="div">
-            <div v-for="(txns, index) in lists" :key="index" id="historyDataId" class="historyDataContainer">
+          <transition-group name="sortList" tag="ul">
+            <li v-for="(txns, index) in lists" :key="index" id="historyDataId" class="historyDataContainer">
               <div class="row">
                 <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
                   <div class="row">
@@ -59,7 +59,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </li>
           </transition-group>
           <!-- pagination -->
           <div class="row">
@@ -336,8 +336,32 @@ export default {
   opacity: 0;
 }
 
+/* history list transitions */
+.sortList-enter-active,
+.sortList-leave-active,
 .sortList-move {
-  transition: transform 1s;
+  transition: 500ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
+  transition-property: opacity, transform;
+}
+
+.sortList-enter {
+  opacity: 0;
+  transform: translateX(50px) scaleY(0.5);
+}
+
+.sortList-enter-to {
+  opacity: 1;
+  transform: translateX(0) scaleY(1);
+}
+
+.sortList-leave-active {
+  position: absolute;
+}
+
+.sortList-leave-to {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: center top;
 }
 
 </style>

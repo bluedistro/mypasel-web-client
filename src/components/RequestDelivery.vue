@@ -9,7 +9,7 @@
               <pickup-form
                 @set_markers="getPickupMarker"
                 @pickup_details="getPickupInfo"
-                v-bind:disablePickupAddress="disablePickupAddress"
+                v-bind:disablePickupAddress="savePickup"
                 data-v-step="0"
               >
               </pickup-form>
@@ -36,7 +36,6 @@
                   <b-toast id="example-toast" title="Using address book" static no-auto-hide>
                     Activating this button will save your current pickup address location during the
                     course of this session. A saved address will be lost when you log out or change again yourself.
-                    <b-badge variant="dark">Beta Test</b-badge>
                   </b-toast>
                 </div>
                 <b-tooltip
@@ -151,7 +150,6 @@ export default {
   },
   data() {
     return {
-      disablePickupAddress: false,
       loaderBarControl: true,
       // control rd error
       incompleteRequestDelivery: false,
@@ -175,7 +173,7 @@ export default {
       // to save pickup address data
       savedPickUpData: null,
       // decision model
-      savePickup: '',
+      savePickup: JSON.parse(localStorage.getItem('savedPickUpData')) ? true : false,
       //
       steps: [
         {
@@ -250,16 +248,12 @@ export default {
     },
     // get emitted pickup info
     getPickupInfo(evt) {
-      // set saved to false once this function is triggered
-      this.savePickup = false;
       // store pickup searchAddress info temporarily
       this.savedPickUpData = evt.searchAddress;
       this.emittedFormData.pickupData = evt;
     },
     // get the emitted pickup marker point and set them to the corresponding data variable
     getPickupMarker(pickupMarker, data) {
-      // set saved to false once this function is triggered
-      this.savePickup = false;
       // store pickup searchAddress info temporarily
       this.savedPickUpData = data.searchAddress
       // updating the pick up data for redundancy'
@@ -322,18 +316,11 @@ export default {
   watch: {
     // save the pick up address if opted to do so
     savePickup: function(choice){
-      if(choice && this.savedPickUpData != null){
+      if(choice){
         localStorage.setItem('savedPickUpData', JSON.stringify(this.savedPickUpData));
       }else if(!choice){
         localStorage.removeItem('savedPickUpData');
       }
-
-      if(choice){
-        this.disablePickupAddress = true;
-      }else{
-        this.disablePickupAddress = false;
-      }
-
     }
   },
   created() {
@@ -344,11 +331,6 @@ export default {
   mounted() {
     // start tour
     // this.$tours['myTour'].start()
-
-    // if savedAddress is not null, check in savedAddress
-    if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
-      this.savePickup = true;
-    }
 
     // update the FCM token
     const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY);

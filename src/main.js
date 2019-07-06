@@ -201,9 +201,6 @@ const router = new VueRouter({
   mode: "history"
 });
 
-console.log('store getters');
-console.log(store.getters.loggedIn);
-
 // set navigation guard for login protected pages
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {

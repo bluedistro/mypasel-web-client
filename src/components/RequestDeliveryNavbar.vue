@@ -84,7 +84,7 @@ export default {
       userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)),
       totalOngoings: 0,
       // handle individual nav-link border
-      rdClassStyle: 'nav-item active-link',
+      rdClassStyle: 'nav-item',
       orClassStyle: 'nav-item',
       srClassStyle: 'nav-item',
       hrClassStyle: 'nav-item',
@@ -110,10 +110,10 @@ export default {
       })
       this.$router.push({name: 'RequestDelivery'});
       // handle individual nav-link border
-      this.rdClassStyle = 'nav-item active-link'
-      this.orClassStyle = 'nav-item',
-      this.srClassStyle ='nav-item',
-      this.hrClassStyle = 'nav-item',
+      // this.rdClassStyle = 'nav-item active-link'
+      // this.orClassStyle = 'nav-item',
+      // this.srClassStyle ='nav-item',
+      // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     scheduledRedirect(){
@@ -125,10 +125,10 @@ export default {
       })
       this.$router.push({name: 'Scheduled'});
       // handle individual nav-link border
-      this.rdClassStyle = 'nav-item'
-      this.orClassStyle = 'nav-item',
-      this.srClassStyle ='nav-item active-link',
-      this.hrClassStyle = 'nav-item',
+      // this.rdClassStyle = 'nav-item'
+      // this.orClassStyle = 'nav-item',
+      // this.srClassStyle ='nav-item active-link',
+      // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     historyRedirect(){
@@ -140,10 +140,10 @@ export default {
       })
       this.$router.push({name: 'History'});
       // handle individual nav-link border
-      this.rdClassStyle = 'nav-item'
-      this.orClassStyle = 'nav-item',
-      this.srClassStyle ='nav-item',
-      this.hrClassStyle = 'nav-item active-link',
+      // this.rdClassStyle = 'nav-item'
+      // this.orClassStyle = 'nav-item',
+      // this.srClassStyle ='nav-item',
+      // this.hrClassStyle = 'nav-item active-link',
       loader.hide();
     },
     ongoingRedirect(){
@@ -155,10 +155,10 @@ export default {
       })
       this.$router.push({name: 'Ongoing'});
       // handle individual nav-link border
-      this.rdClassStyle = 'nav-item'
-      this.orClassStyle = 'nav-item active-link',
-      this.srClassStyle ='nav-item',
-      this.hrClassStyle = 'nav-item',
+      // this.rdClassStyle = 'nav-item'
+      // this.orClassStyle = 'nav-item active-link',
+      // this.srClassStyle ='nav-item',
+      // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
     logOut(evt) {

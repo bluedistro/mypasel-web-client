@@ -125,7 +125,6 @@ export default {
   },
   created() {
     this.loaderBarControl = false;
-    console.log('cookie key ', this.$cookie.get(this.$cookeys.TOKEN_KEY));
     if(this.$cookie.get(this.$cookeys.TOKEN_KEY != null)){
       this.$router.push({name: 'RequestDelivery'});
     }

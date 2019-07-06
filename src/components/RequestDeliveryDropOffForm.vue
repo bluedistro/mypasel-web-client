@@ -28,12 +28,6 @@
           <font-awesome-icon icon="plus" />&nbsp;Add a dropoff
         </button>
       </div>
-      <b-tooltip
-        v-if="disableMultiDropOffs"
-        target="multiDropOffDiv"
-        placement="top"
-        title="Multiple Dropoff is disabled"
-      ></b-tooltip>
     </div>
     <transition-group name="add-dropOff">
       <div v-for="dropOff in dropOffData" :key="dropOff.id">
