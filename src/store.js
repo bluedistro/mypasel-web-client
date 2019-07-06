@@ -344,24 +344,23 @@ export default new Vuex.Store({
       });
     },
 
-    // TODO: Work on promo code later on
-    validatePromoCode({ commit }, payload) {
-      // payload is the promocode from the user
-      return new Promise((resolve, reject) => {
-        const path = "https://api.desymal.com/v1/promo/:" + payload.code + "/:" + payload.id;
-        axios
-          .get(path)
-          .then(resp => {
-            const data = resp.data;
-            commit("promocode_auth_success", data);
-            resolve(resp);
-          })
-          .catch(err => {
-            commit("promocode_auth_error");
-            reject(err);
-          });
-      });
-    },
+    // NOTE: Promo code no longer needed
+    // validatePromoCode({ commit }, payload) {
+    //   return new Promise((resolve, reject) => {
+    //     const path = "https://api.desymal.com/v1/promo/:" + payload.code + "/:" + payload.id;
+    //     axios
+    //       .get(path)
+    //       .then(resp => {
+    //         const data = resp.data;
+    //         commit("promocode_auth_success", data);
+    //         resolve(resp);
+    //       })
+    //       .catch(err => {
+    //         commit("promocode_auth_error");
+    //         reject(err);
+    //       });
+    //   });
+    // },
 
     confirmOrder({ commit }, payload) {
       // payload might to be received might be the amount alone since the rest can be obtained in the store already

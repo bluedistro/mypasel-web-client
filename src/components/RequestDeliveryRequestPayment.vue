@@ -125,9 +125,8 @@
       </div>
 
       <!-- promo code -->
-      <div class="promo-code-div">
+      <!-- <div class="promo-code-div">
         <div class="col-md-12">
-          <!-- get promo code and update amount -->
           <div class="row">
             <div class="col-md-8 col-sm-8 col-8 promo-code-text">
               Use promo code
@@ -175,7 +174,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
       <!-- proceed div -->
       <div class="col-md-12">
         <button
@@ -259,20 +259,19 @@ export default {
     bookingErrorModalTry() {
       this.$refs["booking-error-modal"].hide();
     },
-    // TODO: Finish Promo code feature at a later time
-    checkPromoCodeValidity(evt) {
-      // send promocode if any
-      const payload = {
-        id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
-        code: this.promoCode
-      };
-      this.$store
-        .dispatch("validatePromoCode", payload)
-        .then(resp => {
-          console.log(resp);
-        })
-        .catch(error => {});
-    },
+    // TODO: Promo code no longer needed. Might be deleted
+    // checkPromoCodeValidity(evt) {
+    //   const payload = {
+    //     id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
+    //     code: this.promoCode
+    //   };
+    //   this.$store
+    //     .dispatch("validatePromoCode", payload)
+    //     .then(resp => {
+    //       console.log(resp);
+    //     })
+    //     .catch(error => {});
+    // },
     // Promocode has been disabled
     changeToggleState(evt) {
       this.toggleState = !this.toggleState;
