@@ -99,17 +99,17 @@
             </div>
             <!--  prepaid -->
             <div v-if="paymentOption == 'prepaid'" class="radioLinkedDiv col-md-12" key="prepaid">
-              <div class="col-md-12 contact-name">
+              <div class="col-md-12 company-code">
                 <input
                   type="text"
-                  id="registeredName"
-                  placeholder="Company name"
+                  id="companyCode"
+                  placeholder="Company code"
                   class="form-control"
                   name=""
                   value=""
                 />
               </div>
-              <div class="col-md-12 contact-number">
+              <!-- <div class="col-md-12 contact-number">
                 <vue-phone-number-input
                   v-model="phoneNumber"
                   :default-country-code="phoneField.defaultCode"
@@ -118,7 +118,7 @@
                   name="phoneNumber"
                   id="phoneNumber"
                 />
-              </div>
+              </div> -->
               <div class="payment-row-border"></div>
             </div>
           </transition>
