@@ -480,7 +480,8 @@ text-align: left;
       border:none;
       height: 470px;
       /* border: solid #d4d8dd 1px; */
-      margin: auto;
+      margin-top: 90px;
+      /* margin: auto; */
       top: 0%;
       bottom: 0;
       left: 0;
