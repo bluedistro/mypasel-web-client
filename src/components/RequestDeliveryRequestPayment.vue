@@ -23,8 +23,7 @@
             v-model="paymentOption"
           />
           <label for="cash">
-            Cash
-            <img src="../assets/cash.png" class="paymentModeIconSize" />
+            <img src="../assets/cash.png" class="cashPaymentModeIconSize" />
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -38,8 +37,8 @@
             v-model="paymentOption"
           />
           <label for="momo">
-            Mobile Money
-            <img src="../assets/momo.png" class="paymentModeIconSize" />
+            <!-- Mobile Money -->
+            <img src="../assets/momo.png" class="momoPaymentModeIconSize" />
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -53,67 +52,76 @@
             v-model="paymentOption"
           />
           <label for="prepaid">
-            Prepaid
-            <img src="../assets/prepaid.png" class="paymentModeIconSize" />
+            <!-- Prepaid -->
+            <img src="../assets/prepaid.png" class="prepaidPaymentModeIconSize" />
           </label>
+        </div>
+      </div>
+      <div class="row selectedPaymentOption">
+        <div class="col">
+            <p v-if="paymentOption== 'cash'">Selected mode &bull; Cash</p>
+            <p v-if="paymentOption== 'mobileMoney'">Selected mode &bull; Mobile Money</p>
+            <p v-if="paymentOption== 'prepaid'">Selected mode &bull; Prepaid</p>
         </div>
       </div>
       <div class="payment-row-border"></div>
       <!-- Payment Form Div -->
       <div class="row">
-        <!--  cash -->
-        <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12">
-          <!-- no action to be performed on cash select -->
-        </div>
+          <transition name="payment-option" mode="out-in">
+            <!--  cash -->
+            <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12" key="cash">
+              <!-- no action to be performed on cash select -->
+            </div>
 
-        <!--  mobile money -->
-        <div v-if="paymentOption == 'mobileMoney'" class="radioLinkedDiv col-md-12">
-          <div class="col-md-12 contact-name">
-            <input
-              type="text"
-              id="registeredName"
-              placeholder="Registered name"
-              class="form-control"
-              name=""
-              value=""
-            />
-          </div>
-          <div class="col-md-12 contact-number">
-            <vue-phone-number-input
-              v-model="phoneNumber"
-              :default-country-code="phoneField.defaultCode"
-              :clearable="phoneField.clearable"
-              :preferred-countries="phoneField.preferred"
-              name="phoneNumber"
-              id="phoneNumber"
-            />
-          </div>
-          <div class="payment-row-border"></div>
-        </div>
-        <!--  prepaid -->
-        <div v-if="paymentOption == 'prepaid'" class="radioLinkedDiv col-md-12">
-          <div class="col-md-12 contact-name">
-            <input
-              type="text"
-              id="registeredName"
-              placeholder="Company name"
-              class="form-control"
-              name=""
-              value=""
-            />
-          </div>
-          <div class="col-md-12 contact-number">
-            <vue-phone-number-input
-              v-model="phoneNumber"
-              :default-country-code="phoneField.defaultCode"
-              :clearable="phoneField.clearable"
-              :preferred-countries="phoneField.preferred"
-              name="phoneNumber"
-              id="phoneNumber"
-            />
-          </div>
-          <div class="payment-row-border"></div>
-        </div>
+            <!--  mobile money -->
+            <div v-if="paymentOption == 'mobileMoney'" class="radioLinkedDiv col-md-12" key="momo">
+              <div class="col-md-12 contact-name">
+                <input
+                  type="text"
+                  id="registeredName"
+                  placeholder="Registered name"
+                  class="form-control"
+                  name=""
+                  value=""
+                />
+              </div>
+              <div class="col-md-12 contact-number">
+                <vue-phone-number-input
+                  v-model="phoneNumber"
+                  :default-country-code="phoneField.defaultCode"
+                  :clearable="phoneField.clearable"
+                  :preferred-countries="phoneField.preferred"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                />
+              </div>
+              <div class="payment-row-border"></div>
+            </div>
+            <!--  prepaid -->
+            <div v-if="paymentOption == 'prepaid'" class="radioLinkedDiv col-md-12" key="prepaid">
+              <div class="col-md-12 contact-name">
+                <input
+                  type="text"
+                  id="registeredName"
+                  placeholder="Company name"
+                  class="form-control"
+                  name=""
+                  value=""
+                />
+              </div>
+              <div class="col-md-12 contact-number">
+                <vue-phone-number-input
+                  v-model="phoneNumber"
+                  :default-country-code="phoneField.defaultCode"
+                  :clearable="phoneField.clearable"
+                  :preferred-countries="phoneField.preferred"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                />
+              </div>
+              <div class="payment-row-border"></div>
+            </div>
+          </transition>
       </div>
 
       <!-- promo code -->
@@ -219,8 +227,8 @@ export default {
   data() {
     return {
       // disable prepaid and mobile money payment option
-      disablePrepaidOption: true,
-      disableMobileMoneyOption: true,
+      disablePrepaidOption: false,
+      disableMobileMoneyOption: false,
       // modal works
       unsuccessfulBookingModal: false,
 
@@ -285,11 +293,11 @@ export default {
             name: parsedRequestPayload.dropOffData[i].fullName,
             phone: parsedRequestPayload.dropOffData[i].phoneNumber,
           },
-          additionalInformation: ''
+          additionalInformation: parsedRequestPayload.dropOffData[i].details,
         }
         dropoffs.push(d_o);
       }
-
+      // quick fix to get
       const payload = {
         sender: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
         pickup: {
@@ -307,9 +315,6 @@ export default {
         modeOfDelivery: this.deliveryMode,
         fee: this.amount
       };
-
-      console.log(payload);
-
       // post to the API of the confirm Order
       return this.$store
         .dispatch("confirmOrder", payload)
@@ -355,9 +360,11 @@ export default {
 }
 
 input[type=radio] + label {
-  /* border: 1px dashed #444; */
+  border: solid 0.5px #ccc;
+  border-radius: 2px;
   width: 100px;
-  height: 40px;
+  height: 50px;
+  margin-top: 20px;
 }
 
 .input-hidden {
@@ -365,8 +372,11 @@ input[type=radio] + label {
   left: -9999px;
 }
 
-input[type=radio]:checked + label>img {
+input[type=radio]:checked + label {
   border: 1px solid #42d1f5;
+  border-radius: 2px;
+  margin-top: 20px;
+  height: 50px;
   -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
 -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
 box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
@@ -394,10 +404,27 @@ text-align: left;
   text-align: right;
 }
 
-.paymentModeIconSize {
-  height: 50px;
-  width: 100px;
+.cashPaymentModeIconSize {
+  height: 30px;
+  width: 40px;
+  margin-top: 10px;
+}
 
+.momoPaymentModeIconSize{
+  height: 30px;
+  width: 20px;
+  margin-top: 10px;
+}
+
+.prepaidPaymentModeIconSize {
+  width: 40px;
+  margin-top: 5px;
+}
+
+.paymentModeIconSize {
+  height: 30px;
+  width: 40px;
+  margin-top: 10px;
 }
 
 .promo-code-btn {
@@ -431,11 +458,17 @@ text-align: left;
   margin-top: 20px;
 }
 
+.selectedPaymentOption {
+  text-align: left;
+  margin-bottom: -25px;
+  color: #696d70;
+}
+
 .payment-div {
     border: solid #d4d8dd 1px;
     /* height: 300px; */
     border-radius: 1px;
-    background-color: #fff;
+    background-color: #fafbfc;
     padding: 12px;
     margin-bottom: 15px;
     /* width: 280px; */
@@ -445,8 +478,7 @@ text-align: left;
   @media screen and (max-width:500px){
     .payment-div {
       border:none;
-      height: 350px;
-      margin-top: 50px;
+      height: 470px;
       /* border: solid #d4d8dd 1px; */
       margin: auto;
       top: 0%;
@@ -478,7 +510,7 @@ text-align: left;
       left: 0;
       right: 0;
       position: absolute;
-      height: 450px;
+      height: 470px;
 
     }
 
@@ -545,5 +577,17 @@ text-align: left;
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+  }
+
+  /* transition for payment options */
+  .payment-option-enter-active {
+    transition: all .3s ease;
+  }
+  .payment-option-leave-active {
+    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .payment-option-enter, .payment-option-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>

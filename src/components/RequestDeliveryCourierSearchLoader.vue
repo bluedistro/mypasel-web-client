@@ -201,7 +201,6 @@ export default {
     // prepare payload for courier search api
     const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
     const parsedRequestPayload = JSON.parse(requestPayload);
-
     const payload = {
       senderID: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
       senderPhone: parsedRequestPayload.pickupData.phoneNumber,

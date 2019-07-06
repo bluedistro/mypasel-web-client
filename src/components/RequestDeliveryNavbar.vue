@@ -161,7 +161,7 @@ export default {
       // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
-    logOut(evt) {
+    async logOut(evt) {
       // set up loader overlay
       let loader = this.$loading.show({
           loader: 'bars',
@@ -170,9 +170,9 @@ export default {
           width: 80
       })
 
-      this.$store
-        .dispatch("logout")
+      await this.$store.dispatch("logout")
         .then(response => {
+          // remove cookies
           this.$router.push({ name: "Login" });
           loader.hide();
         })

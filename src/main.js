@@ -214,6 +214,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+
   // prevent users from navigating directly to courier found page
   if (to.matched.some(record => record.name == "CourierFound")) {
     if (store.state.rawRouteGuards == true) {
@@ -230,6 +231,7 @@ router.beforeEach((to, from, next) => {
         })
       }
   }
+
 });
 
 new Vue({

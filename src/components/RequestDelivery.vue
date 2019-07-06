@@ -317,6 +317,7 @@ export default {
     // save the pick up address if opted to do so
     savePickup: function(choice){
       if(choice){
+        this.savedPickUpData.name = this.savedPickUpData.formatted_address;
         localStorage.setItem('savedPickUpData', JSON.stringify(this.savedPickUpData));
       }else if(!choice){
         localStorage.removeItem('savedPickUpData');
