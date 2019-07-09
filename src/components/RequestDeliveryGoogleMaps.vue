@@ -13,7 +13,7 @@
         map-type-id="roadmap"
       >
 
-        <Gmap-Marker v-for="(marker, index) in pickupMarker"
+        <Gmap-Marker v-for="(marker, index) in pickupMarkerAlt"
           @click="center=m.position"
           :clickable="true"
           :position="marker.position"
@@ -41,11 +41,48 @@ export default {
     return {
       // 565 is the actual one
       mapSize: 'width: 800px; height: 1366px',
+      pickupMarkerAlt: [],
      }
   },
   methods: {
 
   },
+  watch: {
+    // watch for value changes in pickup location being received from the RequestDelivery component
+    pickupMarker(evt){
+      const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+      // if an address is saved, then show that saved address instead of the emitted one from the parent component
+      if(savedData != null){
+        this.pickupMarkerAlt = [
+          {
+            position: {
+              lat: savedData.searchAddress.location.lat,
+              lng: savedData.searchAddress.location.lng
+            }
+          }
+        ]
+      }else{
+        this.pickupMarkerAlt = this.pickupMarker
+      }
+    }
+  },
+  mounted(){
+    // on mount, first check to see whether there is an already saved address and display that if any
+    const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+    // if an address is saved, then show that saved address instead of the emitted one from the parent component
+    if(savedData != null){
+      this.pickupMarkerAlt = [
+        {
+          position: {
+            lat: savedData.searchAddress.location.lat,
+            lng: savedData.searchAddress.location.lng
+          }
+        }
+      ]
+    }else{
+      this.pickupMarkerAlt = this.pickupMarker
+    }
+  }
 }
 </script>
 

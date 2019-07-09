@@ -106,6 +106,29 @@ export default {
    color: #309940;
  }
 
+ input[type="email"] {
+   border-color: #ccc;
+   outline: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+   border-top: none;
+   border-left: none;
+   border-right: none;
+   border-radius: 0;
+   background: #fff;
+ }
+
+ input[type="email"]:focus {
+   border-color: #00bcd4;
+   outline: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+   border-top: none;
+   border-left: none;
+   border-right: none;
+   border-radius: 0;
+   background: #fff;
+ }
 
 
 /* for smaller devices devices */

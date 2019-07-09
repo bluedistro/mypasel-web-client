@@ -74,164 +74,169 @@
           </ul>
         </div>
       </div>
-        <div class="col-md-8 main-content">
-            <transition name="settingsChange" mode="out-in">
-              <!-- User Information Overview -->
-              <div class="" v-if="selectedPage == 'overview'" key="overview">
-                <div class="row header-text">
-                  <h4>Overview</h4>
-                </div>
-                <div class="header-border"></div>
-                <!-- actual user information -->
-                <div class="row">
-                  <div class="col-md-12 user-details-overview">
-                    <div class="user-details">
-                      <form v-promise-btn="{ action: 'submit' }" @submit.prevent="updateInfo">
-                        <div class="form-group">
-                          <label for="fullName">Full Name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="fullName"
-                            aria-describedby="nameHelp"
-                            placeholder="full name"
-                            required
-                            disabled
-                            v-model="fullName"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="phoneNumber">Phone number</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="fullName"
-                            aria-describedby="nameHelp"
-                            placeholder="phone number"
-                            readonly
-                            v-model="phoneNumber"
-                          />
-                          <small id="emailHelp" class="form-text text-muted"
-                            >Phone number cannot be altered.</small
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-6 col-lg-6 col-sm-6 col-6">
-                            <label for="country">Country</label>
-                            <select class="form-control" required readonly v-model="country" id="country">
-                              <option disabled>Ghana</option>
-                              <option disabled>Nigeria</option>
-                            </select>
-                          </div>
-                          <div class="form-group col-md-6 col-lg-6 col-sm-6 col-6">
-                            <label for="sex">Sex</label>
-                            <select class="form-control" required readonly v-model="sex" id="sex">
-                              <option disabled>Male</option>
-                              <option disabled>Female</option>
-                              <option disabled>Other</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="emailAddress">Email address</label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            required
-                            id="emailAddress"
-                            aria-describedby="emailHelp"
-                            placeholder="Enter email"
-                            v-model="emailAddress"
-                          />
-                          <small id="emailHelp" class="form-text text-muted"
-                            >We'll never share your email with anyone else.</small
-                          >
-                        </div>
-                        <button type="submit" class="btn btn-outline-primary">Save</button>
-                      </form>
+      <div class="col-md-8 main-content">
+        <transition name="settingsChange" mode="out-in">
+          <!-- User Information Overview -->
+          <div class="" v-if="selectedPage == 'overview'" key="overview">
+            <div class="row header-text">
+              <h4>Overview</h4>
+            </div>
+            <div class="header-border"></div>
+            <!-- actual user information -->
+            <div class="row">
+              <div class="col-md-12 user-details-overview">
+                <div class="user-details">
+                  <form v-promise-btn="{ action: 'submit' }" @submit.prevent="updateInfo">
+                    <div class="form-group">
+                      <label for="fullName">Full Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        aria-describedby="nameHelp"
+                        placeholder="full name"
+                        required
+                        disabled
+                        v-model="fullName"
+                      />
                     </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Password Reset -->
-              <div class="" v-if="selectedPage == 'resetPassword'" key="resetPassword">
-                <div class="row header-text">
-                  <h4>Reset password</h4>
-                </div>
-                <div class="header-border"></div>
-                <div class="row">
-                  <div class="col-md-12 password-reset-overview">
-                    <div class="password-reset">
-                      <form v-promise-btn="{ action: 'submit' }" @submit.prevent="updatePassword">
-                        <div class="form-group">
-                          <label for="currentPassword">Current password</label>
-                          <input
-                            type="password"
-                            v-model="currentPassword"
-                            class="form-control"
-                            id="currentPassword"
-                            placeholder="current password"
-                          />
-                        </div>
-                        <div class="row">
-                          <div class="form-group col-md-6 col-lg-6 col-sm-5 col-5">
-                            <label for="newPassword">New password</label>
-                            <input
-                              type="password"
-                              class="form-control"
-                              id="newPassword"
-                              v-model="newPassword"
-                              name="newPassword"
-                              ref="newPassword"
-                              data-vv-delay="200"
-                              :class="{ input: true, 'is-danger': errors.has('newPassword') }"
-                              v-validate="'required|verify_password'"
-                              placeholder="new password"
-                            />
-                            <span v-show="errors.first('newPassword')" class="help is-danger"
-                              >* {{ errors.first("newPassword") }}</span
-                            >
-                          </div>
-                          <div class="form-group col-md-6 col-lg-6 col-sm-5 col-7">
-                            <label for="confirmNewPassword">Confirm new password</label>
-                            <input
-                              type="password"
-                              class="form-control"
-                              id="confirmNewPassword"
-                              v-model="confirmNewPassword"
-                              ref="confirmNewPassword"
-                              v-validate="'required|confirmed:newPassword'"
-                              :class="{ input: true, 'is-danger': errors.has('confirmNewPassword') }"
-                              name="confirmNewPassword"
-                              placeholder="confirm new password"
-                            />
-                            <span v-show="errors.first('confirmNewPassword')" class="help is-danger"
-                              >*{{ errors.first("confirmNewPassword") }}</span
-                            >
-                          </div>
-                        </div>
-                        <button type="submit" class="btn btn-outline-primary">Reset Password</button>
-                      </form>
+                    <div class="form-group">
+                      <label for="phoneNumber">Phone number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="phoneNumber"
+                        aria-describedby="nameHelp"
+                        placeholder="phone number"
+                        readonly
+                        v-model="phoneNumber"
+                      />
+                      <small id="emailHelp" class="form-text text-muted"
+                        >Phone number cannot be altered.</small
+                      >
                     </div>
-                  </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 col-lg-6 col-sm-6 col-6">
+                        <label for="country">Country</label>
+                        <select
+                          class="form-control"
+                          required
+                          readonly
+                          v-model="country"
+                          id="country"
+                        >
+                          <option disabled>Ghana</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6 col-lg-6 col-sm-6 col-6">
+                        <label for="sex">Sex</label>
+                        <select class="form-control" required readonly v-model="sex" id="sex">
+                          <option disabled>Male</option>
+                          <option disabled>Female</option>
+                          <option disabled>Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="emailAddress">Email address</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        required
+                        id="emailAddress"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter email"
+                        v-model="emailAddress"
+                      />
+                      <small id="emailHelp" class="form-text text-muted"
+                        >We'll never share your email with anyone else.</small
+                      >
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Save</button>
+                  </form>
                 </div>
               </div>
-              <!-- Account settings -->
-              <div class="" v-if="selectedPage == 'accountSettings'" key="accountSettings">
-                <div class="row header-text">
-                  <h4>Account settings</h4>
+            </div>
+          </div>
+          <!-- Password Reset -->
+          <div class="" v-if="selectedPage == 'resetPassword'" key="resetPassword">
+            <div class="row header-text">
+              <h4>Reset password</h4>
+            </div>
+            <div class="header-border"></div>
+            <div class="row">
+              <div class="col-md-12 password-reset-overview">
+                <div class="password-reset">
+                  <form v-promise-btn="{ action: 'submit' }" @submit.prevent="updatePassword">
+                    <div class="form-group">
+                      <label for="currentPassword">Current password</label>
+                      <input
+                        type="password"
+                        v-model="currentPassword"
+                        class="form-control"
+                        id="currentPassword"
+                        placeholder="current password"
+                      />
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 col-lg-6 col-sm-5 col-5">
+                        <label for="newPassword">New password</label>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="newPassword"
+                          v-model="newPassword"
+                          name="newPassword"
+                          ref="newPassword"
+                          data-vv-delay="200"
+                          :class="{ input: true, 'is-danger': errors.has('newPassword') }"
+                          v-validate="'required|verify_password'"
+                          placeholder="new password"
+                        />
+                        <span v-show="errors.first('newPassword')" class="help is-danger"
+                          >* {{ errors.first("newPassword") }}</span
+                        >
+                      </div>
+                      <div class="form-group col-md-6 col-lg-6 col-sm-5 col-7">
+                        <label for="confirmNewPassword">Confirm new password</label>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="confirmNewPassword"
+                          v-model="confirmNewPassword"
+                          ref="confirmNewPassword"
+                          v-validate="'required|confirmed:newPassword'"
+                          :class="{ input: true, 'is-danger': errors.has('confirmNewPassword') }"
+                          name="confirmNewPassword"
+                          placeholder="confirm new password"
+                        />
+                        <span v-show="errors.first('confirmNewPassword')" class="help is-danger"
+                          >*{{ errors.first("confirmNewPassword") }}</span
+                        >
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Reset Password</button>
+                  </form>
                 </div>
-                <div class="header-border"></div>
               </div>
-              <!-- FAQs -->
-              <div class="" v-if="selectedPage == 'faq'" key="faq">
-                <div class="row header-text">
-                  <h4>FAQs</h4>
-                </div>
-                <div class="header-border"></div>
-              </div>
-            </transition>
-        </div>
+            </div>
+          </div>
+          <!-- Account settings -->
+          <div class="" v-if="selectedPage == 'accountSettings'" key="accountSettings">
+            <div class="row header-text">
+              <h4>Account settings</h4>
+            </div>
+            <div class="header-border"></div>
+          </div>
+          <!-- FAQs -->
+          <div class="" v-if="selectedPage == 'faq'" key="faq">
+            <div class="row header-text">
+              <h4>FAQs</h4>
+            </div>
+            <div class="header-border"></div>
+          </div>
+        </transition>
+      </div>
     </div>
     <!-- modal to display data change success or failure -->
     <div>
@@ -315,9 +320,7 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    submit(){
-
-    },
+    submit() {},
     infoChangeStatusFunction(evt) {
       this.$refs["info-change-status-modal"].hide();
     },
@@ -431,19 +434,13 @@ export default {
       }
     });
 
-
     // retrieve prfile image
-    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
-    return this.$store.dispatch('getProfileImage', id)
-                      .then((resp) => {
-
-                      })
-                      .catch((error) => {
-
-                      })
-
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+    return this.$store
+      .dispatch("getProfileImage", id)
+      .then(resp => {})
+      .catch(error => {});
   }
-
 };
 </script>
 
@@ -585,7 +582,6 @@ export default {
     border-left: solid 2px #79a3e0;
   }
 
-
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen
 and (min-device-width : 320px)
@@ -657,5 +653,4 @@ and (min-width : 1224px) {
   transform: translateY(10px);
   opacity: 0;
 }
-
 </style>

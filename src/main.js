@@ -24,8 +24,8 @@ import VueTour from "vue-tour";
 import * as VueGoogleMaps from "vue2-google-maps";
 
 // loading overlay
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 // font awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -68,7 +68,10 @@ import {
   FontAwesomeLayersText
 } from "@fortawesome/vue-fontawesome";
 import cookeys from "./cookeys";
-import store from "./store";
+
+import store from "./store/store.js";
+
+// import store from "./store";
 import routes from "./routes";
 import App from "./App.vue";
 
@@ -168,7 +171,9 @@ navigator.serviceWorker
   });
 
 // get the FCM token right here
-firebase.messaging().requestPermission()
+firebase
+  .messaging()
+  .requestPermission()
   .then(() => firebase.messaging().getToken())
   .then(token => {
     // ste fcm token in localStorage to be used
@@ -224,14 +229,13 @@ router.beforeEach((to, from, next) => {
     }
   }
   // take user directly to dashboard if logged in already
-  if(to.matched.some(record => record.name=="Login")){
-      if(store.getters.loggedIn){
-        next({
-          name: "RequestDelivery"
-        })
-      }
+  if (to.matched.some(record => record.name == "Login")) {
+    if (store.getters.loggedIn) {
+      next({
+        name: "RequestDelivery"
+      });
+    }
   }
-
 });
 
 new Vue({

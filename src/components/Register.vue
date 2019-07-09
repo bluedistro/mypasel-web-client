@@ -195,7 +195,6 @@
                       >
                         <option class="hidden" selected disabled>Please select your country</option>
                         <option>Ghana</option>
-                        <option>Nigeria</option>
                       </select>
                       <span v-show="errors.has('userForm.userCountry')" class="help is-danger">{{
                         errors.first("userForm.userCountry")
@@ -335,7 +334,6 @@
                       >
                         <option class="hidden" selected disabled>Please select your country</option>
                         <option>Ghana</option>
-                        <option>Nigeria</option>
                       </select>
                       <span
                         v-show="errors.has('companyForm.companyCountry')"
@@ -542,8 +540,8 @@ export default {
       });
     }
   },
-  mounted() {},
-  created() {
+  mounted() {
+
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
@@ -555,7 +553,8 @@ export default {
         return strongRegex.test(value);
       }
     });
-  }
+  },
+  created() {}
 };
 </script>
 
@@ -709,6 +708,30 @@ export default {
   width: 20%;
   margin-left: 10px;
   cursor: pointer;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, select:focus {
+  border-color: #00bcd4;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  background: #f8f9fa;
+}
+
+input[type="text"], input[type="password"], select {
+  border-color: #ccc;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  background: #f8f9fa;
 }
 
 

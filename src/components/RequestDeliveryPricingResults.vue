@@ -1,96 +1,114 @@
 <template lang="html">
   <div class="pricing-div">
     <h5 class="pricing-header">Pricing</h5>
-      <div class="row">
-        <!-- motorcycle -->
-        <div class="col-md-4 col-lg-4 col-sm-6 col-6">
-          <input
-            type="radio"
-            name="deliveryMode"
-            id="bike"
-            class="input-hidden"
-            value="bike"
-            :disabled="disabled"
-            v-model="pricing"
-          />
-          <label for="bike">
-              <div class="row dm-price-container">
-                  <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-                    <img class="dm-image" fluid src="../assets/motorcycle.png" height="40px" width="100px" />
-                  </div>
-                  <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
-                     <span>{{ pricingDetails.currency }} {{ pricingDetails.bike }}</span>
-                  </div>
-              </div>
-          </label>
-        </div>
-        <!-- bicycle -->
-        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
-          <input
-            type="radio"
-            name="deliveryMode"
-            id="bicycle"
-            class="input-hidden"
-            value="bicycle"
-            :disabled="disabled"
-            v-model="pricing"
-          />
-          <label for="bicycle">
-            <div class="row dm-price-container">
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-                  <img class="dm-image" fluid src="../assets/bicycle.png" height="40px" width="100px" />
-                </div>
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
-                   <span>{{ pricingDetails.currency }} {{ pricingDetails.bicycle }}</span>
-                </div>
+    <div class="row">
+      <!-- motorcycle -->
+      <div class="col-md-4 col-lg-4 col-sm-6 col-6">
+        <input
+          type="radio"
+          name="deliveryMode"
+          id="bike"
+          class="input-hidden"
+          value="bike"
+          :disabled="disabled"
+          v-model="pricing"
+        />
+        <label for="bike">
+          <div class="row dm-price-container">
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+              <img
+                class="dm-image"
+                fluid
+                src="../assets/motorcycle.png"
+                height="40px"
+                width="100px"
+              />
             </div>
-          </label>
-        </div>
-        <!-- sedan car model -->
-        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
-          <input
-            type="radio"
-            name="deliveryMode"
-            id="car"
-            class="input-hidden"
-            value="car"
-            :disabled="disabled"
-            v-model="pricing"
-          />
-          <label for="car">
-            <div class="row dm-price-container">
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-                  <img class="dm-image" fluid src="../assets/sedan-car-model.png" height="40px" width="100px" />
-                </div>
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
-                   <span>{{ pricingDetails.currency }} {{ pricingDetails.car }}</span>
-                </div>
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
+              <span>{{ pricingDetails.currency }} {{ pricingDetails.bike }}</span>
             </div>
-          </label>
-        </div>
-        <!-- delivery van -->
-        <div class="col-md-4 col-6 col-lg-4 col-sm-6">
-          <input
-            type="radio"
-            name="deliveryMode"
-            id="van"
-            class="input-hidden"
-            value="van"
-            :disabled="disabled"
-            v-model="pricing"
-          />
-          <label for="van">
-            <div class="row dm-price-container">
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-                  <img class="dm-image" fluid src="../assets/delivery-truck.png" height="40px" width="100px" />
-                </div>
-                <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
-                   <span>{{ pricingDetails.currency }} {{ pricingDetails.van }}</span>
-                </div>
-            </div>
-          </label>
-        </div>
+          </div>
+        </label>
       </div>
+      <!-- bicycle -->
+      <div class="col-md-4 col-6 col-lg-4 col-sm-6">
+        <input
+          type="radio"
+          name="deliveryMode"
+          id="bicycle"
+          class="input-hidden"
+          value="bicycle"
+          :disabled="disabled"
+          v-model="pricing"
+        />
+        <label for="bicycle">
+          <div class="row dm-price-container">
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+              <img class="dm-image" fluid src="../assets/bicycle.png" height="40px" width="100px" />
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
+              <span>{{ pricingDetails.currency }} {{ pricingDetails.bicycle }}</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      <!-- sedan car model -->
+      <div class="col-md-4 col-6 col-lg-4 col-sm-6">
+        <input
+          type="radio"
+          name="deliveryMode"
+          id="car"
+          class="input-hidden"
+          value="car"
+          :disabled="disabled"
+          v-model="pricing"
+        />
+        <label for="car">
+          <div class="row dm-price-container">
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+              <img
+                class="dm-image"
+                fluid
+                src="../assets/sedan-car-model.png"
+                height="40px"
+                width="100px"
+              />
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
+              <span>{{ pricingDetails.currency }} {{ pricingDetails.car }}</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      <!-- delivery van -->
+      <div class="col-md-4 col-6 col-lg-4 col-sm-6">
+        <input
+          type="radio"
+          name="deliveryMode"
+          id="van"
+          class="input-hidden"
+          value="van"
+          :disabled="disabled"
+          v-model="pricing"
+        />
+        <label for="van">
+          <div class="row dm-price-container">
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+              <img
+                class="dm-image"
+                fluid
+                src="../assets/delivery-truck.png"
+                height="40px"
+                width="100px"
+              />
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
+              <span>{{ pricingDetails.currency }} {{ pricingDetails.van }}</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -122,7 +140,10 @@ export default {
         this.disabled = true;
       }
     }
-  }
+  },
+  mount(){
+
+  },
 };
 </script>
 
@@ -165,8 +186,8 @@ text-align: left;
 
 .pricing-div {
     border: solid #d4d8dd 1px;
-    height: 300px;
-    border-radius: 1px;
+    height: 230px;
+    border-radius: 2px;
     background-color: #fff;
     padding: 12px;
     margin-bottom: 15px;

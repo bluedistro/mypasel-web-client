@@ -2,11 +2,11 @@
   <div class="">
     <div class="bar"></div>
     <div class="container">
-       <div class="row">
-          <div class="col-md-12 col-lg-12 col-sm-12 col-12 setup-message">
-              {{ setupMessage }}
-          </div>
-       </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-12 setup-message">
+          {{ setupMessage }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -23,50 +23,54 @@ export default {
   },
   methods: {
     // call function to get newly generated FCM token and set it up as cookie
-    async resolveFCMIssue(){
+    async resolveFCMIssue() {
       const tokenExpect = await this.generateFCM();
-      if(tokenExpect != null || tokenExpect != 'error'){
-          // after resolve
-         setTimeout(() => {
-           this.$cookie.set(this.$cookeys.FCM_TOKEN_KEY, tokenExpect, {expires: this.$cookeys.cookie_expire})
-           this.$router.push({name: 'RequestDelivery'});
-         }, 2000);
-      }else if(tokenExpect == 'error'){
-          this.setupMessage="System issue could not be resolved. \
-           Please accept notificatons for this site if you haven't and try logging in again."
-           setTimeout(() => {
-             this.$router.push({name: 'Login'})
-           }, 5000);
+      if (tokenExpect != null || tokenExpect != "error") {
+        // after resolve
+        setTimeout(() => {
+          this.$cookie.set(this.$cookeys.FCM_TOKEN_KEY, tokenExpect, {
+            expires: this.$cookeys.cookie_expire
+          });
+          this.$router.push({ name: "RequestDelivery" });
+        }, 2000);
+      } else if (tokenExpect == "error") {
+        this.setupMessage =
+          "System issue could not be resolved. \
+           Please accept notificatons for this site if you haven't and try logging in again.";
+        setTimeout(() => {
+          this.$router.push({ name: "Login" });
+        }, 5000);
       }
     },
     // try to generate FCM token again on first try failure
-    generateFCM(){
+    generateFCM() {
       return new Promise((resolve, reject) => {
-        this.$messaging.requestPermission()
-            .then(() => this.$messaging.getToken())
-            .then(token => {
-              resolve(token)
-            })
-            .catch(error => {
-              const err = 'error';
-              reject(err);
-            })
-      })
+        this.$messaging
+          .requestPermission()
+          .then(() => this.$messaging.getToken())
+          .then(token => {
+            resolve(token);
+          })
+          .catch(error => {
+            const err = "error";
+            reject(err);
+          });
+      });
     }
   },
-  mounted(){
+  mounted() {
     // check for fcm token presence
-    this.$store.dispatch('checkFCMTokenPresence')
-               .then((resp) => {
-                 // reroute to request delivery if token present
-                 this.$router.push({name: 'RequestDelivery'});
-               })
-               .catch((error) => {
-                // try resolving issue
-                this.resolveFCMIssue();
-               })
-
-      },
+    this.$store
+      .dispatch("checkFCMTokenPresence")
+      .then(resp => {
+        // reroute to request delivery if token present
+        this.$router.push({ name: "RequestDelivery" });
+      })
+      .catch(error => {
+        // try resolving issue
+        this.resolveFCMIssue();
+      });
+  }
 };
 </script>
 
@@ -93,5 +97,4 @@ export default {
    margin-top: 80px;
    font-weight: bold;
  }
-
 </style>

@@ -39,19 +39,21 @@
           required
           id="input-2"
           v-model="fullName"
+          :disabled="disableFullName"
           v-on:blur="sendInfo"
           placeholder="Sender full name"
         >
         </b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-1">
+      <b-form-group id="phone-number">
         <vue-phone-number-input
           v-model="phoneNumber"
           :default-country-code="phoneField.defaultCode"
           :clearable="phoneField.clearable"
           :preferred-countries="phoneField.preferred"
           name="phoneNumber"
+          :disabled="disablePhoneField"
           required
           v-on:blur="sendInfo"
           id="phoneNumber"
@@ -82,10 +84,12 @@ export default {
   },
   props: {
     disablePickupAddress: Boolean,
+    disableFullName: Boolean,
+    disablePhoneField: Boolean,
   },
   data() {
     return {
-      senderAddressPlaceholder: 'Sender address',
+      senderAddressPlaceholder: "Sender address",
       searchingAddressLoader: false,
       phoneField: {
         defaultCode: "GH",
@@ -116,8 +120,8 @@ export default {
         fullName: this.fullName
       };
       // to enable the getPickupAddressData to fire
-      if(JSON.parse(localStorage.getItem('savedPickUpData')) != null){
-        this.getPickupAddressData(JSON.parse(localStorage.getItem('savedPickUpData')) );
+      if (JSON.parse(localStorage.getItem("savedPickUpData")) != null) {
+        this.getPickupAddressData(JSON.parse(localStorage.getItem("savedPickUpData")));
       }
       this.$emit("pickup_details", data);
     },
@@ -129,15 +133,19 @@ export default {
       var lat;
       var lng;
       // search data straight from google autocomplete
-      if(place.geometry){
+      if (place.geometry) {
         infoToReturn = place.geometry;
-        infoToReturn["source"] = 'saved';
-        lat = infoToReturn.location.lat();
-        lng = infoToReturn.location.lng();
+        infoToReturn["source"] = "saved";
+        infoToReturn["location"] = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        }
+        // lat = infoToReturn.location.lat();
+        // lng = infoToReturn.location.lng();
         // search data coming from localStorage saved data
-      }else{
+      } else {
         infoToReturn = place;
-        infoToReturn["source"] = 'direct';
+        infoToReturn["source"] = "direct";
         lat = infoToReturn.location.lat;
         lng = infoToReturn.location.lng;
       }
@@ -152,10 +160,7 @@ export default {
         this.searchingAddressLoader = false;
         this.markers = [];
         this.markers.push({
-          position: {
-            lat: lat,
-            lng: lng
-          }
+          position: infoToReturn["location"]
         });
       }
       // emit data once again (for redundancy)
@@ -170,15 +175,41 @@ export default {
     displaySpinner() {},
     noResultsFound() {}
   },
-  created(){
-    const searchAddress = JSON.parse(localStorage.getItem('savedPickUpData'));
-
-    if(searchAddress != null){
-      this.searchAddress = searchAddress;
-      this.senderAddressPlaceholder = searchAddress.formatted_address;
-
+  created() {
+    // controls the display and hiding of the saved data in the form fields on page created
+    const savedPickupData = JSON.parse(localStorage.getItem("savedPickUpData"));
+    if(this.disablePickupAddress === true){
+      if (savedPickupData != null) {
+        this.searchAddress = savedPickupData.searchAddress;
+        this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address;
+        this.phoneNumber = savedPickupData.phoneNumber;
+        this.fullName = savedPickupData.fullName;
+      }
+    }else{
+      this.searchAddress = null;
+      this.senderAddressPlaceholder = 'Sender address';
+      this.phoneNumber = '';
+      this.fullName = '';
     }
-
+  },
+// controls the display and hiding of the saved data in the form fields on address form value change
+  watch: {
+    disablePickupAddress(status){
+      let savedPickupData = JSON.parse(localStorage.getItem("savedPickUpData"));
+      if(status === true){
+        if (savedPickupData != null) {
+          this.searchAddress = savedPickupData.searchAddress;
+          this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address;
+          this.phoneNumber = savedPickupData.phoneNumber;
+          this.fullName = savedPickupData.fullName;
+        }
+      }else{
+        this.searchAddress = null;
+        this.senderAddressPlaceholder = 'Sender address';
+        this.phoneNumber = '';
+        this.fullName = '';
+      }
+    }
   }
 };
 </script>
@@ -204,10 +235,76 @@ export default {
   margin-bottom: 30px;
   margin-top: 20px;
   border-color: #d4d8dd;
+  border-radius: 2px;
+}
+
+#pickupMap {
+  outline: none;
+  border-color: #ccc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+#pickupMap:focus {
+  border-color: #00bcd4;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+textarea:focus {
+  border-color: #00bcd4;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+textarea {
+  border-color: #ccc;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+input[type="text"]:focus {
+  border-color: #00bcd4;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+input[type="text"] {
+  border-color: #ccc;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 
 .form-control.search-slt {
   content: "\1F50E";
 }
-
 </style>

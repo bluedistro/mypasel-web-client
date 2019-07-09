@@ -6,13 +6,19 @@
     <div class="row">
       <transition name="historyChange" mode="in-out">
         <!--  if no history -->
-        <div class="col-md-12 col-12 col-lg-12 col-sm-12" v-if="historyContent.length <= 0" key="no-history">
+        <div
+          class="col-md-12 col-12 col-lg-12 col-sm-12"
+          v-if="historyContent.length <= 0"
+          key="no-history"
+        >
           <no-activity v-bind:message="message"></no-activity>
         </div>
         <!-- else -->
         <div
           class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
-          v-if="historyContent.length > 0" key="history">
+          v-if="historyContent.length > 0"
+          key="history"
+        >
           <!-- NOTE: The commented section is for the search filter. Might activate it someday -->
 
           <!-- search filter -->
@@ -34,10 +40,14 @@
             <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
           </div> -->
 
-
           <!-- history data -->
           <transition-group name="sortList" tag="ul">
-            <li v-for="(txns, index) in lists" :key="index" id="historyDataId" class="historyDataContainer">
+            <li
+              v-for="(txns, index) in lists"
+              :key="index"
+              id="historyDataId"
+              class="historyDataContainer"
+            >
               <div class="row">
                 <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
                   <div class="row">
@@ -55,7 +65,9 @@
                     <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
                       <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
                     </div>
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">GHS {{ txns.fee }}</div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">
+                      GHS {{ txns.fee }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -63,16 +75,17 @@
           </transition-group>
           <!-- pagination -->
           <div class="row">
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="perPage"
-                aria-controls="historyDataId">
-              </b-pagination>
-              <!-- sorts -->
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="historyDataId"
+            >
+            </b-pagination>
+            <!-- sorts -->
             <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
-                <a @click="sortDateAscending"><font-awesome-icon icon="angle-up" /></a> <br/>
-                <a @click="sortDateDescending"><font-awesome-icon icon="angle-down" /></a>
+              <a @click="sortDateAscending"><font-awesome-icon icon="angle-up"/></a> <br />
+              <a @click="sortDateDescending"><font-awesome-icon icon="angle-down"/></a>
             </div>
             <b-tooltip
               target="tickers"
@@ -118,18 +131,19 @@ export default {
       txnsHistorySearch: "",
       message: "You have no transaction history",
       historyContent: [],
-      errorMessage: "Unable to fetch history due to a technical failure. Please refresh page to try again",
-      historyFetchErrorModal: false,
+      errorMessage:
+        "Unable to fetch history due to a technical failure. Please refresh page to try again",
+      historyFetchErrorModal: false
     };
   },
   methods: {
-    historyFetchError(){
+    historyFetchError() {
       this.$refs["history-fetch-error-modal"].hide();
     },
-    sortDateAscending(){
+    sortDateAscending() {
       this.historyContent = this.historyContent.sort((a, b) => a.rawTime - b.rawTime);
     },
-    sortDateDescending(){
+    sortDateDescending() {
       this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
     }
   },
@@ -141,17 +155,14 @@ export default {
       });
     },
 
-    lists () {
-      const items = this.historyContent
+    lists() {
+      const items = this.historyContent;
       // Return just page of items needed
-      return items.slice(
-        (this.currentPage - 1) * this.perPage,
-        this.currentPage * this.perPage
-      )
+      return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
     },
 
     rows() {
-      return this.historyContent.length
+      return this.historyContent.length;
     }
   },
   mounted() {
@@ -171,13 +182,15 @@ export default {
         });
         this.historyContent = resp.data;
         // sort the data
-        this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime)
+        this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
       })
       .catch(error => {
-        if(error.response.status == 503){
-          this.errorMessage = 'Our servers failed while retrieving your history. Kindly refresh page to try again';
-        }else if(error.response.status == 500){
-          this.errorMessage = 'Sorry, we experienced a technical glitch while fetching your history data. Please refresh page to try again';
+        if (error.response.status == 503) {
+          this.errorMessage =
+            "Our servers failed while retrieving your history. Kindly refresh page to try again";
+        } else if (error.response.status == 500) {
+          this.errorMessage =
+            "Sorry, we experienced a technical glitch while fetching your history data. Please refresh page to try again";
         }
         this.historyFetchErrorModal = true;
       });
@@ -363,5 +376,4 @@ export default {
   transform: scaleY(0);
   transform-origin: center top;
 }
-
 </style>

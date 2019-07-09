@@ -1,15 +1,16 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   module: {
     loaders: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
-      },{
+        loader: "vue-loader"
+      },
+      {
         test: /\.js$/,
-        loader: 'babel-loader'
+        loader: "babel-loader"
       }
     ]
   }
-}
+};

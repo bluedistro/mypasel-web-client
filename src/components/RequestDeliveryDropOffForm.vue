@@ -1,34 +1,6 @@
 <template lang="html">
   <!-- position to the left of the parent component -->
   <div>
-    <!-- drop off element controls -->
-    <div class="row">
-      <!-- <div class="col-md-4 col-lg-4 col-sm-1 col-1 dropoff-notice">
-          <div class="col-md-12 col-sm-6 col-6">
-               ({{ counter + 1}})
-          </div>
-      </div> -->
-      <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-11 col-11 dropOffBtnDiv">
-        <button
-          type="button"
-          :disabled="disableRemoveDropOffs"
-          class="btn btn btn-warning
-                    btn-sm  removeDropOffBtn"
-          @click="removeDropOff"
-        >
-          <font-awesome-icon icon="times" />&nbsp;Remove a dropoff
-        </button>
-        <button
-          type="button"
-          :disabled="disableAddDropOffs"
-          class="btn btn-success
-                    btn-sm addDropOffBtn"
-          @click="addDropOff"
-        >
-          <font-awesome-icon icon="plus" />&nbsp;Add a dropoff
-        </button>
-      </div>
-    </div>
     <transition-group name="add-dropOff">
       <div v-for="dropOff in dropOffData" :key="dropOff.id">
         <div class="card dropOff-card">
@@ -105,6 +77,34 @@
         </div>
       </div>
     </transition-group>
+    <!-- drop off element controls -->
+    <div class="row">
+      <!-- <div class="col-md-4 col-lg-4 col-sm-1 col-1 dropoff-notice">
+          <div class="col-md-12 col-sm-6 col-6">
+               ({{ counter + 1}})
+          </div>
+      </div> -->
+      <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-11 col-11 dropOffBtnDiv">
+        <button
+          type="button"
+          :disabled="disableRemoveDropOffs"
+          class="btn btn btn-warning
+                    btn-sm  removeDropOffBtn"
+          @click="removeDropOff"
+        >
+          <font-awesome-icon icon="times" />&nbsp;Remove a dropoff
+        </button>
+        <button
+          type="button"
+          :disabled="disableAddDropOffs"
+          class="btn btn-success
+                    btn-sm addDropOffBtn"
+          @click="addDropOff"
+        >
+          <font-awesome-icon icon="plus" />&nbsp;Add a dropoff
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -115,7 +115,7 @@ export default {
   // minimum and maximum number of drop off forms to create
   props: {
     minimumDropOffs: Number,
-    maximumDropOffs: Number,
+    maximumDropOffs: Number
   },
   data() {
     return {
@@ -176,7 +176,6 @@ export default {
           detailId: `detail ${counterInc}`
         });
       }
-
     },
     // remove one drop off form and update drop off markers array.
     // Emit these values to the parent component
@@ -186,7 +185,6 @@ export default {
         this.searchAddress.pop();
         --this.counter;
       }
-
 
       this.markers = [];
       for (var i = 0; i < this.dropOffData.length; i++) {
@@ -212,6 +210,10 @@ export default {
       infoToReturn["formatted_address"] = place.name;
       infoToReturn["reference"] = place.reference;
       infoToReturn["vicinity"] = place.vicinity;
+      infoToReturn["location"] = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
       // return needed information
       this.dropOffData[digitally_generated_id].searchAddress = infoToReturn;
       if (this.dropOffData[digitally_generated_id].searchAddress) {
@@ -220,8 +222,8 @@ export default {
         // replace marker on drop off place change
         this.markers.splice(digitally_generated_id, 1, {
           position: {
-            lat: infoToReturn.location.lat(),
-            lng: infoToReturn.location.lng()
+            lat: infoToReturn.location.lat,
+            lng: infoToReturn.location.lng
           }
         });
       }
@@ -232,17 +234,16 @@ export default {
     noResultsFound() {}
   },
   watch: {
-    dropOffData: function(do_data){
-
-      if(do_data.length == 1){
+    dropOffData: function(do_data) {
+      if (do_data.length == 1) {
         this.disableRemoveDropOffs = true;
-      }else{
+      } else {
         this.disableRemoveDropOffs = false;
       }
 
-      if(do_data.length == this.maximumDropOffs){
+      if (do_data.length == this.maximumDropOffs) {
         this.disableAddDropOffs = true;
-      }else{
+      } else {
         this.disableAddDropOffs = false;
       }
     }
@@ -267,24 +268,97 @@ export default {
 
 .removeDropOffBtn{
   margin-right: 10px;
+  border-radius: 2px;
+}
+
+.addDropOffBtn {
+  border-radius: 2px;
 }
 
 .dropOffBtnDiv{
   text-align: right;
+  margin-bottom: 20px;
 }
 
   .card.dropOff-card {
     padding: 15px 10px;
     /*  extend height to 300px when details are added again */
-    height: 290px;
+    height: 300px;
     padding-bottom: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     margin-top: 10px;
     border-color: #d4d8dd;
+    border-radius: 2px;
   }
 
   .dropoff-notice {
     text-align: left;
+  }
+
+  .search-slt {
+    outline: none;
+    border-color: #ccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  .search-slt:focus {
+    border-color: #00bcd4;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  textarea:focus {
+    border-color: #00bcd4;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  textarea {
+    border-color: #ccc;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  input[type="text"]:focus {
+    border-color: #00bcd4;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  input[type="text"] {
+    border-color: #ccc;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
   }
 
   /* Enter and leave animations can use different */
@@ -300,5 +374,4 @@ export default {
     transform: translateX(10px);
     opacity: 0;
   }
-
 </style>

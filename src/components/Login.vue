@@ -4,7 +4,7 @@
       <form class="form-signin" v-promise-btn="{ action: 'submit' }" @submit.prevent="login">
         <div class="row">
           <div class="col-md-9 col-6">
-            <h1 class="h3 mb-3 font-weight-normal login-header" style="text-align: center">
+            <h1 class="h3 mb-3 font-weight-normal login-header">
               MyPasel
             </h1>
           </div>
@@ -42,7 +42,7 @@
           v-model="loginData.password"
         />
 
-        <button
+        <button id="login"
           class="btn btn-outline-dark btn-sm btn-block col-md-3 col-lg-3 col-4 col-sm-3"
           type="submit"
         >
@@ -60,13 +60,11 @@
 <script>
 export default {
   name: "Login",
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       errorMessage: "",
-      loaderBarControl: false,
+      // loaderBarControl: false,
       loginData: {
         phoneNumber: "",
         password: ""
@@ -85,7 +83,7 @@ export default {
     },
     login(evt) {
       evt.preventDefault();
-      this.loaderBarControl = true;
+      // this.loaderBarControl = true;
       this.unsuccessfulLogin = false;
       let user = {
         phoneNumber: this.loginData.phoneNumber.replace(/\s/g, ""),
@@ -100,34 +98,33 @@ export default {
         })
         .catch(error => {
           // console.log(error.response.status)
-          if(error.response.status){
+          if (error.response.status) {
             if (error.response.status == 400) {
               this.errorMessage = "Incorrect phone number or password. Please try again";
             } else if (error.response.status == 503) {
               this.errorMessage =
                 "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
-            } else if(error.response.status == 404){
+            } else if (error.response.status == 404) {
               this.errorMessage = error.response.data.message;
+            } else {
+              this.errorMessage = "Unable to login. Please check credentials and try again";
             }
-             else {
-              this.errorMessage =
-                "Unable to login. Please check credentials and try again";
-            }
-          }else{
-            this.errorModalMessage = "Unable to login due to a technical error. Kindly try again later."
+          } else {
+            this.errorModalMessage =
+              "Unable to login due to a technical error. Kindly try again later.";
           }
 
           // this.errorMessage = 'Incorrect phone number or password. Please try again';
           this.unsuccessfulLogin = true;
-          this.loaderBarControl = false;
+          // this.loaderBarControl = false;
         });
     }
   },
   created() {
-    this.loaderBarControl = false;
-    if(this.$cookie.get(this.$cookeys.TOKEN_KEY != null)){
-      this.$router.push({name: 'RequestDelivery'});
-    }
+    // this.loaderBarControl = false;
+    // if (this.$cookie.get(this.$cookeys.TOKEN_KEY != null)) {
+    //   this.$router.push({ name: "RequestDelivery" });
+    // }
   }
 };
 </script>
@@ -150,6 +147,7 @@ export default {
 
 .login-header{
   float: left;
+  text-align: center;
 }
 
 .passwordField{
@@ -207,6 +205,21 @@ export default {
 #logreg-forms .form-signin input[type="password"] {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+input[type="password"] {
+  outline: none;
+  border-color: #ccc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+
+input[type="password"]:focus {
+  outline: none;
+  border-color: #00bcd4;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 #logreg-forms a{

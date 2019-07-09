@@ -4,44 +4,48 @@
       <h4>Scheduled Transactions</h4>
     </div>
     <div class="row">
-        <transition name="scheduleChange" mode="in-out">
-          <div class="col-md-12 col-sm-12 col-12 col-lg-12" v-if="scheduledData.length <= 0" key="no-schedule">
-            <no-activity v-show="noScheduled" v-bind:message="message"></no-activity>
-          </div>
-          <div class="row" v-if="scheduledData.length > 0" key="schedule">
-            <div
-              class="col-md-10 col-lg-10 col-11 col-sm-11 scheduledContainer"
-              v-for="(txns, index) in scheduledData"
-              :key="index"
-            >
-              <div class="row">
-                <div class="col-md-9 col-sm-9 col-9 col-lg-9 scheduledContainerDetailText">
-                  <div>
-                    <h6 class="scheduled-container-header">{{ txns.transactionNumber }}</h6>
-                  </div>
-                  <div class="">
-                    {{ txns.travellerName }}
-                  </div>
-                  <div class=""><font-awesome-icon /> {{ txns.travellerPhone }}</div>
-                  <div class=""><span class="alt-design">Pickup:</span> {{ txns.pickup }}</div>
-                  <div class=""><span class="alt-design">Update:</span> {{ txns.status }}</div>
+      <transition name="scheduleChange" mode="in-out">
+        <div
+          class="col-md-12 col-sm-12 col-12 col-lg-12"
+          v-if="scheduledData.length <= 0"
+          key="no-schedule"
+        >
+          <no-activity v-show="noScheduled" v-bind:message="message"></no-activity>
+        </div>
+        <div class="row" v-if="scheduledData.length > 0" key="schedule">
+          <div
+            class="col-md-10 col-lg-10 col-11 col-sm-11 scheduledContainer"
+            v-for="(txns, index) in scheduledData"
+            :key="index"
+          >
+            <div class="row">
+              <div class="col-md-9 col-sm-9 col-9 col-lg-9 scheduledContainerDetailText">
+                <div>
+                  <h6 class="scheduled-container-header">{{ txns.transactionNumber }}</h6>
                 </div>
-                <div class="col-md-3 col-sm-3 col-3 col-lg-3 scheduledContainerDetailImage">
-                  <b-img-lazy
-                    :show="true"
-                    right
-                    :src="txns.travellerImage"
-                    class="travellerImage"
-                    rounded="circle"
-                    thumbnail
-                    fluid
-                    alt="Right image"
-                  ></b-img-lazy>
+                <div class="">
+                  {{ txns.travellerName }}
                 </div>
+                <div class=""><font-awesome-icon /> {{ txns.travellerPhone }}</div>
+                <div class=""><span class="alt-design">Pickup:</span> {{ txns.pickup }}</div>
+                <div class=""><span class="alt-design">Update:</span> {{ txns.status }}</div>
+              </div>
+              <div class="col-md-3 col-sm-3 col-3 col-lg-3 scheduledContainerDetailImage">
+                <b-img-lazy
+                  :show="true"
+                  right
+                  :src="txns.travellerImage"
+                  class="travellerImage"
+                  rounded="circle"
+                  thumbnail
+                  fluid
+                  alt="Right image"
+                ></b-img-lazy>
               </div>
             </div>
           </div>
-        </transition>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -137,5 +141,4 @@ margin-top: 10px;
   transform: translateX(10px);
   opacity: 0;
 }
-
 </style>

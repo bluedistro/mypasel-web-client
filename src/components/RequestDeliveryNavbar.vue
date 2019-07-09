@@ -20,16 +20,16 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item v-if="!hidden" v-bind:class="rdClassStyle" @click="requestDeliveryRedirect">
-              Request Delivery
+            Request Delivery
           </b-nav-item>
           <b-nav-item v-if="!hidden" v-bind:class="orClassStyle" @click="ongoingRedirect">
-              Ongoing <b-badge variant="light" v-if="totalOngoings > 0">{{ totalOngoings }}</b-badge>
+            Ongoing <b-badge variant="light" v-if="totalOngoings > 0">{{ totalOngoings }}</b-badge>
           </b-nav-item>
           <b-nav-item v-if="!hidden" v-bind:class="srClassStyle" @click="scheduledRedirect">
-              Scheduled
+            Scheduled
           </b-nav-item>
           <b-nav-item v-if="!hidden" v-bind:class="hrClassStyle" @click="historyRedirect">
-              History
+            History
           </b-nav-item>
         </b-navbar-nav>
 
@@ -48,7 +48,7 @@
             <b-dropdown-item>
               <span class="user-profile-dropdown" @click="userAccountRedirect">
                 <font-awesome-icon icon="pencil-alt" class="account-edit" />
-                  Edit profile
+                Edit profile
               </span>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -84,31 +84,31 @@ export default {
       userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)),
       totalOngoings: 0,
       // handle individual nav-link border
-      rdClassStyle: 'nav-item',
-      orClassStyle: 'nav-item',
-      srClassStyle: 'nav-item',
-      hrClassStyle: 'nav-item',
+      rdClassStyle: "nav-item",
+      orClassStyle: "nav-item",
+      srClassStyle: "nav-item",
+      hrClassStyle: "nav-item"
     };
   },
   methods: {
-    userAccountRedirect(evt){
+    userAccountRedirect(evt) {
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
-      this.$router.push({name: 'UserAccount'});
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
+      this.$router.push({ name: "UserAccount" });
       loader.hide();
     },
-    requestDeliveryRedirect(){
+    requestDeliveryRedirect() {
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
-      this.$router.push({name: 'RequestDelivery'});
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
+      this.$router.push({ name: "RequestDelivery" });
       // handle individual nav-link border
       // this.rdClassStyle = 'nav-item active-link'
       // this.orClassStyle = 'nav-item',
@@ -116,14 +116,14 @@ export default {
       // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
-    scheduledRedirect(){
+    scheduledRedirect() {
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
-      this.$router.push({name: 'Scheduled'});
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
+      this.$router.push({ name: "Scheduled" });
       // handle individual nav-link border
       // this.rdClassStyle = 'nav-item'
       // this.orClassStyle = 'nav-item',
@@ -131,14 +131,14 @@ export default {
       // this.hrClassStyle = 'nav-item',
       loader.hide();
     },
-    historyRedirect(){
+    historyRedirect() {
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
-      this.$router.push({name: 'History'});
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
+      this.$router.push({ name: "History" });
       // handle individual nav-link border
       // this.rdClassStyle = 'nav-item'
       // this.orClassStyle = 'nav-item',
@@ -146,14 +146,14 @@ export default {
       // this.hrClassStyle = 'nav-item active-link',
       loader.hide();
     },
-    ongoingRedirect(){
+    ongoingRedirect() {
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
-      this.$router.push({name: 'Ongoing'});
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
+      this.$router.push({ name: "Ongoing" });
       // handle individual nav-link border
       // this.rdClassStyle = 'nav-item'
       // this.orClassStyle = 'nav-item active-link',
@@ -164,13 +164,14 @@ export default {
     async logOut(evt) {
       // set up loader overlay
       let loader = this.$loading.show({
-          loader: 'bars',
-          color: '#00bcd4',
-          height: 80,
-          width: 80
-      })
+        loader: "bars",
+        color: "#00bcd4",
+        height: 80,
+        width: 80
+      });
 
-      await this.$store.dispatch("logout")
+      await this.$store
+        .dispatch("logout")
         .then(response => {
           // remove cookies
           this.$router.push({ name: "Login" });
@@ -183,7 +184,7 @@ export default {
   },
   mounted() {
     const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-    if (ongoingLength && ongoingLength.length > 0){
+    if (ongoingLength && ongoingLength.length > 0) {
       this.totalOngoings = ongoingLength.length;
     }
   },
@@ -296,6 +297,4 @@ font-family: "Lucida Console", Monaco, monospace;
   margin-left: 4px;
   text-decoration: none;
 }
-
-
 </style>

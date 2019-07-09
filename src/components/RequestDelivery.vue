@@ -10,9 +10,35 @@
                 @set_markers="getPickupMarker"
                 @pickup_details="getPickupInfo"
                 v-bind:disablePickupAddress="savePickup"
+                v-bind:disableFullName="savePickup"
+                v-bind:disablePhoneField="savePickup"
                 data-v-step="0"
               >
               </pickup-form>
+              <div class="row pickupSave">
+                <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
+                  <label class="switch">
+                    <input type="checkbox" v-model="savePickup" />
+                    <span class="slider"></span>
+                  </label>
+                  <span class="pickupSave text">Save to address book</span>
+                </div>
+                <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
+                  <font-awesome-icon
+                    icon="question-circle"
+                    id="saveHelp"
+                    @click="$bvToast.show('example-toast')"
+                  />
+                </div>
+                <div class="save-help-note">
+                  <b-toast id="example-toast" title="Using address book" static no-auto-hide>
+                    Activating this button will save your current pickup address location during the
+                    course of this session. A saved address will be lost when you log out or change
+                    again yourself.
+                  </b-toast>
+                </div>
+                <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
+              </div>
               <drop-off-form
                 v-bind:minimumDropOffs="minimumDropOffForm"
                 v-bind:maximumDropOffs="maximumDropOffForm"
@@ -21,29 +47,6 @@
                 data-v-step="1"
               >
               </drop-off-form>
-              <div class="row pickupSave">
-                <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
-                    <label class="switch">
-                        <input type="checkbox" v-model="savePickup">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="pickupSave text">Save to address book</span>
-                </div>
-                <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
-                    <font-awesome-icon icon="question-circle" id="saveHelp" @click="$bvToast.show('example-toast')" />
-                </div>
-                <div class="save-help-note">
-                  <b-toast id="example-toast" title="Using address book" static no-auto-hide>
-                    Activating this button will save your current pickup address location during the
-                    course of this session. A saved address will be lost when you log out or change again yourself.
-                  </b-toast>
-                </div>
-                <b-tooltip
-                  target="saveHelp"
-                  placement="left"
-                  title="Help">
-                </b-tooltip>
-              </div>
               <div class="checkPricingDiv">
                 <div class="row">
                   <div class="col-md-12 col-lg-12 col-sm-12 col-12">
@@ -164,8 +167,13 @@ export default {
       dropOffMarkers: [],
       //
       emittedFormData: {
-        pickupData: null,
-        dropOffData: null
+        pickupData: {
+          details: '',
+          fullName: '',
+          phoneNumber: '',
+          searchAddress: null,
+        },
+        dropOffData: []
       },
       pricingDetails: {},
       selectedPricingOption: null,
@@ -173,7 +181,7 @@ export default {
       // to save pickup address data
       savedPickUpData: null,
       // decision model
-      savePickup: JSON.parse(localStorage.getItem('savedPickUpData')) ? true : false,
+      savePickup: JSON.parse(localStorage.getItem("savedPickUpData")) ? true : false,
       //
       steps: [
         {
@@ -249,13 +257,13 @@ export default {
     // get emitted pickup info
     getPickupInfo(evt) {
       // store pickup searchAddress info temporarily
-      this.savedPickUpData = evt.searchAddress;
+      this.savedPickUpData = evt;
       this.emittedFormData.pickupData = evt;
     },
     // get the emitted pickup marker point and set them to the corresponding data variable
     getPickupMarker(pickupMarker, data) {
       // store pickup searchAddress info temporarily
-      this.savedPickUpData = data.searchAddress
+      this.savedPickUpData = data;
       // updating the pick up data for redundancy'
       this.emittedFormData.pickupData = data;
       this.pickupMarker = pickupMarker;
@@ -268,10 +276,10 @@ export default {
     },
     checkPricing(evt) {
       evt.preventDefault();
-      if(this.emittedFormData.pickupData == null || this.emittedFormData.dropOffData == null){
-        this.errorModalMessage = "Please provide both pickup and dropoff information"
+      if (this.emittedFormData.pickupData == null || this.emittedFormData.dropOffData == null) {
+        this.errorModalMessage = "Please provide both pickup and dropoff information";
         this.incompleteRequestDelivery = true;
-      }else{
+      } else {
         return this.$store
           .dispatch("getPricing", this.emittedFormData)
           .then(response => {
@@ -279,13 +287,14 @@ export default {
             this.pricingDetails.walking = "N/A";
           })
           .catch(error => {
-            if(error){
-              if(error.response.status == 503 || error.response.status == 500){
-                this.errorModalMessage = "Unable to fetch pricing due to a technical glitch. Please try again"
-              }else{
+            if (error) {
+              if (error.response.status == 503 || error.response.status == 500) {
+                this.errorModalMessage =
+                  "Unable to fetch pricing due to a technical glitch. Please try again";
+              } else {
                 this.errorModalMessage = "Please complete pick up and dropoff information";
               }
-            }else{
+            } else {
               this.errorModalMessage = "Unable to get pricing";
             }
             this.incompleteRequestDelivery = true;
@@ -315,21 +324,34 @@ export default {
   // watch for changes in selected pricing choice
   watch: {
     // save the pick up address if opted to do so
-    savePickup: function(choice){
-      if(choice){
-        this.savedPickUpData.name = this.savedPickUpData.formatted_address;
-        localStorage.setItem('savedPickUpData', JSON.stringify(this.savedPickUpData));
-      }else if(!choice){
-        localStorage.removeItem('savedPickUpData');
+    savePickup: function(choice) {
+      if (choice) {
+        localStorage.setItem("savedPickUpData", JSON.stringify(this.savedPickUpData));
+      } else if (!choice) {
+        this.savedPickUpData = null;
+        localStorage.removeItem("savedPickUpData");
       }
+    },
+    // watch emitted form pickup data to determine its source and act on sending it accordingly
+    emittedFormData(evt){
+       const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+       if(savedData != null){
+         this.emittedFormData.pickupData.searchAddress = savedData.searchAddress
+       }
     }
   },
   created() {
-    if(this.$cookie.get(this.$cookeys.TOKEN_KEY == null)){
-      this.$router.push({name: 'Login'})
+    if (this.$cookie.get(this.$cookeys.TOKEN_KEY == null)) {
+      this.$router.push({ name: "Login" });
     }
   },
   mounted() {
+    // watch for saved pickup data first
+    const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+    if(savedData != null){
+      this.emittedFormData.pickupData.searchAddress = savedData.searchAddress;
+    }
+
     // start tour
     // this.$tours['myTour'].start()
 
@@ -419,47 +441,47 @@ export default {
 /* save pickup info switch */
 
 .switch input {
-    display:none;
+  display: none;
 }
 .switch {
-    display:inline-block;
-    width:40px;
-    height:20px;
-    /* margin-left:2px; */
-    transform:translateY(50%);
-    position:relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  /* margin-left:2px; */
+  transform: translateY(50%);
+  position: relative;
 }
 
 .slider {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    border-radius:30px;
-    box-shadow:0 0 0 1px #777, 0 0 1px #777;
-    cursor:pointer;
-    border:2px solid transparent;
-    overflow:hidden;
-     transition:.4s;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 30px;
+  box-shadow: 0 0 0 1px #777, 0 0 1px #777;
+  cursor: pointer;
+  border: 2px solid transparent;
+  overflow: hidden;
+  transition: 0.4s;
 }
 .slider:before {
-    position:absolute;
-    content:"";
-    width:80%;
-    height:100%;
-    background:#777;
-    border-radius:999px;
-    transform:translateX(-30px);
-    transition:.4s;
+  position: absolute;
+  content: "";
+  width: 80%;
+  height: 100%;
+  background: #777;
+  border-radius: 999px;
+  transform: translateX(-30px);
+  transition: 0.4s;
 }
 
 input:checked + .slider:before {
-    transform:translateX(3px);
-    background:#42d1f5;
+  transform: translateX(3px);
+  background: #42d1f5;
 }
 input:checked + .slider {
-    box-shadow:0 0 0 1px #42d1f5,0 0 1px #42d1f5;
+  box-shadow: 0 0 0 1px #42d1f5, 0 0 1px #42d1f5;
 }
 
 /* end of save pickup info switch */

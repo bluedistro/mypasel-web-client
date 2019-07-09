@@ -9,7 +9,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "aws s3 sync ./dist s3://web.mypasel.com",
-    "test": "jest"
+    "test:unit": "jest",
+    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -22,7 +23,7 @@
     },
     "transform": {
       ".*\\.(vue)$": "vue-jest",
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+      "^.+\\.js$": "babel-jest"
     },
     "collectCoverage": true,
     "collectCoverageFrom": [
@@ -76,12 +77,14 @@
     "jest-serializer-vue": "^2.0.2",
     "jest-transform-stub": "^2.0.0",
     "vue-jest": "^3.0.4",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack-bundle-analyzer": "^3.3.2"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "jest": true
     },
     "extends": [
       "plugin:vue/essential",

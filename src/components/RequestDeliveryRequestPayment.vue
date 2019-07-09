@@ -59,57 +59,57 @@
       </div>
       <div class="row selectedPaymentOption">
         <div class="col">
-            <p v-if="paymentOption== 'cash'">Selected mode &bull; Cash</p>
-            <p v-if="paymentOption== 'mobileMoney'">Selected mode &bull; Mobile Money</p>
-            <p v-if="paymentOption== 'prepaid'">Selected mode &bull; Prepaid</p>
+          <p v-if="paymentOption == 'cash'">Selected mode &bull; Cash</p>
+          <p v-if="paymentOption == 'mobileMoney'">Selected mode &bull; Mobile Money</p>
+          <p v-if="paymentOption == 'prepaid'">Selected mode &bull; Prepaid</p>
         </div>
       </div>
       <div class="payment-row-border"></div>
       <!-- Payment Form Div -->
       <div class="row">
-          <transition name="payment-option" mode="out-in">
-            <!--  cash -->
-            <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12" key="cash">
-              <!-- no action to be performed on cash select -->
-            </div>
+        <transition name="payment-option" mode="out-in">
+          <!--  cash -->
+          <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12" key="cash">
+            <!-- no action to be performed on cash select -->
+          </div>
 
-            <!--  mobile money -->
-            <div v-if="paymentOption == 'mobileMoney'" class="radioLinkedDiv col-md-12" key="momo">
-              <div class="col-md-12 contact-name">
-                <input
-                  type="text"
-                  id="registeredName"
-                  placeholder="Registered name"
-                  class="form-control"
-                  name=""
-                  value=""
-                />
-              </div>
-              <div class="col-md-12 contact-number">
-                <vue-phone-number-input
-                  v-model="phoneNumber"
-                  :default-country-code="phoneField.defaultCode"
-                  :clearable="phoneField.clearable"
-                  :preferred-countries="phoneField.preferred"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                />
-              </div>
-              <div class="payment-row-border"></div>
+          <!--  mobile money -->
+          <div v-if="paymentOption == 'mobileMoney'" class="radioLinkedDiv col-md-12" key="momo">
+            <div class="col-md-12 contact-name">
+              <input
+                type="text"
+                id="registeredName"
+                placeholder="Registered name"
+                class="form-control"
+                name=""
+                value=""
+              />
             </div>
-            <!--  prepaid -->
-            <div v-if="paymentOption == 'prepaid'" class="radioLinkedDiv col-md-12" key="prepaid">
-              <div class="col-md-12 company-code">
-                <input
-                  type="text"
-                  id="companyCode"
-                  placeholder="Company code"
-                  class="form-control"
-                  name=""
-                  value=""
-                />
-              </div>
-              <!-- <div class="col-md-12 contact-number">
+            <div class="col-md-12 contact-number">
+              <vue-phone-number-input
+                v-model="phoneNumber"
+                :default-country-code="phoneField.defaultCode"
+                :clearable="phoneField.clearable"
+                :preferred-countries="phoneField.preferred"
+                name="phoneNumber"
+                id="phoneNumber"
+              />
+            </div>
+            <div class="payment-row-border"></div>
+          </div>
+          <!--  prepaid -->
+          <div v-if="paymentOption == 'prepaid'" class="radioLinkedDiv col-md-12" key="prepaid">
+            <div class="col-md-12 company-code">
+              <input
+                type="text"
+                id="companyCode"
+                placeholder="Company code"
+                class="form-control"
+                name=""
+                value=""
+              />
+            </div>
+            <!-- <div class="col-md-12 contact-number">
                 <vue-phone-number-input
                   v-model="phoneNumber"
                   :default-country-code="phoneField.defaultCode"
@@ -119,9 +119,9 @@
                   id="phoneNumber"
                 />
               </div> -->
-              <div class="payment-row-border"></div>
-            </div>
-          </transition>
+            <div class="payment-row-border"></div>
+          </div>
+        </transition>
       </div>
 
       <!-- promo code -->
@@ -282,18 +282,18 @@ export default {
       // prepare payload
       const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
       const parsedRequestPayload = JSON.parse(requestPayload);
-      const dropoffs = []
-      for(let i = 0; i < parsedRequestPayload.dropOffData.length; i++){
+      const dropoffs = [];
+      for (let i = 0; i < parsedRequestPayload.dropOffData.length; i++) {
         const d_o = {
           name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
           latitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lat,
           longitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lng,
           contact: {
             name: parsedRequestPayload.dropOffData[i].fullName,
-            phone: parsedRequestPayload.dropOffData[i].phoneNumber,
+            phone: parsedRequestPayload.dropOffData[i].phoneNumber
           },
-          additionalInformation: parsedRequestPayload.dropOffData[i].details,
-        }
+          additionalInformation: parsedRequestPayload.dropOffData[i].details
+        };
         dropoffs.push(d_o);
       }
       // quick fix to get
@@ -305,7 +305,7 @@ export default {
           longitude: parsedRequestPayload.pickupData.searchAddress.location.lng,
           contact: {
             name: parsedRequestPayload.pickupData.fullName,
-            phone: parsedRequestPayload.pickupData.phoneNumber,
+            phone: parsedRequestPayload.pickupData.phoneNumber
           },
           additionalInformation: parsedRequestPayload.pickupData.details
         },
