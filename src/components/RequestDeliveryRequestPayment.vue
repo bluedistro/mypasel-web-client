@@ -228,7 +228,7 @@ export default {
     return {
       // disable prepaid and mobile money payment option
       disablePrepaidOption: false,
-      disableMobileMoneyOption: false,
+      disableMobileMoneyOption: true,
       // modal works
       unsuccessfulBookingModal: false,
 

@@ -304,7 +304,6 @@ width: 280px;
   height: 350px;
   width: 280px;
   }
-
 }
 
 @keyframes spin {
