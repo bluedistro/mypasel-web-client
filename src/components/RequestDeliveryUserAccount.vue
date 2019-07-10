@@ -47,7 +47,8 @@
             >
               <li :class="resetPasswordActive"><font-awesome-icon icon="flag" /> Reset Password</li>
             </a>
-            <a
+            <!-- TODO: Account Settings and FAQ Pages will be built and added later -->
+            <!-- <a
               href="#"
               @click.prevent="
                 (selectedPage = 'accountSettings'),
@@ -70,7 +71,7 @@
               "
             >
               <li :class="faqActive"><font-awesome-icon icon="question-circle" /> FAQs</li>
-            </a>
+            </a> -->
           </ul>
         </div>
       </div>
@@ -221,20 +222,20 @@
               </div>
             </div>
           </div>
-          <!-- Account settings -->
-          <div class="" v-if="selectedPage == 'accountSettings'" key="accountSettings">
+          <!-- TODO: Account settings -->
+          <!-- <div class="" v-if="selectedPage == 'accountSettings'" key="accountSettings">
             <div class="row header-text">
               <h4>Account settings</h4>
             </div>
             <div class="header-border"></div>
-          </div>
-          <!-- FAQs -->
-          <div class="" v-if="selectedPage == 'faq'" key="faq">
+          </div> -->
+          <!-- TODO: FAQs -->
+          <!-- <div class="" v-if="selectedPage == 'faq'" key="faq">
             <div class="row header-text">
               <h4>FAQs</h4>
             </div>
             <div class="header-border"></div>
-          </div>
+          </div> -->
         </transition>
       </div>
     </div>
