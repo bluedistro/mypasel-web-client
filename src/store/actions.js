@@ -241,7 +241,7 @@ const confirmOrder = ({ commit }, payload) => {
 const getCourier = ({ commit }, payload) => {
   // console.log(payload)
   return new Promise((resolve, reject) => {
-    const path = "https://api.desymal.com/v1/assigncourier";
+    const path = "https://api.desymal.com/v3/assigncourier";
     // and ugly hack to prevent user from going back to the courier found page
     commit("setRawRouteGuards", false);
     axios

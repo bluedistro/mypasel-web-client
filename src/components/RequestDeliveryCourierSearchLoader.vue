@@ -207,31 +207,36 @@ export default {
       this.$router.push({ name: "RequestPayment" });
     }
 
-    this.deliveryMode = this.$cookie.get(this.$cookeys.DELIVERY_MODE);
-    // prepare payload for courier search api
-    const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
-    const parsedRequestPayload = JSON.parse(requestPayload);
+    // this.deliveryMode = this.$cookie.get(this.$cookeys.DELIVERY_MODE);
+    // // prepare payload for courier search api
+    // const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
+    // const parsedRequestPayload = JSON.parse(requestPayload);
+    // const payload = {
+    //   senderID: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
+    //   senderPhone: parsedRequestPayload.pickupData.phoneNumber,
+    //   senderName: parsedRequestPayload.pickupData.fullName,
+    //   recipientName: parsedRequestPayload.dropOffData[0].fullName,
+    //   recipientPhone: parsedRequestPayload.dropOffData[0].phoneNumber,
+    //   FCM: this.fcm,
+    //   modeOfDelivery: this.deliveryMode,
+    //   startingPoint: parsedRequestPayload.pickupData.searchAddress.formatted_address,
+    //   cityOfDelivery: parsedRequestPayload.dropOffData[0].searchAddress.formatted_address,
+    //   pickUpCoordinates:
+    //     parsedRequestPayload.pickupData.searchAddress.location.lat +
+    //     "," +
+    //     parsedRequestPayload.pickupData.searchAddress.location.lng,
+    //   destinationCoordinates:
+    //     parsedRequestPayload.dropOffData[0].searchAddress.location.lat +
+    //     "," +
+    //     parsedRequestPayload.dropOffData[0].searchAddress.location.lng,
+    //   sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId,
+    //   distance: ""
+    // };
+
     const payload = {
-      senderID: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
-      senderPhone: parsedRequestPayload.pickupData.phoneNumber,
-      senderName: parsedRequestPayload.pickupData.fullName,
-      recipientName: parsedRequestPayload.dropOffData[0].fullName,
-      recipientPhone: parsedRequestPayload.dropOffData[0].phoneNumber,
-      FCM: this.fcm,
-      modeOfDelivery: this.deliveryMode,
-      startingPoint: parsedRequestPayload.pickupData.searchAddress.formatted_address,
-      cityOfDelivery: parsedRequestPayload.dropOffData[0].searchAddress.formatted_address,
-      pickUpCoordinates:
-        parsedRequestPayload.pickupData.searchAddress.location.lat +
-        "," +
-        parsedRequestPayload.pickupData.searchAddress.location.lng,
-      destinationCoordinates:
-        parsedRequestPayload.dropOffData[0].searchAddress.location.lat +
-        "," +
-        parsedRequestPayload.dropOffData[0].searchAddress.location.lng,
-      sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId,
-      distance: ""
-    };
+      sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId
+    }
+
 
     // console.log(payload)
     // test firebase
