@@ -1,7 +1,17 @@
 <template lang="html">
-  <div>
+  <div class="container">
     <navbar :hidden="hideTabs"></navbar>
-    <div class="loader-icon">
+     <div class="row">
+       <div class="col-md-12 col-lg-12 col-sm-12 col-12 search-animate">
+         <div class="la-ball-scale-multiple la-blue la-lg">
+          <div></div>
+          <div></div>
+          <div></div>
+           <div></div>
+         </div>
+       </div>
+     </div>
+    <!-- <div class="loader-icon">
       <div class="ds">
         <div class="ds">
           <div class="ds">
@@ -13,12 +23,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="loader">
       <div class="loader--text"></div>
       <button
         type="button"
-        class="btn btn-outline-danger btn-sm cancel-order"
+        class="btn btn-info btn-sm cancel-order"
         name="button"
         @click="cancelOrder"
       >
@@ -250,35 +260,209 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.ds {
+
+.search-animate {
+  /* border: solid black 1px; */
+  margin-top: 100px;
+  text-align: center;
+}
+
+/*!
+ * Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
+ * Copyright 2015 Daniel Cardoso <@DanielCardoso>
+ * Licensed under MIT
+ */
+.la-ball-scale-multiple,
+.la-ball-scale-multiple > div {
+    position: relative;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.la-ball-scale-multiple {
+    display: inline-block;
+    margin-left: -300px;
+    font-size: 0;
+    color: #fff;
+}
+
+
+.la-ball-scale-multiple.la-dark {
+    color: #333;
+}
+
+.la-ball-scale-multiple.la-blue{
+  color: #4dc0e3;
+}
+
+.la-ball-scale-multiple > div {
+    display: inline-block;
+    float: none;
+    background-color: currentColor;
+    border: 0 solid currentColor;
+}
+.la-ball-scale-multiple {
+    width: 32px;
+    height: 32px;
+}
+.la-ball-scale-multiple > div {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    opacity: 0;
+    -webkit-animation: ball-scale-multiple 1s 0s linear infinite;
+       -moz-animation: ball-scale-multiple 1s 0s linear infinite;
+         -o-animation: ball-scale-multiple 1s 0s linear infinite;
+            animation: ball-scale-multiple 1s 0s linear infinite;
+}
+.la-ball-scale-multiple > div:nth-child(2) {
+    -webkit-animation-delay: .2s;
+       -moz-animation-delay: .2s;
+         -o-animation-delay: .2s;
+            animation-delay: .2s;
+}
+.la-ball-scale-multiple > div:nth-child(3) {
+    -webkit-animation-delay: .4s;
+       -moz-animation-delay: .4s;
+         -o-animation-delay: .4s;
+            animation-delay: .4s;
+}
+.la-ball-scale-multiple > div:nth-child(4) {
+    -webkit-animation-delay: .4s;
+       -moz-animation-delay: .4s;
+         -o-animation-delay: .4s;
+            animation-delay: .4s;
+}
+.la-ball-scale-multiple.la-sm {
+    width: 16px;
+    height: 16px;
+}
+.la-ball-scale-multiple.la-sm > div {
+    width: 16px;
+    height: 16px;
+}
+.la-ball-scale-multiple.la-2x {
+    width: 64px;
+    height: 64px;
+}
+.la-ball-scale-multiple.la-2x > div {
+    width: 64px;
+    height: 64px;
+}
+.la-ball-scale-multiple.la-3x {
+    width: 96px;
+    height: 96px;
+}
+.la-ball-scale-multiple.la-3x > div {
+    width: 96px;
+    height: 96px;
+}
+.la-ball-scale-multiple.la-lg {
+    width: 300px;
+    height: 300px;
+}
+.la-ball-scale-multiple.la-lg > div {
+    width: 300px;
+    height: 300px;
+}
+/*
+ * Animation
+ */
+@-webkit-keyframes ball-scale-multiple {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0);
+                transform: scale(0);
+    }
+    5% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+}
+@-moz-keyframes ball-scale-multiple {
+    0% {
+        opacity: 0;
+        -moz-transform: scale(0);
+             transform: scale(0);
+    }
+    5% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 0;
+        -moz-transform: scale(1);
+             transform: scale(1);
+    }
+}
+@-o-keyframes ball-scale-multiple {
+    0% {
+        opacity: 0;
+        -o-transform: scale(0);
+           transform: scale(0);
+    }
+    5% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 0;
+        -o-transform: scale(1);
+           transform: scale(1);
+    }
+}
+@keyframes ball-scale-multiple {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0);
+           -moz-transform: scale(0);
+             -o-transform: scale(0);
+                transform: scale(0);
+    }
+    5% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+           -moz-transform: scale(1);
+             -o-transform: scale(1);
+                transform: scale(1);
+    }
+}
+
+
+/* .ds {
 display: table-cell;
 border-radius: 999px;
-border: 24px double #42f4d1;
+border: 24px inset #42f4d1;
 animation: spin 10s alternate-reverse ease-in-out infinite both;
 }
 
 .loader-icon {
-/* margin: auto; */
 top: 40%;
-/* bottom: 0; */
 left: 50%;
 margin-left: -140px;
 margin-top: -120px;
-/* right: 0; */
 position: fixed;
 height: 350px;
 width: 280px;
 }
 
+@keyframes spin {
+0% { transform: rotate(0deg); border: 24px inset #42f4d1; }
+100% { transform: rotate(90deg); border: 24px inset #41f4d6; }
+} */
+
 .cancel-order{
   height: 50px;
   width: 300px;
-  /* position: absolute; */
   position: fixed;
   top: 75%;
-  /* bottom: 0; */
   left: 50%;
-  /* right: 0; */
   margin-left: -150px;
   margin-top: -10px;
 }
@@ -306,13 +490,6 @@ width: 280px;
   }
 }
 
-@keyframes spin {
-0% { transform: rotate(0deg); border: 24px inset #42f4d1; }
-25% { transform: rotate(90deg); border: 24px dotted #41f4d6; }
-50% { transform: rotate(180deg); border: 24px dashed #2c9ca0; }
-75% { transform: rotate(270deg); border: 24px outset #6ec5d8; }
-}
-
 .loader {
 height: 90px;
 width: 300px;
@@ -338,26 +515,22 @@ margin: auto;
 
 .loader--text:after {
 content: "Contacting Nearest Available Courier";
-color: #42f4d1;
+color: #333;
 animation: loading-text 10s alternate-reverse ease-in-out infinite both;
 }
 
 @keyframes loading-text {
   0% {
     content: "Contacting Nearest Available Courier";
-    color: #42f4d1;
   }
   25% {
     content: "Contacting Nearest Available Courier.";
-    color: #41f4d6;
   }
   50% {
     content: "Contacting Nearest Available Courier..";
-    color: #2c9ca0;
   }
   75% {
     content: "Contacting Nearest Available Courier...";
-    color: #6ec5d8;
   }
 }
 </style>

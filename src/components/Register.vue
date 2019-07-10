@@ -10,12 +10,12 @@
             <router-link id="loginBtnText" :to="{ name: 'Login', params: {} }">Login</router-link>
           </button>
           <br />
-          <div class="sign-up-notice">
+          <!-- <div class="sign-up-notice">
             By Signing Up, you agree to our
             <a href="https://mypasel.com/terms" target="_blank" class="terms">Terms</a> and
             <a href="https://mypasel.com/privacy" target="_blank" class="privacy">Privacy Policy</a
             >.
-          </div>
+          </div> -->
         </div>
         <div class="col-md-9 register-right">
           <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -175,7 +175,7 @@
                         data-vv-delay="500"
                         :class="{ input: true, 'is-danger': errors.has('userForm.sex') }"
                       >
-                        <option class="hidden" selected disabled>Please select your sex</option>
+                        <option class="hidden" disabled>Please select your sex</option>
                         <option>Male</option>
                         <option>Female</option>
                         <option>Other</option>
@@ -186,6 +186,7 @@
                     </div>
                     <div class="form-group">
                       <select
+
                         class="form-control"
                         v-model="userData.userCountry"
                         name="userCountry"
@@ -193,16 +194,22 @@
                         data-vv-delay="500"
                         :class="{ input: true, 'is-danger': errors.has('userForm.userCountry') }"
                       >
-                        <option class="hidden" selected disabled>Please select your country</option>
+                        <option class="hidden" disabled>Please select your country</option>
                         <option>Ghana</option>
                       </select>
                       <span v-show="errors.has('userForm.userCountry')" class="help is-danger">{{
                         errors.first("userForm.userCountry")
                       }}</span>
                     </div>
-                    <input type="reset" class="btnReset" value="Reset" />
-                    <input type="submit" class="btnRegister" value="Register" />
                   </div>
+                  <div class="col-md-12 individual-terms-accept">
+                      <input type="checkbox" name="termsAgree" v-model="individualTerms" required>
+                      By registering, you agree to have read and understood the <a href="https://mypasel.com/terms">Terms</a> and <a href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
+                  </div>
+                    <div class="col-md-6 individual-register-btns">
+                      <input type="submit" class="btnRegister" value="Register" />
+                      <input type="reset" class="btnReset" value="Reset" />
+                    </div>
                 </div>
               </form>
             </div>
@@ -286,7 +293,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Your Email *"
+                        placeholder="Company email *"
                         name="companyEmail"
                         v-validate="'required|email'"
                         :class="{
@@ -332,8 +339,8 @@
                           'is-danger': errors.has('companyForm.companyCountry')
                         }"
                       >
-                        <option class="hidden" selected disabled>Please select your country</option>
-                        <option>Ghana</option>
+                        <option class="hidden">Please select your country</option>
+                        <option selected>Ghana</option>
                       </select>
                       <span
                         v-show="errors.has('companyForm.companyCountry')"
@@ -341,8 +348,14 @@
                         >{{ errors.first("companyForm.companyCountry") }}</span
                       >
                     </div>
-                    <input type="reset" class="companyBtnReset" value="Reset" />
+                  </div>
+                  <div class="col-md-12 company-terms-accept">
+                      <input type="checkbox" name="termsAgree" v-model="companyTerms" required>
+                      By registering, you agree to have read and understood the <a href="https://mypasel.com/terms">Terms</a> and <a href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
+                  </div>
+                  <div class="col-md-6 company-register-btns">
                     <input type="submit" class="companyBtnRegister" value="Register" />
+                    <input type="reset" class="companyBtnReset" value="Reset" />
                   </div>
                 </div>
               </form>
@@ -398,6 +411,8 @@ export default {
   data() {
     return {
       errorMessage: "",
+      companyTerms: false,
+      individualTerms: false,
       unsuccessfulRegistrationModal: false,
       successfulRegistrationModal: false,
       // user registering data
@@ -408,8 +423,8 @@ export default {
         confirmUserPassword: "",
         userEmail: "",
         userPhone: "",
-        sex: [],
-        userCountry: []
+        sex: '',
+        userCountry: 'Ghana'
       },
       // control the phone number field of the user data
       userPhoneField: {
@@ -424,7 +439,7 @@ export default {
         companyPassword: "",
         confirmCompanyPassword: "",
         companyPhone: "",
-        companyCountry: ""
+        companyCountry: "Ghana"
       },
       // control the phone number field of the company data
       companyPhoneField: {
@@ -560,6 +575,22 @@ export default {
 
 <style lang="css" scoped>
 
+.individual-register-btns {
+
+}
+
+.individual-terms-accept {
+  text-align: left;
+}
+
+.company-register-btns {
+
+}
+
+.company-terms-accept {
+  text-align: left;
+}
+
 .error-modal-text {
   color: #f47a42;
 }
@@ -657,8 +688,8 @@ export default {
     margin-top: 10%;
 }
 .btnRegister{
-    float: right;
-    margin-top: 10%;
+    float: left;
+    margin-top: 2%;
     border: none;
     border-radius: 1.5rem;
     padding: 2%;
@@ -670,8 +701,8 @@ export default {
 }
 
 .btnReset{
-  float: right;
-  margin-top: 10%;
+  float: left;
+  margin-top: 2%;
   border: none;
   border-radius: 1.5rem;
   padding: 2%;
@@ -684,8 +715,9 @@ export default {
 }
 
 .companyBtnRegister{
-  float: right;
-  margin-top: 19%;
+  float: left;
+  margin-top: 2%;
+  margin-bottom: 17%;
   border: none;
   border-radius: 1.5rem;
   padding: 10px;
@@ -697,15 +729,16 @@ export default {
 }
 
 .companyBtnReset {
-  float: right;
-  margin-top: 19%;
+  float: left;
+  margin-top: 2%;
+  margin-bottom: 17%;
   border: none;
   border-radius: 1.5rem;
   padding: 10px;
   background: #efc023;
   color: #fff;
   font-weight: 300;
-  width: 20%;
+  width: 25%;
   margin-left: 10px;
   cursor: pointer;
 }
