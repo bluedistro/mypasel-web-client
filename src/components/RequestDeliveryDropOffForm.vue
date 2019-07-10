@@ -65,8 +65,8 @@
               <b-form-textarea
                 required
                 :id="dropOff.detailId"
-                rows="2"
-                max-rows="4"
+                rows="3"
+                max-rows="6"
                 v-on:blur="sendInfo"
                 v-model="dropOff.details"
                 placeholder="Add details for courier"
@@ -282,8 +282,6 @@ export default {
 
   .card.dropOff-card {
     padding: 15px 10px;
-    /*  extend height to 300px when details are added again */
-    height: 300px;
     padding-bottom: 20px;
     margin-bottom: 5px;
     margin-top: 10px;

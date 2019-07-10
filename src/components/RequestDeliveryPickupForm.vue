@@ -65,8 +65,8 @@
           required
           id="input-2"
           v-model="details"
-          rows="2"
-          max-rows="4"
+          rows="3"
+          max-rows="6"
           v-on:blur="sendInfo"
           placeholder="Add extra information for courier"
         >
@@ -225,12 +225,10 @@ export default {
   text-align: left;
   color: #4286f4;
   font-size: 110%;
-  /* font-weight: bold; */
 }
 
 .card.pickup-card {
   padding: 15px 10px;
-  height: 300px;
   padding-bottom: 20px;
   margin-bottom: 30px;
   margin-top: 20px;
