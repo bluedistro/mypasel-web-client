@@ -15,10 +15,12 @@
     <!-- date picker -->
     <div class="dateSelect">
       <vue-ctk-date-time-picker
+        :dark="dateOptions.darkMode"
         v-model="selectedDate"
         :min-date="dateOptions.minimumDate"
         :no-weekends-days="dateOptions.noWeekendDays"
         :label="dateOptions.label"
+        :color="dateOptions.color"
         :minute-interval="dateOptions.minuteInterval"
         :error-hint="dateOptions.errorHint"
       >
@@ -32,13 +34,15 @@ export default {
   name: "DeliveryDate",
   data() {
     return {
-      selectedDate: "", // format is: 2019-06-23 03:00 am
+      selectedDate: '', // format is: 2019-06-23 03:00 am
       dateOptions: {
         minimumDate: this.getCorrectISODate(),
         noWeekendDays: false,
+        darkMode: false,
         label: "Select preferred delivery date and time",
         minuteInterval: 5,
-        errorHint: true
+        errorHint: true,
+        color: "#5bc0de"
       },
       finalData: null
     };
@@ -47,26 +51,21 @@ export default {
     // get the correct ISO date to set the minimum date
     getCorrectISODate() {
       var today = new Date();
-      var dd = today.getDate();
-      var mm = today.getMonth() + 1;
-      var yyyy = today.getFullYear();
-      if (dd < 10) {
-        dd = "0" + dd;
-      }
-      if (mm < 10) {
-        mm = "0" + mm;
-      }
-      today = yyyy + "-" + mm + "-" + dd;
-      return today;
+      return today.toISOString().split('T')[0]
     }
   },
   watch: {
-    selectedDate: function(date) {
-      const dateData = Date.parse(date);
-      this.$emit("selected_delivery_option", dateData);
+    selectedDate(date) {
+        if(date){
+          const dateData = Date.parse(date);
+          this.$emit("selected_delivery_option", dateData);
+        }else{
+          // no date object perceived
+        }
     }
   },
-  created() {}
+  created() {},
+  mounted(){}
 };
 </script>
 

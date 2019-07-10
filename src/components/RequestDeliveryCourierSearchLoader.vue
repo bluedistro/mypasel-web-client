@@ -297,7 +297,7 @@ export default {
 }
 
 .la-ball-scale-multiple.la-blue{
-  color: #4dc0e3;
+  color: #5bc0de;
 }
 
 .la-ball-scale-multiple > div {
