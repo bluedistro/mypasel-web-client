@@ -182,7 +182,7 @@ export default {
       // to save pickup address data
       savedPickUpData: null,
       // decision model
-      savePickup: JSON.parse(localStorage.getItem("savedPickUpData")) ? true : false,
+      savePickup: JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)) ? true : false,
       //
       steps: [
         {
@@ -327,15 +327,15 @@ export default {
     // save the pick up address if opted to do so
     savePickup: function(choice) {
       if (choice) {
-        localStorage.setItem("savedPickUpData", JSON.stringify(this.savedPickUpData));
+        this.$cookie.set(this.$cookeys.SAVED_ADDRESS_KEY, JSON.stringify(this.savedPickUpData));
       } else if (!choice) {
         this.savedPickUpData = null;
-        localStorage.removeItem("savedPickUpData");
+        this.$cookie.delete(this.$cookeys.SAVED_ADDRESS_KEY);        
       }
     },
     // watch emitted form pickup data to determine its source and act on sending it accordingly
     emittedFormData(evt){
-       const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+       const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
        if(savedData != null){
          this.emittedFormData.pickupData.searchAddress = savedData.searchAddress
        }
@@ -348,7 +348,7 @@ export default {
   },
   mounted() {
     // watch for saved pickup data first
-    const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+    const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
     if(savedData != null){
       this.emittedFormData.pickupData.searchAddress = savedData.searchAddress;
     }

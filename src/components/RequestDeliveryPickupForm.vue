@@ -120,8 +120,8 @@ export default {
         fullName: this.fullName
       };
       // to enable the getPickupAddressData to fire
-      if (JSON.parse(localStorage.getItem("savedPickUpData")) != null) {
-        this.getPickupAddressData(JSON.parse(localStorage.getItem("savedPickUpData")));
+      if (JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)) != null) {
+        this.getPickupAddressData(JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)));
       }
       this.$emit("pickup_details", data);
     },
@@ -177,7 +177,7 @@ export default {
   },
   created() {
     // controls the display and hiding of the saved data in the form fields on page created
-    const savedPickupData = JSON.parse(localStorage.getItem("savedPickUpData"));
+    const savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
     if(this.disablePickupAddress === true){
       if (savedPickupData != null) {
         this.searchAddress = savedPickupData.searchAddress;
@@ -195,7 +195,7 @@ export default {
 // controls the display and hiding of the saved data in the form fields on address form value change
   watch: {
     disablePickupAddress(status){
-      let savedPickupData = JSON.parse(localStorage.getItem("savedPickUpData"));
+      let savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
       if(status === true){
         if (savedPickupData != null) {
           this.searchAddress = savedPickupData.searchAddress;
