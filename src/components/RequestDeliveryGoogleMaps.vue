@@ -50,7 +50,7 @@ export default {
   watch: {
     // watch for value changes in pickup location being received from the RequestDelivery component
     pickupMarker(evt){
-      const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+      const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
       // if an address is saved, then show that saved address instead of the emitted one from the parent component
       if(savedData != null){
         this.pickupMarkerAlt = [
@@ -68,7 +68,7 @@ export default {
   },
   mounted(){
     // on mount, first check to see whether there is an already saved address and display that if any
-    const savedData = JSON.parse(localStorage.getItem('savedPickUpData'));
+    const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
     // if an address is saved, then show that saved address instead of the emitted one from the parent component
     if(savedData != null){
       this.pickupMarkerAlt = [
