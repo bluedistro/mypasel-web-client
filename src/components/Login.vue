@@ -94,7 +94,8 @@ export default {
       return this.$store
         .dispatch("login", user)
         .then(response => {
-          this.$router.push({ name: "SystemSetup" });
+          console.log('logged in ');
+          this.$router.push({ name: "RequestDelivery" });
         })
         .catch(error => {
           // console.log(error.response.status)

@@ -228,9 +228,11 @@ router.beforeEach((to, from, next) => {
       });
     }
   }
+
   // take user directly to dashboard if logged in already
+  // TODO: There is a problem with the getters file that needs to be fixed that's why I'mc cheking directly from the cookie.
   if (to.matched.some(record => record.name == "Login")) {
-    if (store.getters.loggedIn) {
+    if (VueCookie.get(cookeys.TOKEN_KEY) != null) {
       next({
         name: "RequestDelivery"
       });
