@@ -119,7 +119,7 @@
       >
         <p class="request-delivery-error-modal-text">{{ errorModalMessage }}</p>
         <template slot="modal-footer" slot-scope="{ ok }">
-          <b-button size="sm" variant="warning" @click="RequestDeliveryErrorModalHide"
+          <b-button size="sm" variant="info" @click="RequestDeliveryErrorModalHide"
             >Okay.</b-button
           >
         </template>
@@ -330,7 +330,7 @@ export default {
         this.$cookie.set(this.$cookeys.SAVED_ADDRESS_KEY, JSON.stringify(this.savedPickUpData));
       } else if (!choice) {
         this.savedPickUpData = null;
-        this.$cookie.delete(this.$cookeys.SAVED_ADDRESS_KEY);        
+        this.$cookie.delete(this.$cookeys.SAVED_ADDRESS_KEY);
       }
     },
     // watch emitted form pickup data to determine its source and act on sending it accordingly
@@ -488,16 +488,14 @@ input:checked + .slider {
 /* end of save pickup info switch */
 
 .pickupSave {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-right: 10px;
 }
 
 .pickupSave.text {
   font-size: 100%;
   margin-left: 20px;
-  /* float: left; */
   text-align: left;
-  /* vertical-align: sub; */
 }
 
 .save-help {

@@ -230,7 +230,7 @@ export default {
 .card.pickup-card {
   padding: 15px 10px;
   padding-bottom: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   margin-top: 20px;
   border-color: #d4d8dd;
   border-radius: 2px;

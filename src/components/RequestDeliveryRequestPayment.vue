@@ -190,7 +190,7 @@
       </div>
     </div>
     <!-- Unable to book -->
-    <div>
+    <div v-if="unsuccessfulBookingModal == true">
       <b-modal
         no-close-on-backdrop
         hide-header-close
@@ -202,7 +202,7 @@
         title="Booking Status"
       >
         <p class="booking-error-modal-text">
-          Sorry, we were unable to complete your transaction booking.
+          Sorry, we were unable to complete your transaction booking. Please ensure that all the necessary details were provided.
         </p>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <b-button size="sm" variant="warning" @click="bookingErrorModalHide"
@@ -282,48 +282,54 @@ export default {
       // prepare payload
       const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
       const parsedRequestPayload = JSON.parse(requestPayload);
-      const dropoffs = [];
-      for (let i = 0; i < parsedRequestPayload.dropOffData.length; i++) {
-        const d_o = {
-          name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
-          latitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lat,
-          longitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lng,
-          contact: {
-            name: parsedRequestPayload.dropOffData[i].fullName,
-            phone: parsedRequestPayload.dropOffData[i].phoneNumber
+      // validate request delivery information for the final time
+      if(parsedRequestPayload === null || parsedRequestPayload.pickUpData === null || parsedRequestPayload.dropOffData === null){
+        this.unsuccessfulBookingModal = true;
+      }else{
+        const dropoffs = [];
+        for (let i = 0; i < parsedRequestPayload.dropOffData.length; i++) {
+          const d_o = {
+            name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
+            latitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lat,
+            longitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lng,
+            contact: {
+              name: parsedRequestPayload.dropOffData[i].fullName,
+              phone: parsedRequestPayload.dropOffData[i].phoneNumber
+            },
+            additionalInformation: parsedRequestPayload.dropOffData[i].details
+          };
+          dropoffs.push(d_o);
+        }
+        // quick fix to get
+        const payload = {
+          sender: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
+          pickup: {
+            name: parsedRequestPayload.pickupData.searchAddress.formatted_address,
+            latitude: parsedRequestPayload.pickupData.searchAddress.location.lat,
+            longitude: parsedRequestPayload.pickupData.searchAddress.location.lng,
+            contact: {
+              name: parsedRequestPayload.pickupData.fullName,
+              phone: parsedRequestPayload.pickupData.phoneNumber
+            },
+            additionalInformation: parsedRequestPayload.pickupData.details
           },
-          additionalInformation: parsedRequestPayload.dropOffData[i].details
+          dropoffs: dropoffs,
+          deliveryDate: JSON.parse(this.$cookie.get(this.$cookeys.DELIVERY_TIME)),
+          modeOfDelivery: this.deliveryMode,
+          fee: this.amount
         };
-        dropoffs.push(d_o);
+        // post to the API of the confirm Order
+        return this.$store
+          .dispatch("confirmOrder", payload)
+          .then(resp => {
+            // redirect to courier search loader
+            this.$router.push({ name: "SearchingCourier" });
+          })
+          .catch(error => {
+            this.unsuccessfulBookingModal = true;
+          });
       }
-      // quick fix to get
-      const payload = {
-        sender: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
-        pickup: {
-          name: parsedRequestPayload.pickupData.searchAddress.formatted_address,
-          latitude: parsedRequestPayload.pickupData.searchAddress.location.lat,
-          longitude: parsedRequestPayload.pickupData.searchAddress.location.lng,
-          contact: {
-            name: parsedRequestPayload.pickupData.fullName,
-            phone: parsedRequestPayload.pickupData.phoneNumber
-          },
-          additionalInformation: parsedRequestPayload.pickupData.details
-        },
-        dropoffs: dropoffs,
-        deliveryDate: JSON.parse(this.$cookie.get(this.$cookeys.DELIVERY_TIME)),
-        modeOfDelivery: this.deliveryMode,
-        fee: this.amount
-      };
-      // post to the API of the confirm Order
-      return this.$store
-        .dispatch("confirmOrder", payload)
-        .then(resp => {
-          // redirect to courier search loader
-          this.$router.push({ name: "SearchingCourier" });
-        })
-        .catch(error => {
-          this.unsuccessfulBookingModal = true;
-        });
+
     }
   },
   computed: {},
