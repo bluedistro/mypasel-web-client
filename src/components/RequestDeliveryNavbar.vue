@@ -41,23 +41,24 @@
             </template>
             <b-dropdown-item href="#">
               <span class="user-profile-dropdown-name">
-                <font-awesome-icon icon="user" /> Hi, {{ userData.name }}
+                <font-awesome-icon icon="user" />
+                 <span class="username-navbar">Hi, {{ userData.name }}</span>
               </span>
             </b-dropdown-item>
-            <div class="user-profile-dropdown-border"></div>
+            <!-- <div class="user-profile-dropdown-border"></div> -->
             <b-dropdown-item>
               <span class="user-profile-dropdown" @click="userAccountRedirect">
                 <font-awesome-icon icon="pencil-alt" class="account-edit" />
                 Edit profile
               </span>
             </b-dropdown-item>
-            <b-dropdown-item>
+            <!-- <b-dropdown-item>
               <span class="user-profile-dropdown">
                 <font-awesome-icon icon="comments" /> Submit Feedback
               </span>
-            </b-dropdown-item>
+            </b-dropdown-item> -->
             <div class="user-profile-dropdown-border"></div>
-            <b-dropdown-item @click="logOut">
+            <b-dropdown-item @click="logOut" class="sign-out-link">
               <span class="user-profile-dropdown">
                 <font-awesome-icon icon="sign-out-alt" /> Sign out
               </span>
@@ -266,7 +267,8 @@ export default {
 }
 
 .user-profile-dropdown {
-  color: #64666b;
+  color: #4A4432;
+  font-family: 'Lato';
 }
 
 .brand-logo {
@@ -274,17 +276,18 @@ export default {
   height: 50px;
 }
 
-.user-profile-dropdown-name {
-font-family: "Lucida Console", Monaco, monospace;
+.username-navbar {
+  margin-left: 5px;
+  font-family: 'Lato';
   font-size: 17px;
-  letter-spacing: -0.8px;
-  word-spacing: -4.6px;
+  word-spacing: 2px;
+  letter-spacing: 0.5px;
   color: #4A4432;
-  font-weight: normal;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
+}
+
+.user-profile-dropdown-name {
+  color: #4A4432;
+  margin-left: 6px;
 }
 
 
@@ -293,8 +296,14 @@ font-family: "Lucida Console", Monaco, monospace;
 }
 
 .account-edit {
-  color: #64666b;
+  color: #4A4432;
   margin-left: 4px;
   text-decoration: none;
+  font-family: 'Lato';
+}
+
+.sign-out-link {
+  margin-left: 3px;
+  font-family: 'Lato';
 }
 </style>

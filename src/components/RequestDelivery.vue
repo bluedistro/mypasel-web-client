@@ -32,9 +32,10 @@
                 </div>
                 <div class="save-help-note">
                   <b-toast id="example-toast" title="Using address book" static no-auto-hide>
-                    Activating this button will save your current pickup address location during the
-                    course of this session. A saved address will be lost when you log out or change
-                    again yourself.
+                    This feature saves the <strong>pickup address, sender's full name
+                    and sender's phone number</strong> during the course of this session.
+                    However, do note that saved information will <strong> only and
+                    immediately be discarded </strong> when you log out or disable the switch.
                   </b-toast>
                 </div>
                 <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
@@ -173,7 +174,7 @@ export default {
           phoneNumber: '',
           searchAddress: null,
         },
-        dropOffData: []
+        dropOffData: null
       },
       pricingDetails: {},
       selectedPricingOption: null,
@@ -276,8 +277,8 @@ export default {
     },
     checkPricing(evt) {
       evt.preventDefault();
-      if (this.emittedFormData.pickupData == null || this.emittedFormData.dropOffData == null) {
-        this.errorModalMessage = "Please provide both pickup and dropoff information";
+      if (this.emittedFormData.pickupData.searchAddress == null || this.emittedFormData.dropOffData == null) {
+        this.errorModalMessage = "Please provide both pickup and dropoff addresses in order to check pricing";
         this.incompleteRequestDelivery = true;
       } else {
         return this.$store
