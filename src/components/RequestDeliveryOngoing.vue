@@ -49,33 +49,60 @@
             </div>
             <div class="row courierFullDetailsDiv" v-if="showMore == index && showIndex">
               <div class="courierTextDetailsDiv col-md-9 col-lg-9 col-9 col-sm-9" :id="index">
-                <div class="details-header">
-                  <h6 class="">Transaction Details</h6>
-                </div>
-                <div class="details-text">Transaction ID: {{ i.transactionNumber }}</div>
-                <div class="details-text">Courier Name: {{ i.travellerName }}</div>
-                <div class="details-text">Contact: {{ i.travellerPhone }}</div>
-                <div class="details-text">Delivery Mode: {{ i.modeOfDelivery }}</div>
-                <div class="details-text">Delivery Update: {{ i.update }}</div>
-                <div class="details-text">
-                  <span v-if="i.isTimeStamp" class="timeStamp"> {{ i.timeStamp }}</span>
-                </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="details-header">
+                        <h6 class="">{{ i.transactionNumber }}</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="details-text"><font-awesome-icon class="icon-decor" icon="user-circle" /> {{ i.travellerName }}</div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="details-text"><font-awesome-icon class="icon-decor" icon="phone" /> {{ i.travellerPhone }}</div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="details-text"><font-awesome-icon class="icon-decor" icon="circle" /> {{ i.modeOfDelivery | capitalize }} &bull; <span>{{ i.timeAway }}</span></div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="details-text" v-if="i.journeyUpdate != null">
+                            <font-awesome-icon class="icon-decor" icon="flag"/> Journey updates &bull; <span class="journey-updates-decor">{{ i.journeyUpdate }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="details-text">
+                        <span v-if="i.isTimeStamp" class="timeStamp"> {{ i.timeStamp }}</span>
+                      </div>
+                    </div>
+
+                    <!-- <div class="details-text">Delivery Update: {{ i.update }}</div> -->
+                  </div>
               </div>
               <div class="col-md-3 col-lg-3 col-3 col-sm-3 courierDetailsImage">
                 <!-- <img src="../assets/tc.jpeg" class="cImage" height="148px"
                                width="209px" alt="courier image"> -->
-                <b-img-lazy
-                  :show="true"
-                  right
-                  :src="i.travellerImage"
-                  height="125px"
-                  width="125px"
-                  class="courierImage"
-                  rounded="circle"
-                  thumbnail
-                  fluid
-                  alt="Right image"
-                ></b-img-lazy>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-12 col-sm-12">
+                          <b-img-lazy
+                            :show="true"
+                            right
+                            :src="i.travellerImage"
+                            class="courierImage"
+                            rounded="circle"
+                            thumbnail
+                            fluid
+                            alt="Right image"
+                          ></b-img-lazy>
+                        </div>
+                        <!-- TODO: Visual display of timaway - not completed -->
+                        <!-- <div class="col-md-12 col-lg-12 col-12 col-sm-12">
+                          <div class="timeAwayIndicator">
+                            <div class="awayMonitor" v-bind:style="{width: 100 + '%'}"></div>
+                          </div>
+                        </div> -->
+                    </div>
               </div>
             </div>
           </div>
@@ -104,11 +131,13 @@ export default {
       showMore: null,
       showIndex: false,
       ongoingTransactions: "",
+      ongoingTransactionsPolling: null,
       // test data, to be deleted soon
       message: "You have no ongoing transactions",
       // set to true if no transaction is going on
-      noTransaction: false
+      noTransaction: false,
       // transaction updates
+      minutesRemaining: '',
     };
   },
   methods: {
@@ -120,9 +149,26 @@ export default {
         this.showIndex = true;
       }
       this.showMore = evt;
-    }
+    },
+    // refresh ongoing transactions data every 3 seconds
+    pollOngoingTransactionsData(){
+      this.ongoingTransactionsPolling = setInterval(() => {
+        this.ongoingTransactions = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+      }, 3000)
+    },
+  },
+  filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+},
+  beforeDestroy(){
+    clearInterval(this.ongoingTransactionsPolling);
   },
   created() {
+    this.pollOngoingTransactionsData()
     // prevent user from going back to courier Found after ongoing is loaded and instead redirect them to request delivery page
     window.onpopstate = event => {
       if (this.$store.state.courierFoundPage == true) {
@@ -138,12 +184,36 @@ export default {
     };
 
     this.ongoingTransactions = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-
     if (this.ongoingTransactions == null) {
       this.ongoingTransactions = [];
     }
 
     this.$messaging.onMessage(payload => {
+      // for multiple delivery updates
+      if(payload.data.activity == "Delivery complete"){
+          const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+          ongoing_txns_data.forEach(function(txns, index){
+            if(txns.sendID == parseInt(payload.data.sendID)){
+              txns.journeyUpdate = payload.data.update
+              console.log('journey updates ', txns.journeyUpdate);
+            }
+          })
+          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
+          this.ongoingTransactions = ongoing_txns_data;
+      }
+      // for parcel location time update
+      if(payload.data.activity == "Parcel location"){
+         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+         ongoing_txns_data.forEach(function(txns, index){
+            if(txns.sendID == parseInt(payload.data.sendID)){
+              let message = " ride away from headed destination"
+              txns.timeAway = payload.data.timeAway + message;
+            }
+         })
+         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
+         this.ongoingTransactions = ongoing_txns_data;
+      }
+      // for courier progress
       if (payload.data.activity == "Courier progress") {
         // get the sendID of the payload, compare with the send id of the ongoingTransactions data list, and update the
         // location, status, step, update,
@@ -208,12 +278,23 @@ export default {
   }
 
   .courierDetailsImage {
+    margin-top: 10px;
+  }
 
+  .timeAwayIndicator {
+    margin-top: 40px;
+    border: solid #ccc 1px;
+  }
+
+  .awayMonitor {
+    height: 10px;
+    background-color: green;
+    width: 100%;
   }
 
   .courierImage {
-    width: 125px;
-    height: 125px;
+    width: 100px;
+    height: 100px;
   }
 
   .ongoings-header {
@@ -283,6 +364,14 @@ export default {
 
 .timeStamp {
   font-weight: bold;
+}
+
+.icon-decor {
+  color: 	#5bc0de;
+}
+
+.journey-updates-decor {
+  color: green;
 }
 
 .ongoingChange-enter-active {

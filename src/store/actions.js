@@ -17,10 +17,8 @@ const checkFCMTokenPresence = ({ commit }) => {
 
 const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
-    const params = {
-      phoneNumber: user.phoneNumber,
-      password: user.password
-    };
+    // check whether login id is email or phone number
+    const params = user.emailOrPhoneNumber.match(/[a-z]/i) ? {emailAddress: user.emailOrPhoneNumber, password: user.password} : {phoneNumber: user.emailOrPhoneNumber, password: user.password}
     const path = "https://api.desymal.com/user/account/verify";
     axios
       .post(path, params)
@@ -62,19 +60,21 @@ const register = ({ commit }, registerData) => {
         phoneNumber: registerData.userPhone,
         password: registerData.userPassword,
         type: registerData.type,
-        sex: registerData.sex
+        sex: registerData.sex,
+        referenceNumber: 'N/A',
       };
     }
 
     if (registerData.type == "business") {
       params = {
-        emailAddress: registerData.companyEmail,
-        name: registerData.companyName,
-        country: registerData.companyCountry,
-        phoneNumber: registerData.companyPhone,
-        password: registerData.companyPassword,
+        emailAddress: registerData.companyEmployeeEmail,
+        name: registerData.companyEmployeeName,
+        country: registerData.companyEmployeeCountry,
+        phoneNumber: registerData.companyEmployeePhone,
+        password: registerData.companyEmployeePassword,
         type: registerData.type,
-        sex: "Default"
+        sex: registerData.companyEmployeeSex,
+        referenceNumber: registerData.companyEmployeeReferenceNumber,
       };
     }
     axios

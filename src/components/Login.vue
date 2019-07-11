@@ -22,7 +22,7 @@
         </div>
         <span class="login-error" v-if="unsuccessfulLogin">{{ errorMessage }}</span>
 
-        <vue-phone-number-input
+        <!-- <vue-phone-number-input
           v-model="loginData.phoneNumber"
           autofocus
           :default-country-code="phoneField.defaultCode"
@@ -31,6 +31,15 @@
           :preferred-countries="phoneField.preferred"
           name="inputPhoneNumber"
           id="inputPhoneNumber"
+        /> -->
+
+        <input
+          type="text"
+          v-model="loginData.emailOrPhoneNumber"
+          id="inputPhoneNumber"
+          class="form-control emailPhoneField"
+          placeholder="email or phone number"
+          required
         />
 
         <input
@@ -38,7 +47,7 @@
           id="inputPassword"
           class="form-control passwordField"
           placeholder="Password"
-          required=""
+          required
           v-model="loginData.password"
         />
 
@@ -66,7 +75,7 @@ export default {
       errorMessage: "",
       // loaderBarControl: false,
       loginData: {
-        phoneNumber: "",
+        emailOrPhoneNumber: "",
         password: ""
       },
       unsuccessfulLogin: false,
@@ -86,7 +95,7 @@ export default {
       // this.loaderBarControl = true;
       this.unsuccessfulLogin = false;
       let user = {
-        phoneNumber: this.loginData.phoneNumber.replace(/\s/g, ""),
+        emailOrPhoneNumber: this.loginData.emailOrPhoneNumber.replace(/\s/g, ""),
         password: this.loginData.password
       };
 
@@ -94,7 +103,6 @@ export default {
       return this.$store
         .dispatch("login", user)
         .then(response => {
-          console.log('logged in ');
           this.$router.push({ name: "SystemSetup" });
         })
         .catch(error => {
@@ -149,6 +157,13 @@ export default {
 .login-header{
   float: left;
   text-align: center;
+}
+
+.emailPhoneField{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 
 .passwordField{
@@ -208,7 +223,7 @@ export default {
     border-top-right-radius: 0;
 }
 
-input[type="password"] {
+input[type="password"], input[type="text"] {
   outline: none;
   border-color: #ccc;
   -webkit-box-shadow: none;
@@ -216,7 +231,7 @@ input[type="password"] {
 }
 
 
-input[type="password"]:focus {
+input[type="password"]:focus, input[type="text"]:focus {
   outline: none;
   border-color: #00bcd4;
   -webkit-box-shadow: none;

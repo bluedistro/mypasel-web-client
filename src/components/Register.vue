@@ -233,16 +233,32 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Registered Company Name *"
+                        placeholder="Employee name *"
                         v-validate="'required|min:2|max:100'"
                         data-vv-delay="500"
-                        :class="{ input: true, 'is-danger': errors.has('companyForm.companyName') }"
-                        name="companyName"
+                        :class="{ input: true, 'is-danger': errors.has('companyForm.companyEmployeeName') }"
+                        name="companyEmployeeName"
                         value=""
-                        v-model="companyData.companyName"
+                        v-model="companyData.companyEmployeeName"
                       />
-                      <span v-show="errors.has('companyForm.companyName')" class="help is-danger"
-                        >* {{ errors.first("companyForm.companyName") }}</span
+                      <span v-show="errors.has('companyForm.companyEmployeeName')" class="help is-danger"
+                        >* {{ errors.first("companyForm.companyEmployeeName") }}</span
+                      >
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Reference code *"
+                        v-validate="'required|min:2|max:20'"
+                        data-vv-delay="500"
+                        :class="{ input: true, 'is-danger': errors.has('companyForm.companyEmployeeReferenceNumber') }"
+                        name="companyEmployeeReferenceNumber"
+                        value=""
+                        v-model="companyData.companyEmployeeReferenceNumber"
+                      />
+                      <span v-show="errors.has('companyForm.companyEmployeeReferenceNumber')" class="help is-danger"
+                        >* {{ errors.first("companyForm.companyEmployeeReferenceNumber") }}</span
                       >
                     </div>
                     <div class="form-group">
@@ -251,40 +267,40 @@
                         class="form-control"
                         placeholder="Password *"
                         value=""
-                        name="companyPassword"
-                        ref="companyPassword"
+                        name="companyEmployeePassword"
+                        ref="companyEmployeePassword"
                         data-vv-delay="200"
                         :class="{
                           input: true,
-                          'is-danger': errors.has('companyForm.companyPassword')
+                          'is-danger': errors.has('companyForm.companyEmployeePassword')
                         }"
                         v-validate="'required|verify_password'"
-                        v-model="companyData.companyPassword"
+                        v-model="companyData.companyEmployeePassword"
                       />
                       <span
-                        v-show="errors.first('companyForm.companyPassword')"
+                        v-show="errors.first('companyForm.companyEmployeePassword')"
                         class="help is-danger"
-                        >* {{ errors.first("companyForm.companyPassword") }}</span
+                        >* {{ errors.first("companyForm.companyEmployeePassword") }}</span
                       >
                     </div>
                     <div class="form-group">
                       <input
                         type="password"
                         class="form-control"
-                        placeholder="Confirm Password *"
+                        placeholder="Confirm password *"
                         value=""
-                        v-model="companyData.confirmCompanyPassword"
-                        v-validate="'required|confirmed:companyPassword'"
+                        v-model="companyData.confirmCompanyEmployeePassword"
+                        v-validate="'required|confirmed:companyEmployeePassword'"
                         :class="{
                           input: true,
-                          'is-danger': errors.has('companyForm.confirmCompanyPassword')
+                          'is-danger': errors.has('companyForm.confirmCompanyEmployeePassword')
                         }"
-                        name="confirmCompanyPassword"
+                        name="confirmCompanyEmployeePassword"
                       />
                       <span
-                        v-show="errors.first('companyForm.confirmCompanyPassword')"
+                        v-show="errors.first('companyForm.confirmCompanyEmployeePassword')"
                         class="help is-danger"
-                        >*{{ errors.first("companyForm.confirmCompanyPassword") }}</span
+                        >*{{ errors.first("companyForm.confirmCompanyEmployeePassword") }}</span
                       >
                     </div>
                   </div>
@@ -293,59 +309,77 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Company email *"
-                        name="companyEmail"
+                        placeholder="Email *"
+                        name="companyEmployeeEmail"
                         v-validate="'required|email'"
                         :class="{
                           input: true,
-                          'is-danger': errors.has('companyForm.companyEmail')
+                          'is-danger': errors.has('companyForm.companyEmployeeEmail')
                         }"
                         data-vv-delay="1000"
                         value=""
-                        v-model="companyData.companyEmail"
+                        v-model="companyData.companyEmployeeEmail"
                       />
-                      <span v-show="errors.has('companyForm.companyEmail')" class="help is-danger"
-                        >* {{ errors.first("companyForm.companyEmail") }}</span
+                      <span v-show="errors.has('companyForm.companyEmployeeEmail')" class="help is-danger"
+                        >* {{ errors.first("companyForm.companyEmployeeEmail") }}</span
                       >
                     </div>
                     <div class="form-group">
                       <vue-phone-number-input
-                        v-model="companyData.companyPhone"
+                        v-model="companyData.companyEmployeePhone"
                         :default-country-code="companyPhoneField.defaultCode"
                         :clearable="companyPhoneField.clearable"
                         :preferred-countries="companyPhoneField.preferred"
-                        name="companyPhone"
-                        id="companyPhone"
+                        name="companyEmployeePhone"
+                        id="companyEmployeePhone"
                         v-validate="'required'"
                         data-vv-delay="500"
                         :class="{
                           input: true,
-                          'is-danger': errors.has('companyForm.companyPhone')
+                          'is-danger': errors.has('companyForm.companyEmployeePhone')
                         }"
                       />
-                      <span v-show="errors.has('companyForm.companyPhone')" class="help is-danger"
-                        >* {{ errors.first("companyForm.companyPhone") }}</span
+                      <span v-show="errors.has('companyForm.companyEmployeePhone')" class="help is-danger"
+                        >* {{ errors.first("companyForm.companyEmployeePhone") }}</span
                       >
                     </div>
                     <div class="form-group">
                       <select
                         class="form-control"
-                        v-model="companyData.companyCountry"
-                        name="companyCountry"
+                        v-model="companyData.companyEmployeeCountry"
+                        name="companyEmployeeCountry"
                         v-validate="'required'"
                         data-vv-delay="500"
                         :class="{
                           input: true,
-                          'is-danger': errors.has('companyForm.companyCountry')
+                          'is-danger': errors.has('companyForm.companyEmployeeCountry')
                         }"
                       >
                         <option class="hidden">Please select your country</option>
                         <option selected>Ghana</option>
                       </select>
                       <span
-                        v-show="errors.has('companyForm.companyCountry')"
+                        v-show="errors.has('companyForm.companyEmployeeCountry')"
                         class="help is-danger"
-                        >{{ errors.first("companyForm.companyCountry") }}</span
+                        >{{ errors.first("companyForm.companyEmployeeCountry") }}</span
+                      >
+                    </div>
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        v-model="companyData.companyEmployeeSex"
+                        name="sex"
+                        v-validate="'required'"
+                        data-vv-delay="500"
+                        :class="{ input: true, 'is-danger': errors.has('companyForm.companyEmployeeSex') }"
+                      >
+                        <option class="hidden" disabled>Please select your sex</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                      </select>
+                      <span v-show="errors.has('companyForm.companyEmployeeSex')" class="help is-danger"
+                        >* {{ errors.first("companyForm.companyEmployeeSex") }}</span
                       >
                     </div>
                   </div>
@@ -434,12 +468,14 @@ export default {
       },
       // company registering data
       companyData: {
-        companyName: "",
-        companyEmail: "",
-        companyPassword: "",
-        confirmCompanyPassword: "",
-        companyPhone: "",
-        companyCountry: "Ghana"
+        companyEmployeeName: "",
+        companyEmployeeEmail: "",
+        companyEmployeePassword: "",
+        confirmEmployeeCompanyPassword: "",
+        companyEmployeePhone: "",
+        companyEmployeeCountry: "Ghana",
+        companyEmployeeReferenceNumber: "",
+        companyEmployeeSex: '',
       },
       // control the phone number field of the company data
       companyPhoneField: {
@@ -472,12 +508,14 @@ export default {
     // reset company form field
     onCompanyFormReset(evt) {
       evt.preventDefault();
-      this.companyData.companyName = null;
-      this.companyData.companyEmail = null;
-      this.companyData.companyPassword = null;
-      this.companyData.confirmCompanyPassword = null;
-      this.companyData.companyPhone = null;
-      this.companyData.companyCountry = null;
+      this.companyData.companyEmployeeName = null;
+      this.companyData.companyEmployeeEmail = null;
+      this.companyData.companyEmployeePassword = null;
+      this.companyData.confirmCompanyEmployeePassword = null;
+      this.companyData.companyEmployeePhone = null;
+      this.companyData.companyEmployeeCountry = null;
+      this.companyEmployeeReferenceNumber = null;
+      this.companyEmployeeSex = null;
     },
     // reset the user form field
     onUserFormReset(evt) {
