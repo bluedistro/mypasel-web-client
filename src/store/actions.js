@@ -77,6 +77,7 @@ const register = ({ commit }, registerData) => {
         referenceNumber: registerData.companyEmployeeReferenceNumber,
       };
     }
+    console.log('register params ', params);
     axios
       .post(path, params)
       .then(resp => {

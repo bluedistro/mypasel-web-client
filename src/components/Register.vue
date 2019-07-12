@@ -554,10 +554,17 @@ export default {
     validateRegisterForm(scope) {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
+          // show loader first
+          let loader = this.$loading.show({
+            loader: "bars",
+            color: "#00bcd4",
+            height: 80,
+            width: 80
+          });
           // all validations complete for company forms
           if (scope == "companyForm") {
             this.companyData.type = "business";
-            this.companyData.companyPhone = this.companyData.companyPhone.replace(/\s/g, "");
+            this.companyData.companyEmployeePhone = this.companyData.companyEmployeePhone.replace(/\s/g, "");
             this.sendableInfo = this.companyData;
           }
           // all validation complete for user forms
@@ -571,6 +578,7 @@ export default {
           return this.$store
             .dispatch("register", this.sendableInfo)
             .then(response => {
+              loader.hide();
               this.successfulRegistrationModal = true;
             })
             .catch(err => {
@@ -585,6 +593,7 @@ export default {
               }
 
               // this.errorMessage = 'Unable to complete registration'
+              loader.hide();
               this.unsuccessfulRegistrationModal = true;
             });
           // return;
