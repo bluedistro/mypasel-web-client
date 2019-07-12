@@ -154,7 +154,7 @@
                         >We'll never share your email with anyone else.</small
                       >
                     </div>
-                    <button type="submit" class="btn btn-outline-primary">Save</button>
+                    <!-- <button type="submit" class="btn btn-outline-primary">Save</button> -->
                   </form>
                 </div>
               </div>
