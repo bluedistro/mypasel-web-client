@@ -9,16 +9,14 @@
         <div
           class="col-md-12 col-12 col-lg-12 col-sm-12"
           v-if="historyContent.length <= 0"
-          key="no-history"
-        >
+          key="no-history">
           <no-activity v-bind:message="message"></no-activity>
         </div>
         <!-- else -->
         <div
           class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
           v-if="historyContent.length > 0"
-          key="history"
-        >
+          key="history">
           <!-- NOTE: The commented section is for the search filter. Might activate it someday -->
 
           <!-- search filter -->
@@ -129,7 +127,7 @@ export default {
       perPage: 10,
       currentPage: 1,
       txnsHistorySearch: "",
-      message: "You have no transaction history",
+      message: 'Loading...',
       historyContent: [],
       errorMessage:
         "Unable to fetch history due to a technical failure. Please refresh page to try again",
@@ -181,8 +179,13 @@ export default {
           }
         });
         this.historyContent = resp.data;
-        // sort the data
-        this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
+        // check if history is unavailable
+        if (this.historyContent.length <= 0){
+          this.message = "You have no transaction history"
+        }else{
+          // sort the data
+          this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
+        }
       })
       .catch(error => {
         if (error.response.status == 503) {

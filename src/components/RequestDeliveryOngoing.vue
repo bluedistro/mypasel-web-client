@@ -37,7 +37,8 @@
                 {{ i.status }}
               </div>
             </div>
-            <div class="col-md-2 col-sm-2 col-3 col-lg-2 moreBtn">
+            <!-- <div class="item-container"></div> -->
+            <div class="col-md-2 col-sm-2 col-3 col-lg-1 moreBtn">
               <button
                 type="button"
                 class="btn-sm btn-outline-dark form-control"
@@ -133,7 +134,7 @@ export default {
       ongoingTransactions: "",
       ongoingTransactionsPolling: null,
       // test data, to be deleted soon
-      message: "You have no ongoing transactions",
+      message: "Loading...",
       // set to true if no transaction is going on
       noTransaction: false,
       // transaction updates
@@ -186,6 +187,7 @@ export default {
     this.ongoingTransactions = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
     if (this.ongoingTransactions == null) {
       this.ongoingTransactions = [];
+      this.message = "You have no ongoing transactions"
     }
 
     this.$messaging.onMessage(payload => {
@@ -195,7 +197,7 @@ export default {
           ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.data.sendID)){
               txns.journeyUpdate = payload.data.update
-              console.log('journey updates ', txns.journeyUpdate);
+
             }
           })
           VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
@@ -350,10 +352,24 @@ export default {
 .transaction {
   margin-bottom: 10px;
   margin-top: 10px;
+  margin-left: -120px;
+}
+
+/* mobile display of progress component */
+@media screen and (max-width: 700px){
+  .transaction {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: -20px;
+  }
+
 }
 
 .item-container {
-  border-bottom: solid #ccc 1px;
+  border-bottom: solid #dadee3 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 100%;
 }
 
 .moreBtn {
@@ -384,4 +400,6 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 }
+
+
 </style>

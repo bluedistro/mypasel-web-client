@@ -25,9 +25,10 @@
           <b-nav-item v-if="!hidden" v-bind:class="orClassStyle" @click="ongoingRedirect">
             Ongoing <b-badge variant="light" v-if="totalOngoings > 0">{{ totalOngoings }}</b-badge>
           </b-nav-item>
-          <b-nav-item v-if="!hidden" v-bind:class="srClassStyle" @click="scheduledRedirect">
+          <!-- TODO: Disable scheduling for now -->
+          <!-- <b-nav-item v-if="!hidden" v-bind:class="srClassStyle" @click="scheduledRedirect">
             Scheduled
-          </b-nav-item>
+          </b-nav-item> -->
           <b-nav-item v-if="!hidden" v-bind:class="hrClassStyle" @click="historyRedirect">
             History
           </b-nav-item>

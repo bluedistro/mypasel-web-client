@@ -65,7 +65,7 @@
           <b-button v-promise-btn variant="outline-danger" @click="bookingCancellationErrorModalTry"
             >Cancel order</b-button
           >
-          <b-button variant="outline-dark" @click="stopCancellationProcess">Ignore</b-button>
+          <b-button variant="outline-info" @click="stopCancellationProcess">Ignore</b-button>
         </template>
       </b-modal>
     </div>
@@ -105,7 +105,7 @@
         <template slot="modal-footer" slot-scope="{ ok }">
           <b-button
             size="sm"
-            variant="outline-success"
+            variant="outline-info"
             @click="bookingErrorCancellationSuccessModalHide"
             >Back to request delivery</b-button
           >

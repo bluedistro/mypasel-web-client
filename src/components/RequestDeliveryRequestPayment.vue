@@ -205,7 +205,7 @@
           Sorry, we were unable to complete your transaction booking. Please ensure that all the necessary details were provided.
         </p>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-button size="sm" variant="warning" @click="bookingErrorModalHide"
+          <b-button size="sm" variant="info" @click="bookingErrorModalHide"
             >Start new request</b-button
           >
           <b-button size="sm" variant="outline-dark" @click="bookingErrorModalTry"

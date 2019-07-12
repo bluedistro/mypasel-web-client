@@ -84,7 +84,7 @@
                ({{ counter + 1}})
           </div>
       </div> -->
-      <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-11 col-11 dropOffBtnDiv">
+      <div id="multiDropOffDiv" class="col-md-12 col-lg-12 col-sm-12 col-12 dropOffBtnDiv">
         <button
           type="button"
           :disabled="disableRemoveDropOffs"

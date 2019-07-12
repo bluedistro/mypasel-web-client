@@ -70,14 +70,15 @@
                 @selected_pricing_option="getSelectedPricingChoice"
               >
               </pricing-results>
-              <div class="row">
+              <!-- TODO: Disable courier scheduling for now -->
+              <!-- <div class="row">
                 <div class="col-md-12 col-lg-12 col-12 col-sm-12">
                   <delivery-date
                     @selected_delivery_option="get_selected_delivery_option"
                     data-v-step="5"
                   ></delivery-date>
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-12 col-lg-12 col-sm-12 col-12 proceedBtnDiv">
                 <button
                   type="button"
@@ -243,9 +244,10 @@ export default {
   },
   methods: {
     // control error with booking details
-    get_selected_delivery_option(deliveryTime) {
-      this.selectedDeliveryOption = deliveryTime;
-    },
+    // TODO: Disable scheduling for now
+    // get_selected_delivery_option(deliveryTime) {
+    //   this.selectedDeliveryOption = deliveryTime;
+    // },
     RequestDeliveryErrorModalHide() {
       this.$refs["request-delivery-error-modal"].hide();
     },
@@ -304,9 +306,13 @@ export default {
     },
 
     proceedToPayment(evt) {
+      // disable scheduling option and set to now for the moment
+      let now = new Date();
+      this.selectedDeliveryOption = Date.parse(now);
       let item = this.selectedPricingOption;
       let price_validator = this.pricingDetails[item];
-      if (!isNaN(price_validator) && this.selectedDeliveryOption) {
+      // disable date checking for now
+      if (!isNaN(price_validator) /*&& this.selectedDeliveryOption*/) {
         this.$cookie.set(this.$cookeys.DELIVERY_MODE, item, {
           expires: this.$cookeys.cookie_expire
         });
