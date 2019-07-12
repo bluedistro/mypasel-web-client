@@ -144,6 +144,7 @@
                         type="email"
                         class="form-control"
                         required
+                        disabled
                         id="emailAddress"
                         aria-describedby="emailHelp"
                         placeholder="Enter email"

@@ -50,7 +50,7 @@
             <b-dropdown-item>
               <span class="user-profile-dropdown" @click="userAccountRedirect">
                 <font-awesome-icon icon="pencil-alt" class="account-edit" />
-                Edit profile
+                Profile
               </span>
             </b-dropdown-item>
             <!-- <b-dropdown-item>
