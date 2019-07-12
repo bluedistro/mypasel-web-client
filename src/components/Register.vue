@@ -623,7 +623,7 @@ export default {
 <style lang="css" scoped>
 
 .individual-register-btns {
-
+  margin-bottom: 80px;
 }
 
 .individual-terms-accept {
