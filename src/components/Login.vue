@@ -11,7 +11,7 @@
           <div class="col-md-3 col-sm-6 col-lg-3 col-6">
             <!-- <p>Don't have an account!</p>  -->
             <button
-              class="btn btn-outline-dark btn-sm btn-block"
+              class="btn btn-dark btn-sm btn-block"
               type="button"
               id="btn-signup"
               v-on:click="createNewAccount"
@@ -60,7 +60,7 @@
         <a href="#" id="forgot_pswd">
           <router-link :to="{ name: 'ForgotPassword', params: {} }">Forgot password?</router-link>
         </a>
-        <hr />
+        <!-- <hr /> -->
       </form>
     </div>
   </div>
@@ -174,6 +174,7 @@ export default {
 }
 
 #forgot_pswd {
+  border: none;
   float: right;
 }
 
@@ -191,7 +192,7 @@ export default {
     height: 300px;
     border-radius: 1px;
     border: solid #ced3db 1px;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 #inputPhoneNumber{
