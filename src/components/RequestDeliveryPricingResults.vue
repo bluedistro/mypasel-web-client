@@ -16,13 +16,12 @@
         <label for="bike">
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-              <img
-                class="dm-image"
-                fluid
-                src="../assets/motorcycle.png"
+              <b-img-lazy
+                class="dm-image"            
+                src="https://web.mypasel.com/img/motorcycle.5fd1da12.png"
                 height="40px"
                 width="100px"
-              />
+              ></b-img-lazy>
             </div>
             <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
               <span>{{ pricingDetails.currency }} {{ pricingDetails.bike }}</span>
@@ -44,7 +43,7 @@
         <label for="bicycle">
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-              <img class="dm-image" fluid src="../assets/bicycle.png" height="40px" width="100px" />
+              <b-img-lazy class="dm-image" src="https://web.mypasel.com/img/bicycle.0748b2e5.png" height="40px" width="100px"></b-img-lazy>
             </div>
             <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
               <span>{{ pricingDetails.currency }} {{ pricingDetails.bicycle }}</span>
@@ -66,13 +65,12 @@
         <label for="car">
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-              <img
+              <b-img-lazy
                 class="dm-image"
-                fluid
-                src="../assets/sedan-car-model.png"
+                src="https://web.mypasel.com/img/sedan-car-model.4f46e160.png"
                 height="40px"
                 width="100px"
-              />
+              ></b-img-lazy>
             </div>
             <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
               <span>{{ pricingDetails.currency }} {{ pricingDetails.car }}</span>

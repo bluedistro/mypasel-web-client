@@ -23,7 +23,7 @@
             v-model="paymentOption"
           />
           <label for="cash">
-            <img src="../assets/cash.png" class="cashPaymentModeIconSize" />
+            <b-img-lazy fluid src="https://web.mypasel.com/img/cash.a19293ec.png" class="cashPaymentModeIconSize"></b-img-lazy>
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -38,7 +38,7 @@
           />
           <label for="momo">
             <!-- Mobile Money -->
-            <img src="../assets/momo.png" class="momoPaymentModeIconSize" />
+            <b-img-lazy fluid src="https://web.mypasel.com/img/momo.2fcebeeb.png" class="momoPaymentModeIconSize"></b-img-lazy>
           </label>
         </div>
         <div class="col-md-4 col-4">
@@ -53,7 +53,7 @@
           />
           <label for="prepaid">
             <!-- Prepaid -->
-            <img src="../assets/prepaid.png" class="prepaidPaymentModeIconSize" />
+            <b-img-lazy fluid src="https://web.mypasel.com/img/prepaid.5ad907fc.png" class="prepaidPaymentModeIconSize"></b-img-lazy>
           </label>
         </div>
       </div>
