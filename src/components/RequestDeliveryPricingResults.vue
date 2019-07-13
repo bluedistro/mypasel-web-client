@@ -17,7 +17,7 @@
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
               <b-img-lazy
-                class="dm-image"            
+                class="dm-image"
                 src="https://web.mypasel.com/img/motorcycle.5fd1da12.png"
                 height="40px"
                 width="100px"
@@ -92,13 +92,12 @@
         <label for="van">
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
-              <img
-                class="dm-image"
-                fluid
-                src="../assets/delivery-truck.png"
+              <b-img-lazy
+                class="dm-image"                
+                src="https://web.mypasel.com/img/delivery-truck.png"
                 height="40px"
                 width="100px"
-              />
+              ></b-img-lazy>
             </div>
             <div class="col-md-6 col-lg-6 col-sm-6 col-6 dm-price">
               <span>{{ pricingDetails.currency }} {{ pricingDetails.van }}</span>

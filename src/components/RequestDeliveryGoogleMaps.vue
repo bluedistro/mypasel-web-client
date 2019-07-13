@@ -17,11 +17,11 @@
           @click="center=m.position"
           :clickable="true"
           :position="marker.position"
-          icon="http://maps.google.com/mapfiles/ms/icons/red.png"
+          icon="https://web.mypasel.com/img/pickup.png"
         /></Gmap-Marker>
         <Gmap-Marker v-for="(marker, index) in dropOffMarkers"
           :position="marker.position"
-          icon="http://maps.google.com/mapfiles/ms/icons/green.png"
+          icon="https://web.mypasel.com/img/dropoff.png"
         /></Gmap-Marker>
      </Gmap-Map>
   </div>

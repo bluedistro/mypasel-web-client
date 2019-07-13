@@ -6,7 +6,7 @@
           <b-img-lazy
             rounded="circle"
             class="brand-logo"
-            src="https://lh3.googleusercontent.com/C49t3XyUftk6mV63EKR9oUX8rioUCV1HqEfD5LxQJfUC52tsYZBCdx7hsWiR7vKKrA"
+            src="https://web.mypasel.com/img/brand-logo.png"
             fluid
             alt="brand logo"
           >
