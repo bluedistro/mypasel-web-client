@@ -663,9 +663,7 @@ export default {
 
 .register{
     background: -webkit-linear-gradient(right, #743eca, #00ae91);
-    /* margin-top: 5%; */
-    /* margin-bottom: 1%; */
-    /* padding: 1%; */
+
     padding-top: 39px;
     padding-bottom: 32px;
 }
