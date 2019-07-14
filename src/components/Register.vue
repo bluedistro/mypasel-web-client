@@ -3,49 +3,50 @@
     <div class="container-fluid register">
       <div class="row">
         <div class="col-md-3 register-left">
-          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+          <b-img src="https://web.mypasel.com/img/brand-logo.png" fluid rounded="circle" alt="brand-logo"></b-img>
           <h3>Akwaaba to MyPasel</h3>
           <p>Package Delivery and Logistics Made Easy!</p>
           <button type="button" class="loginBtn" name="button">
             <router-link id="loginBtnText" :to="{ name: 'Login', params: {} }">Login</router-link>
           </button>
           <br />
-          <!-- <div class="sign-up-notice">
-            By Signing Up, you agree to our
-            <a href="https://mypasel.com/terms" target="_blank" class="terms">Terms</a> and
-            <a href="https://mypasel.com/privacy" target="_blank" class="privacy">Privacy Policy</a
-            >.
-          </div> -->
+          <div class="sign-up-notice">
+              MyPasel &copy; 2019 by Desymal Technologies. All Rights Reserved.
+          </div>
         </div>
         <div class="col-md-9 register-right">
-          <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a
-                v-on:click="setIndividualTrue"
-                :class="paneControl.individualClass"
-                id="applicant-tab"
-                data-toggle="tab"
-                href="#applicant"
-                role="tab"
-                aria-controls="applicant"
-                :aria-selected="paneControl.individualAria"
-                >Individual</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                v-on:click="setEmployeeTrue"
-                :class="paneControl.employeeClass"
-                id="company-tab"
-                data-toggle="tab"
-                href="#company"
-                role="tab"
-                aria-controls="company"
-                :aria-selected="paneControl.employeeAria"
-                >Business</a
-              >
-            </li>
-          </ul>
+            <div class="row">
+              <div class="col-12 col-sm-12">
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      v-on:click="setIndividualTrue"
+                      :class="paneControl.individualClass"
+                      id="applicant-tab"
+                      data-toggle="tab"
+                      href="#applicant"
+                      role="tab"
+                      aria-controls="applicant"
+                      :aria-selected="paneControl.individualAria"
+                      >Individual</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      v-on:click="setEmployeeTrue"
+                      :class="paneControl.employeeClass"
+                      id="company-tab"
+                      data-toggle="tab"
+                      href="#company"
+                      role="tab"
+                      aria-controls="company"
+                      :aria-selected="paneControl.employeeAria"
+                      >Business</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
           <div class="tab-content" id="myTabContent">
             <div
               :class="paneControl.individualTabPane"
@@ -53,7 +54,7 @@
               role="tabpanel"
               aria-labelledby="applicant-tab"
             >
-              <h3 class="register-heading">Welcome onboard to MyPasel</h3>
+              <!-- <h3 class="register-heading">Welcome onboard to MyPasel</h3> -->
               <form
                 class=""
                 v-promise-btn="{ action: 'submit' }"
@@ -204,7 +205,7 @@
                   </div>
                   <div class="col-md-12 individual-terms-accept">
                       <input type="checkbox" name="termsAgree" v-model="individualTerms" required>
-                      By registering, you agree to have read and understood the <a href="https://mypasel.com/terms">Terms</a> and <a href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
+                      By registering, you agree to have read and understood the <a target="_blank" href="https://mypasel.com/terms">Terms</a> and <a target="_blank" href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
                   </div>
                     <div class="col-md-6 individual-register-btns">
                       <input type="submit" class="btnRegister" value="Register" />
@@ -220,7 +221,7 @@
               role="tabpanel"
               aria-labelledby="company-tab"
             >
-              <h3 class="register-heading">Welcome onboard to MyPasel</h3>
+              <!-- <h3 class="register-heading">Welcome onboard to MyPasel</h3> -->
               <form
                 v-promise-btn="{ action: 'submit' }"
                 @submit.prevent="validateRegisterForm('companyForm')"
@@ -385,7 +386,7 @@
                   </div>
                   <div class="col-md-12 company-terms-accept">
                       <input type="checkbox" name="termsAgree" v-model="companyTerms" required>
-                      By registering, you agree to have read and understood the <a href="https://mypasel.com/terms">Terms</a> and <a href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
+                      By registering, you agree to have read and understood the <a target="_blank" href="https://mypasel.com/terms">Terms</a> and <a target="_blank" href="https://mypasel.com/privacy">Privacy policies</a> of MyPasel.
                   </div>
                   <div class="col-md-6 company-register-btns">
                     <input type="submit" class="companyBtnRegister" value="Register" />
@@ -647,7 +648,7 @@ export default {
 }
 
 .sign-up-notice {
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 90%;
 }
 
@@ -665,6 +666,7 @@ export default {
     background: -webkit-linear-gradient(right, #743eca, #00ae91);
     padding-top: 39px;
     padding-bottom: 32px;
+    height: 100vh;
     -webkit-animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
@@ -751,25 +753,168 @@ export default {
     margin-top: 15%;
     margin-bottom: 5%;
     width: 25%;
-    -webkit-animation: mover 2s infinite  alternate;
-    animation: mover 1s infinite  alternate;
+    -webkit-animation: mover 5s infinite  both;
+    animation: mover 5s infinite  both;
 }
+
+/* ----------------------------------------------
+ * Generated by Animista on 2019-7-14 13:39:2
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation mover
+ * ----------------------------------------
+ */
 @-webkit-keyframes mover {
+  0% {
+    -webkit-transform: translateX(-800px) rotate(-540deg);
+            transform: translateX(-800px) rotate(-540deg);
+    opacity: 0;
+  }
+
+  25% {
+    -webkit-transform: translateX(-600px) rotate(0deg);
+            transform: translateX(-600px) rotate(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    -webkit-transform: translateX(-200px) rotate(-540deg);
+            transform: translateX(-200px) rotate(-540deg);
+    opacity: 1;
+  }
+
+  50% {
+    -webkit-transform: translateX(0) rotate(0deg);
+            transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  60% {
+    transform: translateY(-60px);
+    -webkit-transform: translateY(-60px);
+  }
+
+  65% {
+    transform: translateY(0);
+    -webkit-transform: translateY(-0);
+  }
+
+  80% {
+    transform: translateY(-60px);
+    -webkit-transform: translateY(-60px);
+  }
+
+  85% {
+    transform: translateY(0);
+    -webkit-transform: translateY(-0);
+  }
+
+  87% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(1000px);
+            transform: translateX(1000px);
+    opacity: 0;
+  }
+}
+@keyframes mover {
+  0% {
+    -webkit-transform: translateX(-800px) rotate(-540deg);
+            transform: translateX(-800px) rotate(-540deg);
+    opacity: 0;
+  }
+
+  25% {
+    -webkit-transform: translateX(-600px) rotate(0deg);
+            transform: translateX(-600px) rotate(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    -webkit-transform: translateX(-200px) rotate(-540deg);
+            transform: translateX(-200px) rotate(-540deg);
+    opacity: 1;
+  }
+
+  50% {
+    -webkit-transform: translateX(0) rotate(0deg);
+            transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  60% {
+    transform: translateY(-60px);
+    -webkit-transform: translateY(-60px);
+  }
+
+  65% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+  }
+
+  80% {
+    transform: translateY(-60px);
+    -webkit-transform: translateY(-60px);
+  }
+
+  85% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+  }
+
+  87% {
+    -webkit-transform: translateX(100px);
+            transform: translateX(100px);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+  }
+
+  90% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(1000px);
+            transform: translateX(1000px);
+    opacity: 0;
+  }
+}
+
+
+/* @-webkit-keyframes mover {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+    80% { transform: translateY(-20px); }
+    100% {
+            -webkit-transform: translateX(1000px);
+            transform: translateX(1000px);
+            opacity: 0;
+          }
 }
 @keyframes mover {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-}
+    80% { transform: translateY(-20px); }
+    100% {
+            -webkit-transform: translateX(1000px);
+            transform: translateX(1000px);
+            opacity: 0;
+          }
+} */
 .register-left p{
     font-weight: lighter;
     padding: 12%;
     margin-top: -9%;
 }
 .register .register-form{
-    padding: 10%;
-    margin-top: 10%;
+    padding: 5%;
 }
 .btnRegister{
     float: left;

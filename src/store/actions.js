@@ -362,14 +362,28 @@ const getTransactionsHistory = ({ commit }, id) => {
 
 const saveImage = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
-    const path = "https://api.desymal.com/user/" + String(payload.id) + "/uploadavatar";
-    // axios.post(path, payload.file)
+    const id = JSON.parse(VueCookie.get(cookeys.USER_DATA_KEY)).id
+    const path = "https://api.desymal.com/user/" + String(id) + "/uploadavatar";
+    axios.post(path, payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then((resp) => {
+      commit('profile_image_save_success')
+      resolve(resp)
+    })
+    .catch((error) => {
+      commit('profile_image_save_error')
+      reject(error)
+    })
   });
 };
 
-const getProfileImage = ({ commit }, id) => {
+const getProfileImage = ({ commit }) => {
   return new Promise((resolve, reject) => {
-    const path = "https://api.desymal.com/user/" + String(id) + "/avatar";
+    const id = JSON.parse(VueCookie.get(cookeys.USER_DATA_KEY)).id
+    const path = "https://api.desymal.com/user/" + String(id) + "/avatarpath";
     axios
       .get(path)
       .then(resp => {

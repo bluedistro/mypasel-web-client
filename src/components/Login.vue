@@ -17,12 +17,21 @@
         <div class="col-sm-12 col-xl-6 col-md-8 col-lg-6" id="logreg-forms">
           <form class="form-signin" v-promise-btn="{ action: 'submit' }" @submit.prevent="login">
             <div class="row">
-              <div class="col-md-9 col-6">
+              <div class="col-md-9 col-8">
                 <h1 class="h3 mb-3 font-weight-normal login-header">
+                  <b-img-lazy
+                    fluid
+                    rounded="circle"
+                    alt="brand-logo"
+                    class="login-brand"
+                    src="https://web.mypasel.com/img/brand-logo.png"
+                  >
+
+                  </b-img-lazy>
                   MyPasel
                 </h1>
               </div>
-              <div class="col-md-3 col-sm-6 col-lg-3 col-6">
+              <div class="col-md-3 col-sm-6 col-lg-3 col-4">
                 <!-- <p>Don't have an account!</p>  -->
                   <button
                     class="btn btn-dark btn-sm btn-block"
@@ -177,6 +186,11 @@ export default {
 
 .login-container {
  /* height: 100vh; */
+}
+
+.login-brand {
+  height: 50px;
+  width: 50px;
 }
 
 /* background */
@@ -599,12 +613,14 @@ export default {
   color: #fff;
 }
 
-.emailPhoneField{
-  /* border-top: none; */
-  /* border-left: none; */
-  /* border-right: none; */
+/* .emailPhoneField{
+  border-top: none;
+  border-left: none;
+  border-right: none;
   border-radius: 5px;
   margin-bottom: 10px;
+  background-color: #4e54c8;
+  color: #fff;
 }
 
 .passwordField{
@@ -612,7 +628,9 @@ export default {
   border-left: none;
   border-right: none;
   border-radius: 5px;
-}
+  background-color: #4e54c8;
+  color: #fff;
+} */
 
 #forgot_pswd {
   border: none;
@@ -629,7 +647,7 @@ export default {
     margin:10vh auto;
     height: 300px;
     border-radius: 1px;
-    border: solid #ced3db 1px;
+    border: solid #5bc0de 1px;
     -webkit-animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
@@ -701,19 +719,40 @@ export default {
 #logreg-forms .form-control:focus { z-index: 2; }
 #logreg-forms .form-signin input[type="email"] {
     margin-bottom: -1px;
-    /* border-bottom-right-radius: 0; */
-    /* border-bottom-left-radius: 0; */
+
 }
 #logreg-forms .form-signin input[type="password"] {
-    /* border-top-left-radius: 0; */
-    /* border-top-right-radius: 0; */
+
 }
 
-/* input[type="password"], input[type="text"] {
+::placeholder { /*  Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #5bc0de;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* IE 10-11 */
+  color: #5bc0de;
+}
+
+::ms-input-placeholder { /* Edge */
+  color: #5bc0de;
+}
+
+
+
+input[type="password"], input[type="text"] {
   outline: none;
   border-color: #ccc;
   -webkit-box-shadow: none;
   box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-bottom: 10px;
+  background-color: #4e54c8;
+  color: #fff;
 }
 
 
@@ -722,7 +761,13 @@ input[type="password"]:focus, input[type="text"]:focus {
   border-color: #00bcd4;
   -webkit-box-shadow: none;
   box-shadow: none;
-} */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin-bottom: 10px;
+  background-color: #4e54c8;
+  color: #fff;
+}
 
 /* forgot password controller */
 #logreg-forms a{
@@ -746,6 +791,11 @@ input[type="password"]:focus, input[type="text"]:focus {
     #logreg-forms{
         width:100%;
         border: none;
+    }
+
+    .login-brand {
+      height: 40px;
+      width: 40px;
     }
 
     #logreg-forms .social-btn:nth-child(1){

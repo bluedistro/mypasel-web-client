@@ -11,13 +11,13 @@
             thumbnail
             fluid
             :src="aviImage"
-            alt="Image 1"
+            alt="Profile image"
           ></b-img>
         </div>
-        <div class="row upload-btn-wrapper">
-          <button class="imagebtn" @click.prevent="submit">Upload image</button>
-          <input type="file" @change="previewImage" accept="image/*" name="image" id="image" />
-        </div>
+        <!-- <div class="row upload-btn-wrapper">
+          <button class="imagebtn" @click="previewImage">Upload image</button>
+          <input type="file" @change="onChangeFileUpload" ref="file" name="file" id="file" />
+        </div> -->
         <div class="row user-identity">
           {{ fullName }}
         </div>
@@ -87,7 +87,7 @@
             <div class="row">
               <div class="col-md-12 user-details-overview">
                 <div class="user-details">
-                  <form v-promise-btn="{ action: 'submit' }" @submit.prevent="updateInfo">
+                  <form @submit.prevent="updateInfo">
                     <div class="form-group">
                       <label for="fullName">Full Name</label>
                       <input
@@ -163,7 +163,7 @@
           <!-- Password Reset -->
           <div class="" v-if="selectedPage == 'resetPassword'" key="resetPassword">
             <div class="row header-text">
-              <h4>Reset password</h4>
+              <h4>Change password</h4>
             </div>
             <div class="header-border"></div>
             <div class="row">
@@ -217,7 +217,7 @@
                         >
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-outline-primary">Reset Password</button>
+                    <button type="submit" class="btn btn-info change-password">Change Password</button>
                   </form>
                 </div>
               </div>
@@ -282,20 +282,81 @@ export default {
       fullName: "",
       country: "",
       sex: "",
+      file: '',
       aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
+      // https://picsum.photos/150/150?blur=1&grayscale
     };
   },
   methods: {
-    // preview image
+    onChangeFileUpload(){
+      // display image
+       this.file = this.$refs.file.files[0];
+       var file = this.file;
+       if (this.file) {
+         var reader = new FileReader();
+         reader.onload = e => {
+           var image = new Image();
+           image.onLoad = function(imageEvent) {
+             // resize image to at least 150px before being submitted
+             var max_size = 150;
+             var w = image.width;
+             var h = image.height;
+             if (w > h) {
+               if (w > max_size) {
+                 h *= max_size / w;
+                 w = max_size;
+               }
+             } else {
+               if (h > max_size) {
+                 w *= max_size / h;
+                 h = max_size;
+               }
+             }
+             var canvas = document.createElement("canvas");
+             canvas.width = w;
+             canvas.height = h;
+             canvas.getContext("2d").drawImage(image, 0, 0, w, h);
+             var resizedImage = canvas.toDataURL("image/jpeg");
+           };
+           this.aviImage = e.target.result;
+         };
+         reader.readAsDataURL(file);
+       }
+
+       // save file
+       let formData = new FormData();
+       formData.append('file', this.file)
+       const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+       console.log('uploading');
+       const payload = {
+         avatar: formData
+       }
+        return this.$store.dispatch('saveImage', payload)
+                       .then((resp) => {
+                          // passed image upload success
+                          console.log(resp);
+                          console.log('update success');
+                       })
+                       .catch((error) => {
+                         if(error.response.status == 503){
+                           this.info_change_status_message = "Unable to upload profile image due to technical glitch. Please try again later"
+                         }else{
+                           this.info_change_status_message = "Failed to upload profile image. Please try again"
+                         }
+                         this.infoChangeStatusModal = true;
+                       })
+
+    },
+    // // preview image
     previewImage(event) {
       var input = event.target;
       var file = input.files[0];
+      // set file data to file object
       if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = e => {
           var image = new Image();
           image.onLoad = function(imageEvent) {
-            // resize image to at least 150px before being submitted
             var max_size = 150;
             var w = image.width;
             var h = image.height;
@@ -322,7 +383,6 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    submit() {},
     infoChangeStatusFunction(evt) {
       this.$refs["info-change-status-modal"].hide();
     },
@@ -416,12 +476,19 @@ export default {
     }
   },
   mounted() {
+    // set data
     const user_data = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY));
     this.phoneNumber = user_data.phoneNumber;
     this.emailAddress = user_data.emailAddress;
     this.fullName = user_data.name;
     this.country = user_data.country;
     this.sex = user_data.sex;
+
+    // get user profile image
+    return this.$store.dispatch('getProfileImage')
+                      .then((resp) => {
+                        // this.aviImage = resp.data.image_url;
+                      })
   },
   created() {
     // create a strong password validator on validate
@@ -489,6 +556,10 @@ export default {
 
   .password-reset {
     text-align: left;
+  }
+
+  .change-password {
+    border-radius: 20px;
   }
 
   /* image upload button */

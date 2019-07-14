@@ -144,6 +144,14 @@ const transactions_history_error = (state) => {
   state.status = "transactions_history_error";
 };
 
+const profile_image_save_success = (state) => {
+  state.status = "profile_image_save_successfully";
+};
+
+const profile_image_save_error = (state) => {
+  state.status = "profile_image_save_error";
+};
+
 const profile_image_retrieve_success = (state) => {
   state.status = "profile_image_retrieve_successfully";
 };
@@ -201,6 +209,8 @@ export default {
   transactions_history_error,
   profile_image_retrieve_success,
   profile_image_retrieve_error,
+  profile_image_save_success,
+  profile_image_save_error,
   forgot_password_request_success,
   forgot_password_request_error,
   reset_password_success,

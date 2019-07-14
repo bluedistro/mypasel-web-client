@@ -182,7 +182,7 @@
           type="button"
           @click="confirmOrder"
           v-promise-btn
-          class="btn btn-outline-dark btn-sm proceedBtn"
+          class="btn btn-info btn-sm proceedBtn"
           name="button"
         >
           Confirm Order
