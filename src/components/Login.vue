@@ -73,7 +73,7 @@
               Log in
             </button>
             <a href="#" id="forgot_pswd" v-bind:class="forgotPasswordAnimate">
-              <router-link class="forgot-password-text" :to="{ name: 'ForgotPassword', params: {} }">Forgot password?</router-link>
+              <router-link class="forgot-password-text" :to="{ name: 'ForgotPasswordEmail', params: {} }">Forgot password?</router-link>
             </a>
             <!-- <hr /> -->
           </form>
@@ -143,7 +143,7 @@ export default {
               this.errorMessage = "Unable to login. Please check credentials and try again";
             }
           } else {
-            this.errorModalMessage =
+            this.errorMessage =
               "Unable to login due to a technical error. Kindly try again later.";
           }
 

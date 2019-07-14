@@ -381,7 +381,43 @@ const getProfileImage = ({ commit }, id) => {
         reject(error);
       });
   });
-}
+};
+
+// forgot password
+const requestPasswordReset = ({commit }, emailAddress) => {
+  return new Promise((resolve, reject) => {
+    const path = "https://api.desymal.com/user/password/forgot";
+    axios.post(path, emailAddress)
+         .then((resp) => {
+           commit("forgot_password_request_success");
+           const email = emailAddress.emailAddress;
+           VueCookie.set(cookeys.RESET_EMAIL_ADDRESS, email, {
+             expires: cookeys.cookie_expire
+           });
+           resolve(resp)
+         })
+         .catch((error) => {
+           commit("forgot_password_request_error");
+           reject(error)
+         })
+  })
+};
+
+// reset password
+const resetPassword = ({commit}, payload) => {
+  return new Promise((resolve, reject) => {
+    const path = "https://api.desymal.com/user/password/reset"
+    axios.post(path, payload)
+         .then((resp) => {
+           commit('reset_password_success')
+           resolve(resp)
+         })
+         .catch((error) => {
+           commit('reset_password_error');
+           reject(error)
+         })
+  })
+};
 
 export default {
   checkFCMTokenPresence,
@@ -401,4 +437,6 @@ export default {
   getTransactionsHistory,
   saveImage,
   getProfileImage,
+  requestPasswordReset,
+  resetPassword
 };

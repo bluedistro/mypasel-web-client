@@ -152,6 +152,22 @@ const profile_image_retrieve_error = (state) => {
   state.status = "profile_image_retrieve_error";
 };
 
+const forgot_password_request_success = (state) => {
+  state.status = "forgot_password_request_success";
+};
+
+const forgot_password_request_error = (state) => {
+  state.status = "forgot_password_request_error";
+} ;
+
+const reset_password_success = (state) => {
+  state.status = "reset_password_success";
+};
+
+const reset_password_error = (state) => {
+  state.status = "reset_password_error"
+};
+
 export default {
   auth_request,
   auth_success,
@@ -185,4 +201,8 @@ export default {
   transactions_history_error,
   profile_image_retrieve_success,
   profile_image_retrieve_error,
+  forgot_password_request_success,
+  forgot_password_request_error,
+  reset_password_success,
+  reset_password_error
 };

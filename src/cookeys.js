@@ -42,6 +42,7 @@ const delivery_time = "MPSL8130GH";
 const delivery_mode = "MPSL9130GH";
 const courier_details_key = "MPSL10150GH";
 const saved_address_key = 'MPSL11190GH';
+const resetEmailAddress = 'MPSLXXZY200GH';
 
 const cookeys = {
   USER_DATA_KEY: user,
@@ -55,6 +56,7 @@ const cookeys = {
   DELIVERY_MODE: delivery_mode,
   COURIER_DETAILS_KEY: courier_details_key,
   SAVED_ADDRESS_KEY: saved_address_key,
+  RESET_EMAIL_ADDRESS: resetEmailAddress,
   cookie_expire: 30 // 30 days duration for cookie
 };
 

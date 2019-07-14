@@ -83,9 +83,16 @@ const routes = [
 
   {
     path: "/forgot-password",
-    name: "ForgotPassword",
+    name: "ForgotPasswordEmail",
     component: () =>
-      import(/* webpackChunkName: 'ForgotPassword' */ "./components/ForgotPassword.vue")
+      import(/* webpackChunkName: 'ForgotPassword' */ "./components/ForgotPasswordEmail.vue")
+  },
+
+  {
+    path: "/reset-password",
+    name: "ForgotPasswordConfirm",
+    component: () =>
+      import(/* webpackChunkName: 'ForgotPassword' */ "./components/ForgotPasswordConfirm.vue")
   },
 
   {
