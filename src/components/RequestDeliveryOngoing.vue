@@ -191,6 +191,17 @@ export default {
     }
 
     this.$messaging.onMessage(payload => {
+      if(payload.data.activity == 'Navigation started'){
+        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+        ongoing_txns_data.forEach(function(txns, index){
+          if(txns.sendID == parseInt(payload.data.sendID)){
+            txns.journeyUpdate = payload.data.status;
+            txns.timeAway = payload.data.timeAway;
+          }
+        })
+        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
+        this.ongoingTransactions = ongoing_txns_data;
+      }
       // for multiple delivery updates
       if(payload.data.activity == "Delivery complete"){
           const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
