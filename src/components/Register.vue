@@ -14,7 +14,7 @@
               Copyright &copy; MyPasel {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
           </div>
           <div class="sign-up-terms">
-              <a href="https://mypasel.com/privacy">Privacy</a>&nbsp;<a href="https://mypasel.com/terms">Terms</a>&nbsp;<a href="https://mypasel.com/faqs">FAQs</a>
+              <a target="_blank" href="https://mypasel.com/privacy">Privacy</a>&nbsp;<a target="_blank" href="https://mypasel.com/terms">Terms</a>&nbsp;<a target="_blank" href="https://mypasel.com/faqs">FAQs</a>
           </div>
         </div>
         <div class="col-md-9 register-right">
