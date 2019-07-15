@@ -11,7 +11,7 @@
           </button>
           <br />
           <div class="sign-up-notice">
-              MyPasel &copy; 2019 by Desymal Technologies. All Rights Reserved.
+              MyPasel &copy; {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
           </div>
         </div>
         <div class="col-md-9 register-right">
@@ -447,6 +447,7 @@ export default {
   data() {
     return {
       errorMessage: "",
+      copyrightYear: "",
       companyTerms: false,
       individualTerms: false,
       unsuccessfulRegistrationModal: false,
@@ -605,7 +606,9 @@ export default {
     }
   },
   mounted() {
-
+    let cRightYear = new Date();
+    cRightYear = cRightYear.getUTCFullYear();
+    this.copyrightYear = cRightYear;
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
