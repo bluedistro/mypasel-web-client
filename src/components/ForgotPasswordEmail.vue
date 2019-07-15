@@ -308,8 +308,14 @@ export default {
 
 
 /* for smaller devices devices */
- @media (max-width: 992px){
+ @media (max-width: 700px){
+   .form-body {
+     background-color: #fff;
+   }
 
+   input[type="email"], input[type="email"]:focus {
+     background: #fff;
+   }
  }
 
 /* show background shadow for bigger devices */

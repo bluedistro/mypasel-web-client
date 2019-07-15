@@ -404,10 +404,17 @@ export default {
  }
 
 
-/* for smaller devices devices */
- @media (max-width: 992px){
+ /* for smaller devices devices */
+  @media (max-width: 700px){
+    .form-body {
+      background-color: #fff;
+    }
 
- }
+    input[type="email"], input[type="password"], input[type="text"], input[type="password"]:focus, input[type="text"]:focus, input[type="email"]:focus {
+      background: #fff;
+    }
+
+  }
 
 /* show background shadow for bigger devices */
  @media (min-width: 992px){

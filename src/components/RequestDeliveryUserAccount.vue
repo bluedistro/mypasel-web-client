@@ -283,7 +283,7 @@ export default {
       country: "",
       sex: "",
       file: '',
-      aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
+      aviImage: ""
       // https://picsum.photos/150/150?blur=1&grayscale
     };
   },
@@ -326,7 +326,6 @@ export default {
        // save file
        let formData = new FormData();
        formData.append('file', this.file)
-       const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
        console.log('uploading');
        const payload = {
          avatar: formData
@@ -487,7 +486,8 @@ export default {
     // get user profile image
     return this.$store.dispatch('getProfileImage')
                       .then((resp) => {
-                        // this.aviImage = resp.data.image_url;
+                        // console.log('user image ', resp);
+                        this.aviImage = resp.data.image_url;
                       })
   },
   created() {

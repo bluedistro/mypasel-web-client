@@ -333,6 +333,15 @@ export default {
     }
   },
   computed: {},
+  mounted(){
+    let user = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY))
+    // allow prepaid options based on user registration type
+    if(user.type.toLowerCase() == "individual"){
+      this.disablePrepaidOption = true;
+    }else if(user.type.toLowerCase() == "business"){
+      this.disablePrepaidOption = false;
+    }
+  },
   created() {
     if (this.$store.state.search == true) {
       this.$router.push({ name: "SearchingCourier" });
