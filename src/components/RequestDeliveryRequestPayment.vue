@@ -103,8 +103,10 @@
               <input
                 type="text"
                 id="companyCode"
+                v-model="companyCode"
                 placeholder="Company code"
                 class="form-control"
+                :disabled="disableCompanyCodeField"
                 name=""
                 value=""
               />
@@ -188,7 +190,7 @@
           Confirm Order
         </button>
       </div>
-      <div class="col-md-12 footer-note">
+      <div class="col-md-12 footer-note" v-if="disablePrepaidOption == true">
          * Mobile money payment feature will be introduced very soon. <br/>
          * Prepaid mode of payment is only enabled for businesses registered directly with us. <br/>
          * To register as a recognized business on our platform, contact <span class="footer-note-email">support@mypasel.com</span>
@@ -237,7 +239,8 @@ export default {
       disableMobileMoneyOption: true,
       // modal works
       unsuccessfulBookingModal: false,
-
+      companyCode: '',
+      disableCompanyCodeField: true,
       phoneField: {
         defaultCode: "GH",
         preferred: ["GH"],
@@ -345,6 +348,10 @@ export default {
     if(user.type.toLowerCase() == "individual"){
       this.disablePrepaidOption = true;
     }else if(user.type.toLowerCase() == "business"){
+      if(user.verification_code){
+        this.companyCode = user.verification_code;
+        this.paymentOption = "prepaid";
+      }
       this.disablePrepaidOption = false;
     }
   },
