@@ -93,7 +93,7 @@
           <div class="row dm-price-container">
             <div class="col-md-6 col-lg-6 col-sm-6 col-6">
               <b-img-lazy
-                class="dm-image"                
+                class="dm-image"
                 src="https://web.mypasel.com/img/delivery-truck.png"
                 height="40px"
                 width="100px"
@@ -206,9 +206,9 @@ text-align: left;
 
   input[type=radio]:checked + label {
     border: 1px solid #42d1f5;
-    -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+    /* -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
   -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
-  box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+  box-shadow: 0px 1px 5px 0px rgba(11,123,252,1); */
   }
 
 .dm-image {
