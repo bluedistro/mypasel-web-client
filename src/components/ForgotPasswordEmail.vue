@@ -11,7 +11,7 @@
               </h3>
               <h2 class="text-center">Forgot Password?</h2>
               <p>You can reset your password here.</p>
-              <div v-bind:class="errorClass">
+              <div v-bind:class="errorClass" id="verify-email-error-id">
                 <span v-if="unableToSendEmail">{{ errorMessage }}</span>
               </div>
               <div class="panel-body">
@@ -46,11 +46,11 @@
                 <div>
                   <div class="border-line"></div>
                   <a href="#">
-                    <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
+                    <!-- <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
                       >Login</router-link
-                    >
-                    <router-link class="createAccountBtn" :to="{ name: 'Register', params: {} }"
-                      >Create new account</router-link
+                    > -->
+                    <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
+                      >Login</router-link
                     >
                   </a>
                 </div>
@@ -168,6 +168,11 @@ export default {
             transform: translateZ(0);
     opacity: 1;
   }
+}
+
+#verify-email-error-id {
+  height: 40px;
+  min-height: 40px;
 }
 
 .verify-email-error {
@@ -303,7 +308,7 @@ export default {
    border-left: none;
    border-right: none;
    border-radius: 0;
-   background: #fff;
+   background: #f5f9ff;
  }
 
 

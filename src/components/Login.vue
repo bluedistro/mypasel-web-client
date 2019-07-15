@@ -43,7 +43,7 @@
                   </button>
               </div>
             </div>
-            <div v-bind:class="errorClass">
+            <div v-bind:class="errorClass" id="login-error-id">
               <span v-if="unsuccessfulLogin">{{ errorMessage }}</span>
             </div>
             <!-- <vue-phone-number-input
@@ -86,6 +86,12 @@
             </a>
             <!-- <hr /> -->
           </form>
+          <div class="copyright-div">
+            Copyright &copy; MyPasel {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
+          </div>
+          <div class="terms-div">
+             <a href="https://mypasel.com/privacy">Privacy</a>&nbsp;<a href="https://mypasel.com/terms">Terms</a>&nbsp;<a href="https://mypasel.com/faqs">FAQs</a>
+          </div>
         </div>
       </div>
   </div>
@@ -99,6 +105,7 @@ export default {
     return {
       errorMessage: "",
       errorClass: "",
+      copyrightYear: "",
       // loaderBarControl: false,
       loginData: {
         emailOrPhoneNumber: "",
@@ -177,6 +184,11 @@ export default {
     // if (this.$cookie.get(this.$cookeys.TOKEN_KEY != null)) {
     //   this.$router.push({ name: "RequestDelivery" });
     // }
+  },
+  mounted(){
+    let cRightYear = new Date();
+    cRightYear = cRightYear.getUTCFullYear();
+    this.copyrightYear = cRightYear;
   }
 };
 </script>
@@ -186,6 +198,24 @@ export default {
 
 .login-container {
  /* height: 100vh; */
+}
+
+.copyright-div {
+  margin-top: 40px;
+  font-size: 80%;
+  color: #a2acbd;
+}
+
+.terms-div {
+  /* margin-top: 5px; */
+  text-align: center;
+  font-size: 80%;
+  color: #a2acbd;
+  word-spacing: 5px;
+}
+
+.terms-div a{
+  color: black;
 }
 
 .login-brand {
@@ -324,10 +354,15 @@ export default {
   padding: 7px;
 }
 
+#login-error-id {
+  height: 25px;
+  min-height: 25px;
+}
+
 .login-error{
   /* float: left; */
   font-size: 90%;
-  margin-bottom: 5px;
+  /* margin-bottom: 2px; */
   color: #f57242;
   -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 	        animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
@@ -632,9 +667,10 @@ export default {
   color: #fff;
 } */
 
-#forgot_pswd {
+#forgot_pswd a{
   border: none;
   float: right;
+  text-decoration: none;
 }
 
 .forgot-password-text {
@@ -645,9 +681,9 @@ export default {
 #logreg-forms{
     width:612px;
     margin:10vh auto;
-    height: 300px;
+    height: 360px;
     border-radius: 1px;
-    border: solid #5bc0de 1px;
+    border: solid #5bc0de 2px;
     -webkit-animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
@@ -770,12 +806,12 @@ input[type="password"]:focus, input[type="text"]:focus {
 }
 
 /* forgot password controller */
-#logreg-forms a{
+/* #logreg-forms a{
     display: block;
     padding-top:10px;
     color: #fff;
     text-decoration: none;
-}
+} */
 
 
 

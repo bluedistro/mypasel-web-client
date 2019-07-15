@@ -11,7 +11,7 @@
               </h3> -->
               <h2 class="text-center">Reset Password</h2>
               <p>A confirmation code was sent to the email provided. Please enter the confirmation code and a new password</p>
-              <div v-bind:class="errorClass">
+              <div v-bind:class="errorClass" id="reset-password-error-id">
                 <span v-if="unableToResetPassword">{{ errorMessage }}</span>
               </div>
               <div class="panel-body">
@@ -38,7 +38,7 @@
                         id="userPassword"
                         name="userPassword"
                         v-model="userPassword"
-                        placeholder="password *"
+                        placeholder="new password *"
                         ref="userPassword"
                         class="form-control"
                         type="password"
@@ -61,7 +61,7 @@
                         name="confirmPassword"
                         ref="confirmPassword"
                         v-model="confirmPassword"
-                        placeholder="confirm password *"
+                        placeholder="confirm new password *"
                         class="form-control"
                         type="password"
                         v-validate="'required|confirmed:userPassword'"
@@ -89,11 +89,11 @@
                 <div>
                   <div class="border-line"></div>
                   <a href="#">
-                    <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
+                    <!-- <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
                       >Login</router-link
-                    >
-                    <router-link class="createAccountBtn" :to="{ name: 'Register', params: {} }"
-                      >Create new account</router-link
+                    > -->
+                    <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
+                      >Login</router-link
                     >
                   </a>
                 </div>
@@ -257,6 +257,11 @@ export default {
             transform: translateX(0);
     opacity: 1;
   }
+}
+
+#reset-password-error-id {
+  height: 40px;
+  min-height: 40px;
 }
 
 .reset-password-error {

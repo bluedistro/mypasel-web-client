@@ -283,7 +283,7 @@ export default {
       country: "",
       sex: "",
       file: '',
-      aviImage: ""
+      aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
       // https://picsum.photos/150/150?blur=1&grayscale
     };
   },
@@ -483,11 +483,11 @@ export default {
     this.country = user_data.country;
     this.sex = user_data.sex;
 
-    // get user profile image
+    // get user profile image || TODO: Change image under development. This will be enabled if completed
     return this.$store.dispatch('getProfileImage')
                       .then((resp) => {
                         // console.log('user image ', resp);
-                        this.aviImage = resp.data.image_url;
+                        // this.aviImage = resp.data.image_url;
                       })
   },
   created() {

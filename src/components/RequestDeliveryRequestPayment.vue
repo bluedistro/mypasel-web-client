@@ -188,6 +188,12 @@
           Confirm Order
         </button>
       </div>
+      <div class="col-md-12 footer-note">
+         * Mobile money payment feature will be introduced very soon. <br/>
+         * Prepaid mode of payment is only enabled for businesses registered directly with us. <br/>
+         * To register as a recognized business on our platform, contact <span class="footer-note-email">support@mypasel.com</span>
+           or <span class="footer-note-contact">(+233)208-153-748</span>.
+      </div>
     </div>
     <!-- Unable to book -->
     <div v-if="unsuccessfulBookingModal == true">
@@ -391,9 +397,9 @@ input[type=radio]:checked + label {
   border-radius: 2px;
   margin-top: 20px;
   height: 50px;
-  -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+  /* -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
 -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
+box-shadow: 0px 1px 5px 0px rgba(11,123,252,1); */
 }
 
 .v-name-container{
@@ -422,6 +428,21 @@ text-align: left;
   height: 30px;
   width: 40px;
   margin-top: 10px;
+}
+
+.footer-note {
+  margin-top: 80px;
+  font-size: 80%;
+  color: #737a85;
+  text-align: left;
+}
+
+.footer-note .footer-note-email {
+  color: black;
+}
+
+.footer-note .footer-note-contact {
+  color: black;
 }
 
 .momoPaymentModeIconSize{

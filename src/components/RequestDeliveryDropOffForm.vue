@@ -190,8 +190,8 @@ export default {
       for (var i = 0; i < this.dropOffData.length; i++) {
         this.markers.push({
           position: {
-            lat: this.dropOffData[i].searchAddress.location.lat(),
-            lng: this.dropOffData[i].searchAddress.location.lng()
+            lat: this.dropOffData[i].searchAddress.location.lat,
+            lng: this.dropOffData[i].searchAddress.location.lng
           }
         });
       }

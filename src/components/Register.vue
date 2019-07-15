@@ -11,7 +11,10 @@
           </button>
           <br />
           <div class="sign-up-notice">
-              MyPasel &copy; {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
+              Copyright &copy; MyPasel {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
+          </div>
+          <div class="sign-up-terms">
+              <a href="https://mypasel.com/privacy">Privacy</a>&nbsp;<a href="https://mypasel.com/terms">Terms</a>&nbsp;<a href="https://mypasel.com/faqs">FAQs</a>
           </div>
         </div>
         <div class="col-md-9 register-right">
@@ -139,7 +142,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Your Email *"
+                        placeholder="Email *"
                         name="userEmail"
                         v-validate="'required|email'"
                         :class="{ input: true, 'is-danger': errors.has('userForm.userEmail') }"
@@ -654,6 +657,16 @@ export default {
 .sign-up-notice {
   margin-top: 20px;
   font-size: 90%;
+}
+
+.sign-up-terms{
+  margin-top: 5px;
+  font-size: 90%;
+  word-spacing: 5px;
+}
+
+.sign-up-terms a{
+  color: black;
 }
 
 .terms{
