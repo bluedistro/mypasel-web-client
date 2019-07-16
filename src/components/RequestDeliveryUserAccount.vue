@@ -508,7 +508,7 @@ export default {
   created() {
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
-      getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
+      getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
                   1 lowercase letter and 1 number`,
       validate: value => {
         var strongRegex = new RegExp(
