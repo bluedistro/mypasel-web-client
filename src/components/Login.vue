@@ -62,7 +62,7 @@
               v-model="loginData.emailOrPhoneNumber"
               id="inputPhoneNumber"
               class="form-control emailPhoneField"
-              placeholder="email or phone number"
+              placeholder="username or phone number"
               required
             />
 

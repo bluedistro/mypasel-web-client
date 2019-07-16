@@ -201,10 +201,11 @@ export default {
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
-                  1 lowercase letter, 1 number, and one special character`,
+                  1 lowercase letter and 1 number`,
       validate: value => {
         var strongRegex = new RegExp(
-          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})"
+          // (?=.*[!@#\$%\^&\*])
+          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
         );
         return strongRegex.test(value);
       }

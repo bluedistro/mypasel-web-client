@@ -6,8 +6,8 @@
           <b-img src="https://web.mypasel.com/img/brand-logo.png" fluid rounded="circle" alt="brand-logo"></b-img>
           <h3>Akwaaba to MyPasel</h3>
           <p>Package Delivery and Logistics Made Easy!</p>
-          <button type="button" class="loginBtn" name="button">
-            <router-link id="loginBtnText" :to="{ name: 'Login', params: {} }">Login</router-link>
+          <button type="button" class="loginBtn" name="button" @click="goToLogin">
+            Login
           </button>
           <br />
           <div class="sign-up-notice">
@@ -100,23 +100,53 @@
                       >
                     </div>
                     <div class="form-group">
-                      <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Password *"
-                        value=""
-                        name="userPassword"
-                        ref="userPassword"
-                        data-vv-delay="200"
-                        :class="{ input: true, 'is-danger': errors.has('userForm.userPassword') }"
-                        v-validate="'required|verify_password'"
-                        v-model="userData.userPassword"
-                      />
+                      <div class="row">
+                        <div class="col-md-11 col-sm-11 col-11 col-lg-11">
+                          <input
+                            type="password"
+                            class="form-control"
+                            placeholder="Password *"
+                            value=""
+                            name="userPassword"
+                            id="userPassword"
+                            ref="userPassword"
+                            data-vv-delay="200"
+                            :class="{ input: true, 'is-danger': errors.has('userForm.userPassword') }"
+                            v-validate="'required|verify_password'"
+                            v-model="userData.userPassword"
+                          />
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-1 col-lg-1 view-password">
+                          <a href="#" @click="togglePasswordVisiblityController('user')">
+                            <font-awesome-icon icon="eye" />
+                          </a>
+                        </div>
+                      </div>
                       <span v-show="errors.first('userForm.userPassword')" class="help is-danger"
                         >* {{ errors.first("userForm.userPassword") }}</span
                       >
                     </div>
                     <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="username *"
+                        value=""
+                        v-model="userData.username"
+                        v-validate="'required|verify_username'"
+                        :class="{
+                          input: true,
+                          'is-danger': errors.has('userForm.username')
+                        }"
+                        name="username"
+                      />
+                      <span
+                        v-show="errors.first('userForm.username')"
+                        class="help is-danger"
+                        >*{{ errors.first("userForm.username") }}</span
+                      >
+                    </div>
+                    <!-- <div class="form-group">
                       <input
                         type="password"
                         class="form-control"
@@ -135,7 +165,7 @@
                         class="help is-danger"
                         >*{{ errors.first("userForm.confirmUserPassword") }}</span
                       >
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -267,21 +297,31 @@
                       >
                     </div>
                     <div class="form-group">
-                      <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Password *"
-                        value=""
-                        name="companyEmployeePassword"
-                        ref="companyEmployeePassword"
-                        data-vv-delay="200"
-                        :class="{
-                          input: true,
-                          'is-danger': errors.has('companyForm.companyEmployeePassword')
-                        }"
-                        v-validate="'required|verify_password'"
-                        v-model="companyData.companyEmployeePassword"
-                      />
+                      <div class="row">
+                        <div class="col-md-11 col-11 col-sm-11 col-lg-11">
+                          <input
+                            type="password"
+                            class="form-control"
+                            placeholder="Password *"
+                            value=""
+                            id="companyEmployeePassword"
+                            name="companyEmployeePassword"
+                            ref="companyEmployeePassword"
+                            data-vv-delay="200"
+                            :class="{
+                              input: true,
+                              'is-danger': errors.has('companyForm.companyEmployeePassword')
+                            }"
+                            v-validate="'required|verify_password'"
+                            v-model="companyData.companyEmployeePassword"
+                          />
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-1 col-lg-1 view-password">
+                          <a href="#" @click="togglePasswordVisiblityController('company')">
+                            <font-awesome-icon icon="eye" />
+                          </a>
+                        </div>
+                      </div>
                       <span
                         v-show="errors.first('companyForm.companyEmployeePassword')"
                         class="help is-danger"
@@ -289,6 +329,26 @@
                       >
                     </div>
                     <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="employee username *"
+                        value=""
+                        v-model="companyData.companyEmployeeUsername"
+                        v-validate="'required|verify_username'"
+                        :class="{
+                          input: true,
+                          'is-danger': errors.has('companyForm.companyEmployeeUsername')
+                        }"
+                        name="companyEmployeeUsername"
+                      />
+                      <span
+                        v-show="errors.first('companyForm.companyEmployeeUsername')"
+                        class="help is-danger"
+                        >*{{ errors.first("companyForm.companyEmployeeUsername") }}</span
+                      >
+                    </div>
+                    <!-- <div class="form-group">
                       <input
                         type="password"
                         class="form-control"
@@ -307,7 +367,7 @@
                         class="help is-danger"
                         >*{{ errors.first("companyForm.confirmCompanyEmployeePassword") }}</span
                       >
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -460,7 +520,7 @@ export default {
         firstName: "",
         lastName: "",
         userPassword: "",
-        confirmUserPassword: "",
+        username: "",
         userEmail: "",
         userPhone: "",
         sex: '',
@@ -477,7 +537,7 @@ export default {
         companyEmployeeName: "",
         companyEmployeeEmail: "",
         companyEmployeePassword: "",
-        confirmEmployeeCompanyPassword: "",
+        companyEmployeeUsername: "",
         companyEmployeePhone: "",
         companyEmployeeCountry: "Ghana",
         companyEmployeeReferenceNumber: "",
@@ -511,16 +571,31 @@ export default {
       //  redirect to Login page
       this.$router.push({ name: "Login" });
     },
+    goToLogin(){
+      this.$router.push({name: 'Login'})
+    },
+    togglePasswordVisiblityController(type){
+      if(type === 'user'){
+        var fieldType = document.getElementById("userPassword");
+      }else if(type === 'company'){
+        var fieldType = document.getElementById("companyEmployeePassword");
+      }
+      if(fieldType.type === "password"){
+        fieldType.type = "text";
+      }else{
+        fieldType.type = "password";
+      }
+    },
     // reset company form field
     onCompanyFormReset(evt) {
       evt.preventDefault();
       this.companyData.companyEmployeeName = null;
       this.companyData.companyEmployeeEmail = null;
       this.companyData.companyEmployeePassword = null;
-      this.companyData.confirmCompanyEmployeePassword = null;
+      this.companyData.companyEmployeeUsername = null;
       this.companyData.companyEmployeePhone = null;
       this.companyData.companyEmployeeCountry = null;
-      this.companyEmployeeReferenceNumber = null;
+      this.companyData.companyEmployeeReferenceNumber = null;
       this.companyEmployeeSex = null;
     },
     // reset the user form field
@@ -529,7 +604,7 @@ export default {
       this.userData.firstName = null;
       this.userData.lastName = null;
       this.userData.userPassword = null;
-      this.userData.confirmUserPassword = null;
+      this.userData.username = null;
       this.userData.userEmail = null;
       this.userData.userPhone = null;
       this.userData.sex = [];
@@ -614,11 +689,22 @@ export default {
     this.copyrightYear = cRightYear;
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
-      getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
-                  1 lowercase letter, 1 number, and one special character`,
+      getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
+                  1 lowercase letter and 1 number.`,
       validate: value => {
         var strongRegex = new RegExp(
-          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})"
+          // (?=.*[!@#\$%\^&\*])
+          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
+        );
+        return strongRegex.test(value);
+      }
+    });
+    // verify user name
+    this.$validator.extend("verify_username", {
+      getMessage: field => `The username should contain at least a letter and be between 5 to 20 characters`,
+      validate: value => {
+        var strongRegex = new RegExp(
+          "^(?=.*[a-z])(?=.{5,20})", "i"
         );
         return strongRegex.test(value);
       }
@@ -630,6 +716,14 @@ export default {
 
 <style lang="css" scoped>
 
+.view-password {
+  vertical-align: middle;
+  float: left;
+  margin-left: -15px;
+  width: 100vw;
+  border-bottom: solid #ccc 1px;
+}
+
 .individual-register-btns {
   margin-bottom: 80px;
 }
@@ -640,6 +734,14 @@ export default {
 
 .company-register-btns {
 
+}
+
+#userPassword {
+  margin-top: 5px;
+}
+
+#companyEmployeePassword {
+  margin-top: 4px;
 }
 
 .company-terms-accept {
@@ -735,9 +837,9 @@ export default {
     border-radius: 1.5rem;
     padding: 2%;
     width: 60%;
-    background: #f8f9fa;
-    font-weight: bold;
-    color: #383d41;
+    background: #5bc0de;
+    /* font-weight: bold; */
+    color: #fff;
     margin-top: 5%;
     margin-bottom: 3%;
     cursor: pointer;

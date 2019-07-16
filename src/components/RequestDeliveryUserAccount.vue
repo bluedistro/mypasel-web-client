@@ -102,6 +102,19 @@
                       />
                     </div>
                     <div class="form-group">
+                      <label for="fullName">Username</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        aria-describedby="nameHelp"
+                        placeholder="username"
+                        required
+                        disabled
+                        v-model="username"
+                      />
+                    </div>
+                    <div class="form-group">
                       <label for="phoneNumber">Phone number</label>
                       <input
                         type="text"
@@ -278,6 +291,7 @@ export default {
       newPassword: "",
       confirmNewPassword: "",
       phoneNumber: "",
+      username: '',
       emailAddress: "",
       fullName: "",
       country: "",
@@ -482,6 +496,7 @@ export default {
     this.fullName = user_data.name;
     this.country = user_data.country;
     this.sex = user_data.sex;
+    this.username = user_data.username;
 
     // get user profile image || TODO: Change image under development. This will be enabled if completed
     return this.$store.dispatch('getProfileImage')
@@ -494,10 +509,11 @@ export default {
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be eight characters long and contain at least: 1 uppercase letter
-                  1 lowercase letter, 1 number, and one special character`,
+                  1 lowercase letter and 1 number`,
       validate: value => {
         var strongRegex = new RegExp(
-          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})"
+          // (?=.*[!@#\$%\^&\*])
+          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
         );
         return strongRegex.test(value);
       }
