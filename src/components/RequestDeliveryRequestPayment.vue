@@ -351,8 +351,10 @@ export default {
       if(user.verification_code){
         this.companyCode = user.verification_code;
         this.paymentOption = "prepaid";
-      }
-      this.disablePrepaidOption = false;
+	this.disablePrepaidOption = false;
+      }else{
+         this.disablePrepaidOption = true;
+       }
     }
   },
   created() {
