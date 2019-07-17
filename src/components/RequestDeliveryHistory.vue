@@ -72,7 +72,7 @@
             </li>
           </transition-group>
           <!-- pagination -->
-          <div class="row">
+          <div class="row pagination">
             <b-pagination
               v-model="currentPage"
               :total-rows="rows"
@@ -208,7 +208,7 @@ export default {
 
 .history-data {
     border: solid #ccc 1px;
-    border-radius: 3px;
+    border-radius: 1px;
     background: #f9fff9;
 }
 
@@ -216,6 +216,10 @@ export default {
   margin-bottom: 5px;
   /*  */
 
+}
+
+.general-container {
+  margin-left: 130px;
 }
 
 .transaction-header {
@@ -234,7 +238,7 @@ export default {
   text-align: left;
   padding-left: 5px;
   /*  */
-  font-family: "Lucida Console", Monaco, monospace;
+  /* font-family: "Lucida Console", Monaco, monospace; */
   font-size: 15px;
   letter-spacing: 1px;
   word-spacing: 0.5px;
@@ -251,7 +255,7 @@ export default {
   padding-left: 5px;
   /*  */
   /*  */
-  font-family: "Lucida Console", Monaco, monospace;
+  /* font-family: "Lucida Console", Monaco, monospace; */
   font-size: 15px;
   letter-spacing: 1px;
   word-spacing: 0.5px;
@@ -320,6 +324,10 @@ export default {
   text-align: left;
 }
 
+.pagination {
+  justify-content: center;
+}
+
 .transaction-history-header {
   margin-bottom: 20px;
   margin-left: 2px;
@@ -335,7 +343,17 @@ export default {
 
 @media screen and (max-width: 768px){
   .general-container {
-    margin-left: 13px;
+    margin-left: -3px;
+  }
+
+  .tickers{
+    display: none;
+    /* text-align: right; */
+  }
+
+  .pagination {
+    justify-content: center;
+    /* text-align: center; */
   }
 
 }
