@@ -169,7 +169,6 @@ export default {
     clearInterval(this.ongoingTransactionsPolling);
   },
   created() {
-    this.pollOngoingTransactionsData()
     // prevent user from going back to courier Found after ongoing is loaded and instead redirect them to request delivery page
     window.onpopstate = event => {
       if (this.$store.state.courierFoundPage == true) {
@@ -188,6 +187,9 @@ export default {
     if (this.ongoingTransactions == null) {
       this.ongoingTransactions = [];
       this.message = "You have no ongoing transactions"
+    }else{
+      this.pollOngoingTransactionsData()
+      console.log('api ongoing default mount', this.ongoingTransactions);
     }
 
     this.$messaging.onMessage(payload => {

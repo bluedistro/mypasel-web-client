@@ -17,7 +17,7 @@ const checkFCMTokenPresence = ({ commit }) => {
 
 const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
-    // check whether login id is email or phone number
+    // check whether login id is username or phone number
     const params = user.emailOrPhoneNumber.match(/[a-z]/i) ? {username: user.emailOrPhoneNumber, password: user.password} : {phoneNumber: user.emailOrPhoneNumber, password: user.password}
     const path = "https://api.desymal.com/user/account/verify";
     axios

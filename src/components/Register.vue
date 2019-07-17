@@ -132,6 +132,8 @@
                         class="form-control"
                         placeholder="username *"
                         value=""
+                        pattern="[^\s]+"
+                        title="No spaces allowed in username"
                         v-model="userData.username"
                         v-validate="'required|verify_username'"
                         :class="{
@@ -334,6 +336,8 @@
                         class="form-control"
                         placeholder="employee username *"
                         value=""
+                        pattern="[^\s]+"
+                        title="No spaces allowed in username"
                         v-model="companyData.companyEmployeeUsername"
                         v-validate="'required|verify_username'"
                         :class="{
@@ -704,6 +708,7 @@ export default {
       getMessage: field => `The username should contain at least a letter and be between 5 to 20 characters`,
       validate: value => {
         var strongRegex = new RegExp(
+          // "^[A-Za-z][A-Za-z0-9]*$", "i"
           "^(?=.*[a-z])(?=.{5,20})", "i"
         );
         return strongRegex.test(value);

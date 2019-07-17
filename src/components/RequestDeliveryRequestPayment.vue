@@ -447,11 +447,11 @@ text-align: left;
 }
 
 .footer-note .footer-note-email {
-  color: black;
+  color: #5bc0de;
 }
 
 .footer-note .footer-note-contact {
-  color: black;
+  color: #5bc0de;
 }
 
 .momoPaymentModeIconSize{
