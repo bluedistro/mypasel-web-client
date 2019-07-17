@@ -26,6 +26,9 @@
     </div> -->
     <div class="loader">
       <div class="loader--text"></div>
+      <div class="timer-display">
+         <span v-bind:style="{ 'color':countDownTextColor }">{{ countdownMinutes }} : {{ countdownSeconds }}</span>
+      </div>
       <button
         type="button"
         class="btn btn-info btn-sm cancel-order"
@@ -130,6 +133,25 @@
         </template>
       </b-modal>
     </div>
+    <!-- courier search timeout -->
+    <!-- Courier found -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="courier-search-timeout-modal"
+        size="sm"
+        id="courier-search-timeout-modal"
+        v-model="courierSearchTimeoutModal"
+        title="Courier Search time out"
+      >
+        <p class="courier-search-timeout-modal-text">No courier responded to your request.</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button size="sm" variant="outline-success" @click="timedOutController">Continue</b-button>
+        </template>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -147,6 +169,7 @@ export default {
       cancellationReason: "",
       hideTabs: true,
       courierFoundModal: false,
+      courierSearchTimeoutModal: false,
       successfulBookingModal: false,
       unsuccessfulBookingModal: false,
       bookingCancellationFormModal: false,
@@ -154,7 +177,11 @@ export default {
       //
       deliveryMode: null,
       fcm: this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY),
-      courierFoundStatus: false
+      courierFoundStatus: false,
+      // countdown timer
+      countdownMinutes: null,
+      countdownSeconds: null,
+      countDownTextColor: '#48f542'
     };
   },
   methods: {
@@ -162,6 +189,10 @@ export default {
     courierDetails() {
       this.$refs["courier-found-modal"].hide();
       this.$router.push({ name: "CourierFound" });
+    },
+    timedOutController(){
+      this.$refs["courier-search-timeout-modal"].hide();
+      this.$router.push({name: 'RequestDelivery'});
     },
     // stop the cancellation process
     stopCancellationProcess() {
@@ -259,7 +290,33 @@ export default {
       }
     });
   },
-  mounted() {},
+  mounted() {
+    // countdown from 5 minutes
+    var start = new Date().getTime()
+    var countdown = new Date(start + 5*60000);
+    // set countdown
+    var x = setInterval(() => {
+      var now = new Date().getTime();
+      var distance = countdown - now;
+      this.countdownMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      this.countdownSeconds = Math.floor((distance % (1000 * 60)) / 1000);
+      if(distance < 60000){
+        this.countDownTextColor = '#c43d14';
+      }
+
+      if(distance < 1){
+        this.courierSearchTimeoutModal = true;
+        clearInterval(x);
+      }
+
+    })
+
+    // redirect back to request delivery after five minutes of no answer
+    // setTimeout(() => {
+    //
+    //   this.$router.push({name : 'RequestDelivery'})
+    // }, 300000)
+  },
   beforeDestroy() {}
 };
 </script>
@@ -472,6 +529,18 @@ width: 280px;
   margin-top: -10px;
 }
 
+.timer-display {
+  color: #808996;
+  height: 20px;
+  width: 300px;
+  background-color: #e0dfd7;
+  position: fixed;
+  top: 84%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -10px;
+}
+
 @media screen and (max-width:500px){
   .cancel-order{
     height: 50px;
@@ -481,6 +550,18 @@ width: 280px;
     left: 50%;
     margin-left: -150px;
     margin-top: 70px;
+  }
+
+  .timer-display {
+    color: #808996;
+    height: 20px;
+    width: 300px;
+    background-color: #e0dfd7;
+    position: fixed;
+    top: 86%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -10px;
   }
 
 

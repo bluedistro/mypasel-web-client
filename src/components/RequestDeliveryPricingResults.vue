@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="pricing-div">
-    <h5 class="pricing-header">Pricing</h5>
+    <h5 class="pricing-header">Select Pricing</h5>
     <div class="row">
       <!-- motorcycle -->
       <div class="col-md-4 col-lg-4 col-sm-6 col-6">
@@ -197,6 +197,7 @@ text-align: left;
     height: 60px;
     border: solid #ccc 1px;
     border-radius: 1px;
+    background-color: #f0f2f5;
   }
 
   .input-hidden {
@@ -206,9 +207,11 @@ text-align: left;
 
   input[type=radio]:checked + label {
     border: 1px solid #42d1f5;
-    /* -webkit-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
-  -moz-box-shadow: 0px 1px 5px 0px rgba(11,123,252,1);
-  box-shadow: 0px 1px 5px 0px rgba(11,123,252,1); */
+    border-radius: 1px;
+    background-color: #f0f2f5;
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(11,123,252,1);
+  -moz-box-shadow: 0px 1px 3px 0px rgba(11,123,252,1);
+  box-shadow: 0px 1px 3px 0px rgba(11,123,252,1);
   }
 
 .dm-image {
