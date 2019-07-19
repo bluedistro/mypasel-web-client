@@ -143,11 +143,11 @@
         size="sm"
         id="courier-search-timeout-modal"
         v-model="courierSearchTimeoutModal"
-        title="Courier Search time out"
+        title="Courier search timed out"
       >
-        <p class="courier-search-timeout-modal-text">No courier responded to your request.</p>
+        <p class="courier-search-timeout-modal-text">No courier responded to your request. Please place another request</p>
         <template slot="modal-footer" slot-scope="{ ok }">
-          <b-button size="sm" variant="outline-success" @click="timedOutController">Continue</b-button>
+          <b-button size="sm" variant="outline-success" @click="timedOutController">Okay</b-button>
         </template>
       </b-modal>
     </div>

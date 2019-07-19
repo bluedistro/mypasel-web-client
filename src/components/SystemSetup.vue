@@ -26,7 +26,6 @@ export default {
     // call function to get newly generated FCM token and set it up as cookie
     async resolveFCMIssue() {
       const tokenExpect = await this.generateFCM();
-      console.log('token expect ', tokenExpect);
       if (tokenExpect != null || tokenExpect != "error") {
         // after resolve
         setTimeout(() => {

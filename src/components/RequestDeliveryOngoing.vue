@@ -154,8 +154,29 @@ export default {
     // refresh ongoing transactions data every 3 seconds
     pollOngoingTransactionsData(){
       this.ongoingTransactionsPolling = setInterval(() => {
-        this.ongoingTransactions = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-      }, 3000)
+        // update ongoing transactions data in cookie
+        const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+        this.$store.dispatch('getOngoingTransactions', user_id)
+                          .then((resp) => {
+                            // get updated ongoingTransactions data from cookie and assign to the data object
+                            this.ongoingTransactions = resp.data
+                            if(this.ongoingTransactions){
+                              this.ongoingTransactions.forEach(function(txns, index){
+                                for (let i = 0; i < parseInt(txns.step); i++) {
+                                  const step = `step${i}`;
+                                  txns[step] = "active";
+                                }
+                              })
+                              // sync cookie info
+                              VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
+                            }else{
+                              // reset to empty array
+                              this.ongoingTransactions = []
+                              this.message = 'No ongoing transactions'
+                            }
+                          })
+                          .catch((err) => {})
+      }, 10000)
     },
   },
   filters: {
@@ -182,15 +203,9 @@ export default {
         this.$router.push("/");
       }
     };
+    //Begin continuous polling
+    this.pollOngoingTransactionsData();
 
-    this.ongoingTransactions = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-    if (this.ongoingTransactions == null) {
-      this.ongoingTransactions = [];
-      this.message = "You have no ongoing transactions"
-    }else{
-      this.pollOngoingTransactionsData()
-      console.log('api ongoing default mount', this.ongoingTransactions);
-    }
 
     this.$messaging.onMessage(payload => {
       if(payload.data.activity == 'Navigation started'){
@@ -213,6 +228,7 @@ export default {
 
             }
           })
+          // sync cookie info
           VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
           this.ongoingTransactions = ongoing_txns_data;
       }
@@ -225,6 +241,7 @@ export default {
               txns.timeAway = payload.data.timeAway + message;
             }
          })
+         // sync cookie info
          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
          this.ongoingTransactions = ongoing_txns_data;
       }
@@ -261,7 +278,7 @@ export default {
           //     VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
           // }
         });
-        // set cookie data back
+        // // sync cookie info
         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
         this.ongoingTransactions = ongoing_txns_data;
       }
