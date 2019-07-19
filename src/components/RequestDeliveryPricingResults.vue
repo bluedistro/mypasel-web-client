@@ -187,7 +187,7 @@ text-align: left;
     border-radius: 2px;
     background-color: #fff;
     padding: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   /* input radio */

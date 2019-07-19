@@ -79,11 +79,13 @@
                   ></delivery-date>
                 </div>
               </div> -->
-              <div class="col-md-12 col-lg-12 col-sm-12 col-12 proceedBtnDiv">
+
+              <!-- proceed to payment button -->
+              <div>
                 <button
                   type="button"
                   @click="proceedToPayment"
-                  class="btn btn-info btn-sm checkPricingBtn"
+                  class="btn btn-info btn-sm proceedToPaymentBtn"
                   data-v-step="6"
                   name="button"
                 >
@@ -408,6 +410,12 @@ export default {
   border-radius: 1px;
 }
 
+.proceedToPaymentBtn {
+  width: 100%;
+  border-radius: 1px;
+  margin-bottom: 20px;
+}
+
 .checkPricingDiv {
   margin-bottom: 10px;
 }
@@ -443,10 +451,6 @@ export default {
 .courierNeedDiv {
   text-align: center;
   margin-bottom: 10px;
-}
-
-.proceedBtnDiv {
-  margin-bottom: 30px;
 }
 
 /* save pickup info switch */

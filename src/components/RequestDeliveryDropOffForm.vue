@@ -92,7 +92,7 @@
                     btn-sm  removeDropOffBtn"
           @click="removeDropOff"
         >
-          <font-awesome-icon icon="times" />&nbsp;Remove a dropoff
+          <font-awesome-icon icon="times" />&nbsp;Remove dropoff
         </button>
         <button
           type="button"
@@ -101,7 +101,7 @@
                     btn-sm addDropOffBtn"
           @click="addDropOff"
         >
-          <font-awesome-icon icon="plus" />&nbsp;Add a dropoff
+          <font-awesome-icon icon="plus" />&nbsp;Add dropoff
         </button>
       </div>
     </div>
