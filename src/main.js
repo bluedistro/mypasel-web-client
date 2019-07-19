@@ -182,7 +182,7 @@ firebase
     VueCookie.set(cookeys.FCM_TOKEN_KEY, token, { expires: cookeys.cookie_expire });
   })
   .catch(err => {
-    console.log("Unable to receive notification...");
+    // console.log("Unable to receive notification...");
   });
 
 // click away directive

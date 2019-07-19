@@ -134,7 +134,6 @@
       </b-modal>
     </div>
     <!-- courier search timeout -->
-    <!-- Courier found -->
     <div>
       <b-modal
         no-close-on-backdrop
@@ -308,14 +307,7 @@ export default {
         this.courierSearchTimeoutModal = true;
         clearInterval(x);
       }
-
     })
-
-    // redirect back to request delivery after five minutes of no answer
-    // setTimeout(() => {
-    //
-    //   this.$router.push({name : 'RequestDelivery'})
-    // }, 300000)
   },
   beforeDestroy() {}
 };

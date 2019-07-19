@@ -12,19 +12,23 @@
 </template>
 
 <script>
+import VueCookie from 'vue-cookie';
+import cookeys from '../cookeys';
 export default {
   name: "SystemSetup",
   data() {
     return {
       resetFCMModal: false,
-      setupMessage: "Please hold on a second while we setup you up...",
-      errorMessage: "Failed to set up system. Please click on resolve issue to fix it"
+      setupMessage: "Requesting browser permission to configure notifications...",
+      errorMessage: "Failed to set up system. Please click on resolve issue to fix it",
+      redirectToLogin: false,
     };
   },
   methods: {
     // call function to get newly generated FCM token and set it up as cookie
     async resolveFCMIssue() {
       const tokenExpect = await this.generateFCM();
+      console.log('token expect ', tokenExpect);
       if (tokenExpect != null || tokenExpect != "error") {
         // after resolve
         setTimeout(() => {
@@ -33,14 +37,15 @@ export default {
           });
           this.$router.push({ name: "RequestDelivery" });
         }, 2000);
-      } else if (tokenExpect == "error") {
-        this.setupMessage =
-          "System issue could not be resolved. \
-           Please accept notificatons for this site if you haven't and try logging in again.";
-        setTimeout(() => {
-          this.$router.push({ name: "Login" });
-        }, 5000);
       }
+      // else if (tokenExpect == "error") {
+      //   this.setupMessage =
+      //     "System issue could not be resolved. \
+      //      Please accept notificatons for this site if you haven't and try logging in again.";
+      //   setTimeout(() => {
+      //     this.$router.push({ name: "Login" });
+      //   }, 5000);
+      // }
     },
     // try to generate FCM token again on first try failure
     generateFCM() {
@@ -51,11 +56,29 @@ export default {
           .then(token => {
             resolve(token);
           })
-          .catch(error => {
+          .catch((error) => {
             const err = "error";
+            this.setupMessage = "Browser notifications permission was not granted and blocked instead. Please allow notifications."
+            setTimeout(() => {
+              this.redirectToLogin = true;
+            },5000);
             reject(err);
           });
       });
+    }
+  },
+  watch: {
+    redirectToLogin(val){
+      this.setupMessage = "Unable to get notification permission. Please allow notification for this site. Redirecting to login page..."
+      setTimeout(() => {
+        this.$store.dispatch('logout')
+                   .then((resp) => {
+                     this.$router.push({name: 'Login'})
+                   })
+                   .catch((error) => {
+                     //
+                   })
+      }, 5000);
     }
   },
   mounted() {
@@ -63,6 +86,7 @@ export default {
     this.$store
       .dispatch("checkFCMTokenPresence")
       .then(resp => {
+        console.log('mounted info ', resp);
         // reroute to request delivery if token present
         this.$router.push({ name: "RequestDelivery" });
       })
