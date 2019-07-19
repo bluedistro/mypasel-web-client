@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import VueCookie from 'vue-cookie';
-import cookeys from '../cookeys';
 export default {
   name: "SystemSetup",
   data() {
@@ -71,6 +69,7 @@ export default {
     redirectToLogin(val){
       this.setupMessage = "Unable to get notification permission. Please allow notification for this site. Redirecting to login page..."
       setTimeout(() => {
+        // revert login status and clear all cookies
         this.$store.dispatch('logout')
                    .then((resp) => {
                      this.$router.push({name: 'Login'})
