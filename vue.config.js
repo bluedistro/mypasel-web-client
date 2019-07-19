@@ -1,8 +1,12 @@
 // vue.config.js
 
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
+//   watchOptions: {
+//       poll: true
+// }
+
   // devServer: {
   //   proxy: {
   //     "/*": {
@@ -11,7 +15,7 @@ module.exports = {
   //     }
   //   }
   // },
-  configureWebpack: {
-    plugins: [new BundleAnalyzerPlugin()]
-  }
+  // configureWebpack: {
+  //   plugins: [new BundleAnalyzerPlugin()]
+  // }
 };

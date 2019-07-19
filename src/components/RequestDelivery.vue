@@ -255,10 +255,14 @@ export default {
       this.selectedPricingOption = evt;
     },
     getDropOffInfo(evt) {
+      // reset pricing options after each location address change
+      this.pricingDetails = {};
       this.emittedFormData.dropOffData = evt;
     },
     // get emitted pickup info
     getPickupInfo(evt) {
+      // reset pricing options after each location address change
+      this.pricingDetails = {};
       // store pickup searchAddress info temporarily
       this.savedPickUpData = evt;
       this.emittedFormData.pickupData = evt;
