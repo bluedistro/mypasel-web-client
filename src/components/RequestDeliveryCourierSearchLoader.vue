@@ -304,7 +304,7 @@ export default {
         this.countDownTextColor = '#c43d14';
       }
 
-      if(distance < 1){
+      if(distance < 1000){
         this.courierSearchTimeoutModal = true;
         clearInterval(x);
       }
