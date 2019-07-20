@@ -176,7 +176,7 @@ export default {
                             }
                           })
                           .catch((err) => {})
-      }, 10000)
+      }, 25000)
     },
   },
   filters: {
