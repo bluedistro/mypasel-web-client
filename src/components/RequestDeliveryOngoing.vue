@@ -24,18 +24,18 @@
               <div class="col-md-10 col-lg-10 col-8 col-sm-8">
                 <h3>Ongoing Transactions</h3>
               </div>
-              <div class="col-md-2 col-lg-2 col-4 col-sm-4 totalTransactions">
+              <div class="col-md-2 col-lg-2 col-5 col-sm-5 totalTransactions">
                 {{ ongoingTransactions.length }} Transaction(s)
               </div>
             </div>
           </div>
           <div class="row item-container" v-for="(i, index) in ongoingTransactions" :key="index">
-            <div class="col-md-10 col-sm-10 col-9 col-lg-10 transaction">
+            <div class="col-md-7 col-sm-12 col-12 col-lg-8 transaction">
               <progress-steps v-bind:step1="i.step0" v-bind:step2="i.step1" v-bind:step3="i.step2">
               </progress-steps>
-              <div class="status">
-                {{ i.status }}
-              </div>
+            </div>
+            <div class="status col-md-3 col-sm-0 col-0 col-lg-2">
+              {{ i.status }}
             </div>
             <!-- <div class="item-container"></div> -->
             <div class="col-md-2 col-sm-2 col-3 col-lg-1 moreBtn">
@@ -162,10 +162,11 @@ export default {
                             this.ongoingTransactions = resp.data
                             if(this.ongoingTransactions){
                               this.ongoingTransactions.forEach(function(txns, index){
-                                for (let i = 0; i < parseInt(txns.step); i++) {
-                                  const step = `step${i}`;
+                                for (let i = 0; i < txns.step; i++) {
+                                  let step = `step${i}`;
                                   txns[step] = "active";
                                 }
+                                txns.journeyUpdate = txns.status;
                               })
                               // sync cookie info
                               VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
@@ -176,7 +177,7 @@ export default {
                             }
                           })
                           .catch((err) => {})
-      }, 25000)
+      }, 10000)
     },
   },
   filters: {
@@ -211,10 +212,11 @@ export default {
                         this.ongoingTransactions = resp.data
                         if(this.ongoingTransactions){
                           this.ongoingTransactions.forEach(function(txns, index){
-                            for (let i = 0; i < parseInt(txns.step); i++) {
-                              const step = `step${i}`;
+                            for(let i = 0; i < txns.step; i++) {
+                              let step = `step${i}`;
                               txns[step] = "active";
                             }
+                            txns.journeyUpdate = txns.status;
                           })
                           // sync cookie info
                           VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
@@ -317,6 +319,10 @@ export default {
   .status {
     /* font-weight: bold; */
     color: #3aac5d;
+    margin-top: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .totalTransactions {
@@ -410,9 +416,24 @@ export default {
 /* mobile display of progress component */
 @media screen and (max-width: 700px){
   .transaction {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     margin-top: 10px;
-    margin-left: -20px;
+    margin-left: -35px;
+  }
+
+  .status {
+    /* font-weight: bold; */
+    color: #3aac5d;
+    margin-top: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .moreBtn {
+    vertical-align: middle;
+    /* margin-top: 25px; */
+    /* margin-bottom: 20px; */
   }
 
 }

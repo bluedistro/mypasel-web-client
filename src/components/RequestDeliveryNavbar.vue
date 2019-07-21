@@ -85,6 +85,7 @@ export default {
     return {
       userData: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)),
       totalOngoings: 0,
+      ongoingCount: null,
       // handle individual nav-link border
       rdClassStyle: "nav-item",
       orClassStyle: "nav-item",
@@ -182,6 +183,14 @@ export default {
         .catch(error => {
           console.log("error");
         });
+    },
+    pollOngoingTxns(){
+      this.ongoingCount = setInterval(() => {
+        const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+        if (ongoingLength && ongoingLength.length > 0) {
+          this.totalOngoings = ongoingLength.length;
+        }
+      }, 5000)
     }
   },
   mounted() {
@@ -189,8 +198,13 @@ export default {
     if (ongoingLength && ongoingLength.length > 0) {
       this.totalOngoings = ongoingLength.length;
     }
+    // set polling to check for the update length of ongoing transactions
+    this.pollOngoingTxns();
   },
-  created() {}
+  created() {},
+  beforeDestroy(){
+    clearInterval(this.ongoingCount);
+  }
 };
 </script>
 
