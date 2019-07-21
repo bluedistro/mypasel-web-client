@@ -203,6 +203,28 @@ export default {
         this.$router.push("/");
       }
     };
+    // instantiate ongoing transactions before polling
+    const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+    this.$store.dispatch('getOngoingTransactions', user_id)
+                      .then((resp) => {
+                        // get updated ongoingTransactions data from cookie and assign to the data object
+                        this.ongoingTransactions = resp.data
+                        if(this.ongoingTransactions){
+                          this.ongoingTransactions.forEach(function(txns, index){
+                            for (let i = 0; i < parseInt(txns.step); i++) {
+                              const step = `step${i}`;
+                              txns[step] = "active";
+                            }
+                          })
+                          // sync cookie info
+                          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
+                        }else{
+                          // reset to empty array
+                          this.ongoingTransactions = []
+                          this.message = 'No ongoing transactions'
+                        }
+                      })
+                      .catch((err) => {})
     //Begin continuous polling
     this.pollOngoingTransactionsData();
 

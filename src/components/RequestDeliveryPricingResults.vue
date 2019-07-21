@@ -129,7 +129,8 @@ export default {
     },
     // watch the pricing results and enable and disable accordingly
     pricingDetails: function(val) {
-      if (val) {
+      // check the length of the object
+      if (Object.entries(val).length !== 0 && val.constructor === Object) {
         this.disabled = false;
         this.activeColor = "#5b89d3";
       } else {
@@ -203,6 +204,12 @@ text-align: left;
   .input-hidden {
     position: absolute;
     left: -9999px;
+  }
+
+  input[type="radio"]:disabled + label {
+    background-color: #fff;
+    opacity: 0.3;
+
   }
 
   input[type=radio]:checked + label {

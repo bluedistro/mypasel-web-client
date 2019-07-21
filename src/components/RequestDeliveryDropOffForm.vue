@@ -69,7 +69,7 @@
                 max-rows="6"
                 v-on:blur="sendInfo"
                 v-model="dropOff.details"
-                placeholder="Add details for courier"
+                placeholder="Extra information or comments"
               >
               </b-form-textarea>
             </b-form-group>

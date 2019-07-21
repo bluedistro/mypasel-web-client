@@ -363,7 +363,12 @@ export default {
     }
     // check for pricing availability and value
     let option = this.deliveryMode;
-    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option];
+    // if no option, redirect back to request delivery
+    if(!option){
+      this.$router.push({name: 'RequestDelivery'});
+    }else{
+    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option];  
+    }
   },
   beforeDestroy() {}
 };
@@ -399,6 +404,11 @@ input[type=radio] + label {
 .input-hidden {
   position: absolute;
   left: -9999px;
+}
+
+input[type=radio]:disabled + label{
+  background-color: #fff;
+  opacity: 0.3;
 }
 
 input[type=radio]:checked + label {

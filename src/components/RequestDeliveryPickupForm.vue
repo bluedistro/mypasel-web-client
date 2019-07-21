@@ -68,7 +68,7 @@
           rows="3"
           max-rows="6"
           v-on:blur="sendInfo"
-          placeholder="Add extra information for courier"
+          placeholder="Extra information or comments"
         >
         </b-form-textarea>
       </b-form-group>
@@ -94,7 +94,7 @@ export default {
       phoneField: {
         defaultCode: "GH",
         preferred: ["GH"],
-        clearable: true
+        clearable: false,
       },
       fullName: "",
       phoneNumber: "",
@@ -140,8 +140,6 @@ export default {
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng()
         }
-        // lat = infoToReturn.location.lat();
-        // lng = infoToReturn.location.lng();
         // search data coming from localStorage saved data
       } else {
         infoToReturn = place;
