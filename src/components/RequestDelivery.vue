@@ -89,7 +89,7 @@
               <div>
                 <content-loader v-if="pricingInit == null" class="c-loader-pricing"
                 :speed="2"
-                :height="230"
+                :height="200"
                 :primaryColor="'#dae1ed'"
                 :secondaryColor="'#8acbe3'"
                 :animate="true">
