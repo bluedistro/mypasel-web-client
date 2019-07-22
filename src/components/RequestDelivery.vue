@@ -9,7 +9,7 @@
               <div>
                 <content-loader v-if="pickupInit == null"
                 :speed="2"
-                :height="230"
+                :height="300"
                 :animate="true">
                 </content-loader>
                 <div>
@@ -53,7 +53,7 @@
               <div>
                 <content-loader v-if="dropOffInit == null"
                 :speed="2"
-                :height="230"
+                :height="300"
                 :animate="true">
                 </content-loader>
                 <drop-off-form
@@ -85,7 +85,7 @@
               <div>
                 <content-loader v-if="pricingInit == null"
                 :speed="2"
-                :height="150"
+                :height="230"
                 :animate="true">
                 </content-loader>
                 <pricing-results
