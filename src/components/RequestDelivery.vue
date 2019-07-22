@@ -6,15 +6,25 @@
           <!-- forms side -->
           <div class="row">
             <div class="col-md-5 col-sm-12 col-12 col-lg-5 formSide">
-              <pickup-form
-                @set_markers="getPickupMarker"
-                @pickup_details="getPickupInfo"
-                v-bind:disablePickupAddress="savePickup"
-                v-bind:disableFullName="savePickup"
-                v-bind:disablePhoneField="savePickup"
-                data-v-step="0"
-              >
-              </pickup-form>
+              <div>
+                <content-loader v-if="pickupInit == null"
+                :speed="2"
+                :height="230"
+                :animate="true">
+                </content-loader>
+                <div>
+                  <pickup-form
+                    @set_markers="getPickupMarker"
+                    @pickup_details="getPickupInfo"
+                    @pickup_init="pickup_init"
+                    v-bind:disablePickupAddress="savePickup"
+                    v-bind:disableFullName="savePickup"
+                    v-bind:disablePhoneField="savePickup"
+                    data-v-step="0"
+                  >
+                  </pickup-form>
+                </div>
+              </div>
               <div class="row pickupSave">
                 <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
                   <label class="switch">
@@ -40,14 +50,22 @@
                 </div>
                 <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
               </div>
-              <drop-off-form
-                v-bind:minimumDropOffs="minimumDropOffForm"
-                v-bind:maximumDropOffs="maximumDropOffForm"
-                @set_markers="getDropOffMarkers"
-                @dropoff_details="getDropOffInfo"
-                data-v-step="1"
-              >
-              </drop-off-form>
+              <div>
+                <content-loader v-if="dropOffInit == null"
+                :speed="2"
+                :height="230"
+                :animate="true">
+                </content-loader>
+                <drop-off-form
+                  v-bind:minimumDropOffs="minimumDropOffForm"
+                  v-bind:maximumDropOffs="maximumDropOffForm"
+                  @set_markers="getDropOffMarkers"
+                  @dropoff_details="getDropOffInfo"
+                  @dropOff_init="dropOff_init"
+                  data-v-step="1"
+                >
+                </drop-off-form>
+              </div>
               <div class="checkPricingDiv">
                 <div class="row">
                   <div class="col-md-12 col-lg-12 col-sm-12 col-12">
@@ -64,12 +82,20 @@
                   </div>
                 </div>
               </div>
-              <pricing-results
-                v-bind:pricingDetails="pricingDetails"
-                data-v-step="4"
-                @selected_pricing_option="getSelectedPricingChoice"
-              >
-              </pricing-results>
+              <div>
+                <content-loader v-if="pricingInit == null"
+                :speed="2"
+                :height="150"
+                :animate="true">
+                </content-loader>
+                <pricing-results
+                  v-bind:pricingDetails="pricingDetails"
+                  data-v-step="4"
+                  @selected_pricing_option="getSelectedPricingChoice"
+                  @pricing_init="pricing_init"
+                >
+                </pricing-results>
+              </div>
               <!-- TODO: Disable courier scheduling for now -->
               <!-- <div class="row">
                 <div class="col-md-12 col-lg-12 col-12 col-sm-12">
@@ -96,6 +122,7 @@
             <!-- maps side -->
             <div class="col-md-4 col-lg-4 googleMapsDiv">
               <google-maps
+                @google_maps_init="googleMaps_init"
                 v-bind:pickupMarker="pickupMarker"
                 data-v-step="2"
                 v-bind:dropOffMarkers="dropOffMarkers"
@@ -135,6 +162,7 @@
 <script>
 // lazy load imports
 import axios from "axios";
+import { ContentLoader } from 'vue-content-loader';
 
 const GoogleMaps = () => import("./RequestDeliveryGoogleMaps");
 const PickupForm = () => import("./RequestDeliveryPickupForm");
@@ -147,6 +175,7 @@ const Navbar = () => import("./RequestDeliveryNavbar");
 export default {
   name: "RequestDelivery",
   components: {
+    ContentLoader,
     navbar: Navbar,
     "google-maps": GoogleMaps,
     "pickup-form": PickupForm,
@@ -157,6 +186,11 @@ export default {
   },
   data() {
     return {
+      // child component initializers
+      pickupInit: null,
+      dropOffInit: null,
+      pricingInit: null,
+      googleMapsInit: null,
       loaderBarControl: true,
       // control rd error
       incompleteRequestDelivery: false,
@@ -332,6 +366,19 @@ export default {
         this.incompleteRequestDelivery = true;
         this.$router.push({ name: "RequestDelivery" });
       }
+    },
+    // child components initialization
+    pricing_init(message){
+      this.pricingInit = message;
+    },
+    pickup_init(message){
+      this.pickupInit = message;
+    },
+    dropOff_init(message){
+      this.dropOffInit = message;
+    },
+    googleMaps_init(message){
+      this.googleMapsInit = message;
     }
   },
   // watch for changes in selected pricing choice

@@ -13,6 +13,7 @@
           <no-activity v-bind:message="message"></no-activity>
         </div>
         <!-- else -->
+
         <div
           class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
           v-if="historyContent.length > 0"
@@ -115,11 +116,13 @@
 </template>
 
 <script>
+import { ContentLoader } from 'vue-content-loader';
 // import NoActivity from './RequestDeliveryNoActivity.vue';
 const NoActivity = () => import("./RequestDeliveryNoActivity");
 export default {
   name: "History",
   components: {
+    ContentLoader,
     "no-activity": NoActivity
   },
   data() {

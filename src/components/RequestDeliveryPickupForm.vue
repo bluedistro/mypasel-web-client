@@ -190,6 +190,9 @@ export default {
       this.fullName = '';
     }
   },
+  mounted(){
+    this.$emit('pickup_init', 'pickup_ready');
+  },
 // controls the display and hiding of the saved data in the form fields on address form value change
   watch: {
     disablePickupAddress(status){

@@ -139,8 +139,9 @@ export default {
       }
     }
   },
-  mount(){
-
+  mounted(){
+    // alert parent when loaded
+    this.$emit('pricing_init', 'pricing_ready')
   },
 };
 </script>

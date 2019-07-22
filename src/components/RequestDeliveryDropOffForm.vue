@@ -233,6 +233,9 @@ export default {
     displaySpinner() {},
     noResultsFound() {}
   },
+  mounted(){
+    this.$emit('dropOff_init', 'dropOff_ready');
+  },
   watch: {
     dropOffData: function(do_data) {
       if (do_data.length == 1) {

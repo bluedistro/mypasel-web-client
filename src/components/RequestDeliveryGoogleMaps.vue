@@ -82,6 +82,8 @@ export default {
     }else{
       this.pickupMarkerAlt = this.pickupMarker
     }
+    // emit readiness status
+    this.$emit('google_maps_init', "google_maps_ready");
   }
 }
 </script>
