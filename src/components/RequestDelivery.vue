@@ -7,9 +7,11 @@
           <div class="row">
             <div class="col-md-5 col-sm-12 col-12 col-lg-5 formSide">
               <div>
-                <content-loader v-if="pickupInit == null"
+                <content-loader class="c-loader-pickup" v-if="pickupInit == null"
                 :speed="3"
                 :height="290"
+                :primaryColor="'#dae1ed'"
+                :secondaryColor="'#8acbe3'"
                 :animate="true">
                 </content-loader>
                 <div>
@@ -51,9 +53,11 @@
                 <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
               </div>
               <div>
-                <content-loader v-if="dropOffInit == null"
+                <content-loader v-if="dropOffInit == null" class="c-loader-dropOff"
                 :speed="3"
                 :height="290"
+                :primaryColor="'#dae1ed'"
+                :secondaryColor="'#8acbe3'"
                 :animate="true">
                 </content-loader>
                 <drop-off-form
@@ -83,9 +87,11 @@
                 </div>
               </div>
               <div>
-                <content-loader v-if="pricingInit == null"
+                <content-loader v-if="pricingInit == null" class="c-loader-pricing"
                 :speed="2"
                 :height="230"
+                :primaryColor="'#dae1ed'"
+                :secondaryColor="'#8acbe3'"
                 :animate="true">
                 </content-loader>
                 <pricing-results
@@ -121,6 +127,14 @@
             </div>
             <!-- maps side -->
             <div class="col-md-4 col-lg-4 googleMapsDiv">
+              <content-loader v-if="googleMapsInit == null" class="c-loader-maps"
+              :speed="2"
+              :primaryColor="'#dae1ed'"
+              :height="1366"
+              :width="800"
+              :secondaryColor="'#8acbe3'"
+              :animate="true">
+              </content-loader>
               <google-maps
                 @google_maps_init="googleMaps_init"
                 v-bind:pickupMarker="pickupMarker"
@@ -437,6 +451,26 @@ export default {
 .formSide {
   background-color: #f2faff;
   /* height: 100%; */
+}
+
+.c-loader-pickup {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.c-loader-dropOff {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.c-loader-pricing {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.c-loader-maps {
+  position: fixed;
+  left: 41%;
 }
 
 .proceedBtnText {
