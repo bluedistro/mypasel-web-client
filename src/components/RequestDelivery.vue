@@ -59,6 +59,9 @@
                 :primaryColor="'#dae1ed'"
                 :secondaryColor="'#8acbe3'"
                 :animate="true">
+                <rect x="0" y="0" rx="0" ry="0" width="400" height="220" />
+                <rect x="317" y="225" rx="0" ry="0" width="84" height="45" />
+                <rect x="215" y="225" rx="0" ry="0" width="94" height="45" />
                 </content-loader>
                 <drop-off-form
                   v-bind:minimumDropOffs="minimumDropOffForm"
@@ -459,8 +462,8 @@ export default {
 }
 
 .c-loader-dropOff {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .c-loader-pricing {
