@@ -117,8 +117,8 @@
                           />
                         </div>
                         <div class="col-md-1 col-sm-1 col-1 col-lg-1 view-password">
-                          <a href="#" @click="togglePasswordVisiblityController('user')">
-                            <font-awesome-icon icon="eye" />
+                          <a @click="togglePasswordVisiblityController('user')">
+                            <font-awesome-icon :icon="eyeIcon" />
                           </a>
                         </div>
                       </div>
@@ -319,8 +319,8 @@
                           />
                         </div>
                         <div class="col-md-1 col-sm-1 col-1 col-lg-1 view-password">
-                          <a href="#" @click="togglePasswordVisiblityController('company')">
-                            <font-awesome-icon icon="eye" />
+                          <a @click="togglePasswordVisiblityController('company')">
+                            <font-awesome-icon :icon="eyeIcon" />
                           </a>
                         </div>
                       </div>
@@ -517,6 +517,7 @@ export default {
       copyrightYear: "",
       companyTerms: false,
       individualTerms: false,
+      eyeIcon: 'eye',
       unsuccessfulRegistrationModal: false,
       successfulRegistrationModal: false,
       // user registering data
@@ -586,8 +587,10 @@ export default {
       }
       if(fieldType.type === "password"){
         fieldType.type = "text";
+        this.eyeIcon = 'eye-slash';
       }else{
         fieldType.type = "password";
+        this.eyeIcon = 'eye';
       }
     },
     // reset company form field
