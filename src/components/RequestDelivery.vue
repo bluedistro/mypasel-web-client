@@ -8,8 +8,8 @@
             <div class="col-md-5 col-sm-12 col-12 col-lg-5 formSide">
               <div>
                 <content-loader v-if="pickupInit == null"
-                :speed="2"
-                :height="300"
+                :speed="3"
+                :height="290"
                 :animate="true">
                 </content-loader>
                 <div>
@@ -52,8 +52,8 @@
               </div>
               <div>
                 <content-loader v-if="dropOffInit == null"
-                :speed="2"
-                :height="300"
+                :speed="3"
+                :height="290"
                 :animate="true">
                 </content-loader>
                 <drop-off-form
