@@ -187,16 +187,20 @@ export default {
     pollOngoingTxns(){
       this.ongoingCount = setInterval(() => {
         const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-        if (ongoingLength && ongoingLength.length > 0) {
+        if (ongoingLength.length > 0) {
           this.totalOngoings = ongoingLength.length;
+        }else{
+          this.totalOngoings = 0
         }
       }, 5000)
     }
   },
   mounted() {
     const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-    if (ongoingLength && ongoingLength.length > 0) {
+    if (ongoingLength.length > 0) {
       this.totalOngoings = ongoingLength.length;
+    }else{
+      this.totalOngoings = 0
     }
     // set polling to check for the update length of ongoing transactions
     this.pollOngoingTxns();

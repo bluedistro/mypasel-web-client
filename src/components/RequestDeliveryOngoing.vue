@@ -160,7 +160,7 @@ export default {
                           .then((resp) => {
                             // get updated ongoingTransactions data from cookie and assign to the data object
                             this.ongoingTransactions = resp.data
-                            if(this.ongoingTransactions){
+                            if(this.ongoingTransactions.length > 0){
                               this.ongoingTransactions.forEach(function(txns, index){
                                 for (let i = 0; i < txns.step; i++) {
                                   let step = `step${i}`;
@@ -168,13 +168,13 @@ export default {
                                 }
                                 txns.journeyUpdate = txns.status;
                               })
-                              // sync cookie info
-                              VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
-                            }else{
+                            }else if(this.ongoingTransactions <= 0){
                               // reset to empty array
                               this.ongoingTransactions = []
                               this.message = 'No ongoing transactions'
                             }
+                            // sync cookie info
+                            VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
                           })
                           .catch((err) => {})
       }, 10000)
@@ -210,7 +210,7 @@ export default {
                       .then((resp) => {
                         // get updated ongoingTransactions data from cookie and assign to the data object
                         this.ongoingTransactions = resp.data
-                        if(this.ongoingTransactions){
+                        if(this.ongoingTransactions.length > 0){
                           this.ongoingTransactions.forEach(function(txns, index){
                             for(let i = 0; i < txns.step; i++) {
                               let step = `step${i}`;
@@ -218,13 +218,13 @@ export default {
                             }
                             txns.journeyUpdate = txns.status;
                           })
-                          // sync cookie info
-                          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
-                        }else{
+                        }else if(this.ongoingTransactions <= 0){
                           // reset to empty array
                           this.ongoingTransactions = []
                           this.message = 'No ongoing transactions'
                         }
+                        // sync cookie info
+                        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
                       })
                       .catch((err) => {})
     //Begin continuous polling
