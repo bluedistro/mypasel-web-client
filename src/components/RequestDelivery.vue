@@ -27,30 +27,32 @@
                   </pickup-form>
                 </div>
               </div>
-              <div class="row pickupSave">
-                <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
-                  <label class="switch">
-                    <input type="checkbox" v-model="savePickup" />
-                    <span class="slider"></span>
-                  </label>
-                  <span class="pickupSave text">Save to address book</span>
+              <div class="pickupSaveContainer">
+                <div class="row pickupSave">
+                  <div class="col-md-6 col-sm-10 col-10 col-lg-6 sliderDiv">
+                    <label class="switch">
+                      <input type="checkbox" v-model="savePickup" />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="pickupSave text">Save to address book</span>
+                  </div>
+                  <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
+                    <font-awesome-icon
+                      icon="question-circle"
+                      id="saveHelp"
+                      @click="$bvToast.show('example-toast')"
+                    />
+                  </div>
+                  <div class="save-help-note">
+                    <b-toast id="example-toast" title="Using address book" static no-auto-hide>
+                      This feature saves the <strong>pickup address, sender's full name
+                      and sender's phone number</strong> during the course of this session.
+                      However, do note that saved information will <strong> only and
+                      immediately be discarded </strong> when you log out or disable the switch.
+                    </b-toast>
+                  </div>
+                  <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
                 </div>
-                <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
-                  <font-awesome-icon
-                    icon="question-circle"
-                    id="saveHelp"
-                    @click="$bvToast.show('example-toast')"
-                  />
-                </div>
-                <div class="save-help-note">
-                  <b-toast id="example-toast" title="Using address book" static no-auto-hide>
-                    This feature saves the <strong>pickup address, sender's full name
-                    and sender's phone number</strong> during the course of this session.
-                    However, do note that saved information will <strong> only and
-                    immediately be discarded </strong> when you log out or disable the switch.
-                  </b-toast>
-                </div>
-                <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
               </div>
               <div>
                 <content-loader v-if="dropOffInit == null" class="c-loader-dropOff"
@@ -588,12 +590,20 @@ input:checked + .slider {
 .pickupSave {
   margin-bottom: 10px;
   margin-right: 10px;
+  /* background-color: #fff; */
 }
 
 .pickupSave.text {
   font-size: 100%;
   margin-left: 20px;
   text-align: left;
+  color: #61646b;
+}
+
+.pickupSaveContainer {
+  background-color: #fff;
+  border-radius: 2px;
+  border: solid 1px #d4d8dd;
 }
 
 .save-help {
