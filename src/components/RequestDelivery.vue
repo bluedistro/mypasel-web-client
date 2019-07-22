@@ -9,7 +9,7 @@
               <div>
                 <content-loader class="c-loader-pickup" v-if="pickupInit == null"
                 :speed="3"
-                :height="290"
+                :height="250"
                 :primaryColor="'#dae1ed'"
                 :secondaryColor="'#8acbe3'"
                 :animate="true">
@@ -55,7 +55,7 @@
               <div>
                 <content-loader v-if="dropOffInit == null" class="c-loader-dropOff"
                 :speed="3"
-                :height="290"
+                :height="250"
                 :primaryColor="'#dae1ed'"
                 :secondaryColor="'#8acbe3'"
                 :animate="true">
