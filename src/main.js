@@ -1,33 +1,24 @@
 import Vue from "vue";
+import App from "./App.vue";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import axios from "axios";
-// bootstrap vue
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
-// import router from './router';
-// import cookie code names
 import VueCookie from "vue-cookie";
 import VeeValidate from "vee-validate";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
-// vue button async lock
 import VuePromiseBtn from "vue-promise-btn";
-// styling for spinner
 import "vue-promise-btn/dist/vue-promise-btn.css";
-// firebase imports
 import firebase from "firebase/app";
 import "firebase/messaging";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import VueTour from "vue-tour";
 import * as VueGoogleMaps from "vue2-google-maps";
-
-// loading overlay
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-
-// font awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCog,
@@ -61,42 +52,10 @@ import {
   faQuestionCircle,
   faComments,
   faHome,
+  faEllipsisV,
   faMapPin,
   faAngleDown
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  FontAwesomeIcon,
-  FontAwesomeLayers,
-  FontAwesomeLayersText
-} from "@fortawesome/vue-fontawesome";
-import cookeys from "./cookeys";
-
-import store from "./store/store.js";
-
-// import store from "./store";
-import routes from "./routes";
-import App from "./App.vue";
-
-require("vue-tour/dist/vue-tour.css");
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyAxhKx9yKauKHGZCVfRaLCvYsFCK1-v3mw",
-    libraries: "places"
-  }
-});
-
-Vue.component("vue-phone-number-input", VuePhoneNumberInput);
-Vue.use(VueCookie);
-Vue.use(VeeValidate);
-Vue.use(VueRouter);
-Vue.use(Loading);
-
-Vue.prototype.$http = axios;
-const token = VueCookie.get(cookeys.TOKEN_KEY);
-if (token) {
-  Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
-}
 
 library.add(
   faCog,
@@ -130,9 +89,73 @@ library.add(
   faUserPlus,
   faLock,
   faCar,
+  faEllipsisV,
   faTruckPickup,
   faComments
 );
+
+import {
+  FontAwesomeIcon,
+  FontAwesomeLayers,
+  FontAwesomeLayersText
+} from "@fortawesome/vue-fontawesome";
+import cookeys from "./cookeys";
+import store from "./store/store.js";
+import routes from "./routes/routes";
+require("vue-tour/dist/vue-tour.css");
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyAxhKx9yKauKHGZCVfRaLCvYsFCK1-v3mw",
+    libraries: "places"
+  }
+});
+Vue.component("vue-phone-number-input", VuePhoneNumberInput);
+Vue.use(VueCookie);
+Vue.use(VeeValidate);
+Vue.use(VueRouter);
+Vue.use(Loading);
+
+Vue.prototype.$http = axios;
+const token = VueCookie.get(cookeys.TOKEN_KEY);
+
+// socket subscription
+var socketIOClient = require('socket.io-client')
+var sailsIOClient = require('sails.io.js')
+
+if (token) {
+  Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+  // subscribe to the socket
+  // subscribe to Socket event
+  const id = JSON.parse(VueCookie.get(cookeys.USER_DATA_KEY)).id
+  let io;
+  if(socketIOClient.sails){
+    io = socketIOClient;
+  }else{
+    io = sailsIOClient(socketIOClient)
+  }
+
+  io.sails.url = "https://api.mypasel.com"
+  // subscribe to socket
+  io.socket.request({
+      method: 'get',
+      url: '/user/subscribe?id=' + id,
+      headers: {
+        'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
+      }
+    },
+    (responseData, jwres) => {
+      console.log('response data ', responseData);
+    })
+
+    io.socket.on('parcel', (event) => {
+      console.log('picked payload', event);
+    })
+
+  // make socket a prototype
+  Vue.prototype.$ioSocket = io.socket;
+
+}
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("font-awesome-layers", FontAwesomeLayers);
@@ -207,7 +230,7 @@ Vue.directive("click-outside", {
 // set vue router for routes
 const router = new VueRouter({
   routes,
-  mode: "history"
+  mode: "history",
 });
 
 // set navigation guard for login protected pages

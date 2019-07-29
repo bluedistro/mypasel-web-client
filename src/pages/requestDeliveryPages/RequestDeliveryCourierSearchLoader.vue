@@ -280,7 +280,17 @@ export default {
         console.log("Searching courier error");
       });
 
-    this.$messaging.onMessage(payload => {
+    // this.$messaging.onMessage(payload => {
+    //   if (payload.data.activity == "Courier found") {
+    //     this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
+    //       expires: this.$cookeys.cookie_expire
+    //     });
+    //     this.courierFoundModal = true;
+    //   }
+    // });
+
+    // soclket try
+    this.$ioSocket.on('events', (payload) => {
       if (payload.data.activity == "Courier found") {
         this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
           expires: this.$cookeys.cookie_expire
@@ -288,6 +298,7 @@ export default {
         this.courierFoundModal = true;
       }
     });
+
   },
   mounted() {
     // countdown from 5 minutes

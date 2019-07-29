@@ -1,8 +1,8 @@
 import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import Register from '../components/Register.vue';
+import Register from '../pages/Register.vue';
 import VeeValidate from 'vee-validate';
 import VueRouter from "vue-router";
-import Login from '../components/Login.vue';
+import Login from '../pages/Login.vue';
 import Vue from 'vue';
 
 const localVue = createLocalVue();

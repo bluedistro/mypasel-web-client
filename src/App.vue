@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <navbar
-      v-if="
-        ['RequestDelivery', 'Ongoing', 'Scheduled', 'History', 'UserAccount'].includes($route.name)
-      "
-    ></navbar>
+    <navbar v-if="['RequestDelivery', 'Ongoing', 'Scheduled', 'History', 'UserAccount'].includes($route.name)">
+    </navbar>
     <router-view />
   </div>
 </template>
 
 <script>
-import router from "./router";
-import Navbar from "./components/RequestDeliveryNavbar.vue";
+import Navbar from "./pages/requestDeliveryPages/RequestDeliveryNavbar.vue";
 
 export default {
   components: {

@@ -636,6 +636,10 @@ export default {
     left: 0;
   }
 
+  .sidebar-content a {
+     text-decoration: none;
+  }
+
   .image-row {
     margin-top: 10px;
     justify-content: center;

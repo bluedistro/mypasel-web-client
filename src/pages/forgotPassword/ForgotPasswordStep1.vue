@@ -1,5 +1,5 @@
 <template lang="html">
-  <!-- <div class="form-gap"></div> -->
+<div v-if="showConfirmPage === false">
   <div class="container">
     <div class="row">
       <div class="col-md-12 col-sm-10 col-lg-6 form-body">
@@ -46,9 +46,6 @@
                 <div>
                   <div class="border-line"></div>
                   <a href="#">
-                    <!-- <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
-                      >Login</router-link
-                    > -->
                     <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
                       >Login</router-link
                     >
@@ -61,19 +58,23 @@
       </div>
     </div>
   </div>
+  <div v-if="showConfirmPage === true">
+    <confirm-password></confirm-password>
+  </div>
+</div>
 </template>
 
 <script>
-import axios from "axios";
-
+import axios from "axios"
 export default {
-  name: "ForgotPasswordEmail",
+  name: "resetPassword",
   data() {
     return {
       emailAddress: '',
       errorMessage: '',
       errorClass: '',
       unableToSendEmail: false,
+      showConfirmPage: false,
     };
   },
   methods: {
@@ -87,14 +88,14 @@ export default {
         width: 80
       });
 
-      this.errorClass = '';
-      this.unableToSendEmail = false;
+      this.errorClass = ''
+      this.unableToSendEmail = false
       const payload = {
         emailAddress : this.emailAddress
       }
       return this.$store.dispatch('requestPasswordReset', payload)
                         .then((resp) => {
-                          loader.hide();
+                          loader.hide()
                           this.$router.push({name: 'ForgotPasswordConfirm'});
                         })
                         .catch((error) => {
@@ -328,9 +329,6 @@ export default {
     .form-body {
       border: solid #ced3db 1px;
       border-radius: 2px;
-      /* -webkit-box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75);
-      -moz-box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75);
-      box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75); */
     }
  }
 </style>

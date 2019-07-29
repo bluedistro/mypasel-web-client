@@ -1,14 +1,10 @@
 <template lang="html">
-  <!-- <div class="form-gap"></div> -->
   <div class="container">
     <div class="row">
       <div class="col-md-12 col-sm-10 col-lg-6 form-body">
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="text-center">
-              <!-- <h3>
-                <font-awesome-icon icon="lock" size="2x" />
-              </h3> -->
               <h2 class="text-center">Reset Password</h2>
               <p>A confirmation code was sent to the email provided. Please enter the confirmation code and a new password</p>
               <div v-bind:class="errorClass" id="reset-password-error-id">
@@ -89,9 +85,6 @@
                 <div>
                   <div class="border-line"></div>
                   <a href="#">
-                    <!-- <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"
-                      >Login</router-link
-                    > -->
                     <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
                       >Login</router-link
                     >
@@ -103,7 +96,6 @@
         </div>
       </div>
     </div>
-    <!-- reset successful-->
     <div v-if="resetSuccessful == true">
       <b-modal
         no-close-on-backdrop
@@ -128,9 +120,8 @@
 
 <script>
 import axios from "axios";
-
 export default {
-  name: "ForgotPasswordConfirm",
+  name: "confirmPassword",
   data() {
     return {
       emailAddress: this.$cookie.get(this.$cookeys.RESET_EMAIL_ADDRESS),
@@ -159,7 +150,6 @@ export default {
             verification_code: this.verificatonCode,
             password: this.userPassword
           }
-          // show loader first
           let loader = this.$loading.show({
             loader: "bars",
             color: "#00bcd4",
@@ -198,13 +188,11 @@ export default {
     }
   },
   mounted(){
-    // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
                   1 lowercase letter and 1 number`,
       validate: value => {
         var strongRegex = new RegExp(
-          // (?=.*[!@#\$%\^&\*])
           "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
         );
         return strongRegex.test(value);
@@ -427,9 +415,6 @@ export default {
     .form-body {
       border: solid #ced3db 1px;
       border-radius: 2px;
-      /* -webkit-box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75);
-      -moz-box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75);
-      box-shadow: 2px 3px 3px -1px rgba(0,0,0,0.75); */
     }
  }
 </style>

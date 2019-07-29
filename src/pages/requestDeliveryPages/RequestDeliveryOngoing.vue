@@ -116,7 +116,7 @@
 <script>
 import firebase from "firebase";
 import VueCookie from "vue-cookie";
-import cookeys from "../cookeys";
+import cookeys from "../../cookeys";
 
 const NoActivity = () => import("./RequestDeliveryNoActivity");
 const ProgressSteps = () => import("./RequestDeliveryOngoingProgressComponent");

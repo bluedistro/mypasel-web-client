@@ -367,7 +367,7 @@ export default {
     if(!option){
       this.$router.push({name: 'RequestDelivery'});
     }else{
-    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option];  
+    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option];
     }
   },
   beforeDestroy() {}

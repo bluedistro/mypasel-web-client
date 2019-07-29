@@ -2,15 +2,15 @@
   <div>
     <b-navbar toggleable="lg" fixed="top" type="dark" variant="info">
       <b-navbar-brand class="navbar-brand">
+        <b-img-lazy
+          rounded="circle"
+          class="brand-logo"
+          src="https://web.mypasel.com/img/brand-logo.png"
+          fluid
+          alt="brand logo"
+        >
+        </b-img-lazy>
         <router-link class="navbar-brand-text" :to="{ name: 'RequestDelivery', params: {} }">
-          <b-img-lazy
-            rounded="circle"
-            class="brand-logo"
-            src="https://web.mypasel.com/img/brand-logo.png"
-            fluid
-            alt="brand logo"
-          >
-          </b-img-lazy>
           MyPasel
         </router-link>
       </b-navbar-brand>
@@ -273,7 +273,7 @@ export default {
     color: #fff;
     font-weight: 300;
     font-size: 18px;
-    margin-left: 30px;
+    margin-left: 20px;
 }
 
 .navbar-brand-text {
@@ -291,8 +291,8 @@ export default {
 }
 
 .brand-logo {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 
 .username-navbar {
@@ -325,4 +325,5 @@ export default {
   margin-left: 3px;
   font-family: 'Lato';
 }
+
 </style>

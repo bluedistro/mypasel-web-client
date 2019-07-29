@@ -1,6 +1,6 @@
 // use vue-test-utils boilerplate to do some of the setting ups
 import { shallowMount } from '@vue/test-utils'
-import Login from '../components/Login.vue';
+import Login from '../pages/Login.vue';
 import Vue from 'vue';
 
 describe('Login.vue', () => {

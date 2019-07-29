@@ -82,7 +82,7 @@
               Log in
             </button>
             <a href="#" id="forgot_pswd" v-bind:class="forgotPasswordAnimate">
-              <router-link class="forgot-password-text" :to="{ name: 'ForgotPasswordEmail', params: {} }">Forgot password?</router-link>
+              <router-link class="forgot-password-text" :to="{ name: 'resetPassword', params: {} }">Forgot password?</router-link>
             </a>
             <!-- <hr /> -->
           </form>

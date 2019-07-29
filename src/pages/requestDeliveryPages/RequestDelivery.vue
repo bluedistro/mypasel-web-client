@@ -179,6 +179,7 @@
 </template>
 
 <script>
+
 // lazy load imports
 import axios from "axios";
 import { ContentLoader } from 'vue-content-loader';
@@ -187,7 +188,7 @@ const GoogleMaps = () => import("./RequestDeliveryGoogleMaps");
 const PickupForm = () => import("./RequestDeliveryPickupForm");
 const DropOffForm = () => import("./RequestDeliveryDropOffForm");
 const PricingResults = () => import("./RequestDeliveryPricingResults");
-const InternetConnectivity = () => import("./InternetConnection");
+const InternetConnectivity = () => import("../InternetConnection");
 const DeliveryDate = () => import("./RequestDeliveryDate");
 const Navbar = () => import("./RequestDeliveryNavbar");
 
@@ -440,6 +441,7 @@ export default {
       id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
       fcmToken: token
     };
+
     this.$store
       .dispatch("updateFCMToken", updatePayload)
       .then(resp => {})
