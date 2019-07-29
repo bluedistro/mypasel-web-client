@@ -181,7 +181,6 @@ export default {
         this.searchAddress.pop()
         --this.counter
       }
-
       this.markers = []
       for (var i = 0; i < this.dropOffData.length; i++) {
         if(this.dropOffData[i].searchAddress != null){
