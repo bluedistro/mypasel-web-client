@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import VOffline from "v-offline";
+import VOffline from "v-offline"
 
 export default {
   components: {
@@ -30,20 +30,20 @@ export default {
       message: "",
       onlineSlot: "online",
       offlineSlot: "offline"
-    };
+    }
   },
   methods: {
     handleConnectivityChange(status) {
-      this.onLine = status;
+      this.onLine = status
       if (this.onLine) {
-        this.message = "Online";
+        this.message = "Online"
       } else {
-        this.message = "Offline";
+        this.message = "Offline"
       }
     }
   },
   watch: {}
-};
+}
 </script>
 
 <style lang="css" scoped>

@@ -3,25 +3,14 @@
     <div class="container">
       <ul class="progressbar">
         <li :class="step1">
-          <div class="" v-if="step1 === 'active'">
-            <!-- {{ message1 }} -->
-          </div>
+          <div class="" v-if="step1 === 'active'"></div>
         </li>
         <li :class="step2">
-          <div class="" v-if="step2 === 'active'">
-            <!-- {{ message2 }} -->
-          </div>
+          <div class="" v-if="step2 === 'active'"></div>
         </li>
         <li :class="step3">
-          <div class="" v-if="step3 === 'active'">
-            <!-- {{ message3 }} -->
-          </div>
+          <div class="" v-if="step3 === 'active'"></div>
         </li>
-        <!-- <li :class="step4">
-                <div class="" v-if="step4 === 'active'">
-                  {{ message4 }}
-                </div>
-              </li> -->
       </ul>
     </div>
   </div>
@@ -34,24 +23,13 @@ export default {
     step1: null,
     step2: null,
     step3: null
-    // step4: null,
-    // message1: null,
-    // message2: null,
-    // message3: null,
-    // message4: null,
-    // length: null,
-  },
-  data() {
-    return {};
   }
-};
+}
 </script>
 
 <style lang="css" scoped>
 .container {
-  /* width: 100%; */
   margin-left: -40px;
-  /* position: absolute; */
   z-index: 1;
 }
 

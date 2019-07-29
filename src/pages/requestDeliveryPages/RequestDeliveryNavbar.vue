@@ -187,7 +187,7 @@ export default {
     pollOngoingTxns(){
       this.ongoingCount = setInterval(() => {
         const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-        if (ongoingLength.length > 0) {
+        if (ongoingLength && ongoingLength.length > 0) {
           this.totalOngoings = ongoingLength.length;
         }else{
           this.totalOngoings = 0
@@ -197,7 +197,7 @@ export default {
   },
   mounted() {
     const ongoingLength = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
-    if (ongoingLength.length > 0) {
+    if (ongoingLength && ongoingLength.length > 0) {
       this.totalOngoings = ongoingLength.length;
     }else{
       this.totalOngoings = 0

@@ -51,32 +51,29 @@
 </template>
 
 <script>
-// import NoActivity from './RequestDeliveryNoActivity.vue';
-const NoActivity = () => import("./RequestDeliveryNoActivity");
+const NoActivity = () => import("./RequestDeliveryNoActivity")
 export default {
   name: "Scheduled",
   components: {
     "no-activity": NoActivity
   },
-  data() {
+  data () {
     return {
       message: "You have no scheduled transactions",
       noScheduled: true,
       scheduledData: []
-    };
+    }
   },
-  created() {},
-  mounted() {
-    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+  mounted () {
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
     this.$store
       .dispatch("getScheduledTransactions", id)
       .then(resp => {
-        this.scheduledData = resp.data;
-        // console.log(resp.data)
+        this.scheduledData = resp.data
       })
-      .catch(error => []);
+      .catch(error => [])
   }
-};
+}
 </script>
 
 <style lang="css" scoped>

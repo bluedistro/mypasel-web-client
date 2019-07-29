@@ -1,18 +1,6 @@
 <template lang="html">
   <div class="courierNeedDiv">
     <h6 class="courierNeedTimeHeader">When do you need the courier?</h6>
-    <!-- <div class="radio-btn-group">
-          <div class="radio">
-            <input type="radio" name="deliveryDateOption" value="now" checked v-model="deliveryDateOption" id="now"/>
-            <label for="now">Now</label>
-          </div>
-          <div class="radio">
-            <input type="radio" name="deliveryDateOption" value="later" v-model="deliveryDateOption" id="later"/>
-            <label for="later">Later</label>
-          </div>
-       </div> -->
-    <!-- <h5 class="show m-t-2">Currently checked value: <span>{{ deliveryDateOption }}</span></h5> -->
-    <!-- date picker -->
     <div class="dateSelect">
       <vue-ctk-date-time-picker
         :dark="dateOptions.darkMode"
@@ -32,7 +20,7 @@
 <script>
 export default {
   name: "DeliveryDate",
-  data() {
+  data () {
     return {
       selectedDate: '', // format is: 2019-06-23 03:00 am
       dateOptions: {
@@ -49,24 +37,22 @@ export default {
   },
   methods: {
     // get the correct ISO date to set the minimum date
-    getCorrectISODate() {
-      var today = new Date();
+    getCorrectISODate () {
+      var today = new Date()
       return today.toISOString().split('T')[0]
     }
   },
   watch: {
-    selectedDate(date) {
+    selectedDate (date) {
         if(date){
-          const dateData = Date.parse(date);
-          this.$emit("selected_delivery_option", dateData);
+          const dateData = Date.parse(date)
+          this.$emit("selected_delivery_option", dateData)
         }else{
           // no date object perceived
         }
     }
-  },
-  created() {},
-  mounted(){}
-};
+  }
+}
 </script>
 
 <style lang="css" scoped>

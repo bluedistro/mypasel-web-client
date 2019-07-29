@@ -69,10 +69,7 @@
       <div class="row">
         <transition name="payment-option" mode="out-in">
           <!--  cash -->
-          <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12" key="cash">
-            <!-- no action to be performed on cash select -->
-          </div>
-
+          <div v-if="paymentOption == 'cash'" class="radioLinkedDiv col-md-12" key="cash"></div>
           <!--  mobile money -->
           <div v-if="paymentOption == 'mobileMoney'" class="radioLinkedDiv col-md-12" key="momo">
             <div class="col-md-12 contact-name">
@@ -111,73 +108,10 @@
                 value=""
               />
             </div>
-            <!-- <div class="col-md-12 contact-number">
-                <vue-phone-number-input
-                  v-model="phoneNumber"
-                  :default-country-code="phoneField.defaultCode"
-                  :clearable="phoneField.clearable"
-                  :preferred-countries="phoneField.preferred"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                />
-              </div> -->
             <div class="payment-row-border"></div>
           </div>
         </transition>
       </div>
-
-      <!-- promo code -->
-      <!-- <div class="promo-code-div">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-8 col-sm-8 col-8 promo-code-text">
-              Use promo code
-            </div>
-            <div class="col-md-4 col-sm-4 col-4">
-              <label class="switch" id="toggleRadio">
-                <input
-                  type="checkbox"
-                  :disabled="disablePromoCodeFeature"
-                  v-model="toggleState"
-                  @click="changeToggleState"
-                />
-                <span class="slider"></span>
-              </label>
-              <b-tooltip
-                v-show="disablePromoCodeFeature"
-                target="toggleRadio"
-                placement="bottom"
-                title="feature is disabled"
-              ></b-tooltip>
-            </div>
-          </div>
-          <div v-show="promoCodeToggle" class="row">
-            <div class="row col-md-12">
-              <div class="col-8 col-md-8 col-sm-8 col-lg-8">
-                <input
-                  type="text"
-                  id="registeredName"
-                  placeholder="Enter code"
-                  v-model="promoCode"
-                  class="form-control"
-                  name=""
-                  value=""
-                />
-              </div>
-              <div class="col-4 col-md-4 col-sm-4 col-lg-4 promo-code-btn">
-                <input
-                  type="button"
-                  @click="checkPromoCodeValidity"
-                  class="form-control btn-sm btn btn-outline-info"
-                  value="Apply"
-                  name="button"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <!-- proceed div -->
       <div class="col-md-12">
         <button
@@ -226,18 +160,17 @@
 </template>
 
 <script>
-const Navbar = () => import("./RequestDeliveryNavbar");
+const Navbar = () => import("./RequestDeliveryNavbar")
 export default {
   name: "RequestPayment",
   components: {
     navbar: Navbar
   },
-  data() {
+  data () {
     return {
       // disable prepaid and mobile money payment option
       disablePrepaidOption: false,
       disableMobileMoneyOption: true,
-      // modal works
       unsuccessfulBookingModal: false,
       companyCode: '',
       disableCompanyCodeField: true,
@@ -258,44 +191,29 @@ export default {
       disablePromoCodeFeature: true,
       bookingData: null,
       fcm: this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
-    };
+    }
   },
   methods: {
-    bookingErrorModalHide() {
-      this.$refs["booking-error-modal"].hide();
-      this.$router.push({ name: "RequestDelivery" });
+    bookingErrorModalHide () {
+      this.$refs["booking-error-modal"].hide()
+      this.$router.push({ name: "RequestDelivery" })
     },
-    bookingErrorModalTry() {
-      this.$refs["booking-error-modal"].hide();
+    bookingErrorModalTry () {
+      this.$refs["booking-error-modal"].hide()
     },
-    // TODO: Promo code no longer needed. Might be deleted
-    // checkPromoCodeValidity(evt) {
-    //   const payload = {
-    //     id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
-    //     code: this.promoCode
-    //   };
-    //   this.$store
-    //     .dispatch("validatePromoCode", payload)
-    //     .then(resp => {
-    //       console.log(resp);
-    //     })
-    //     .catch(error => {});
-    // },
-    // Promocode has been disabled
-    changeToggleState(evt) {
-      this.toggleState = !this.toggleState;
-      this.promoCodeToggle = !this.promoCodeToggle;
+    changeToggleState (evt) {
+      this.toggleState = !this.toggleState
+      this.promoCodeToggle = !this.promoCodeToggle
     },
     // confirm booking order
-    confirmOrder(evt) {
-      // prepare payload
-      const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
-      const parsedRequestPayload = JSON.parse(requestPayload);
+    confirmOrder (evt) {
+      const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY)
+      const parsedRequestPayload = JSON.parse(requestPayload)
       // validate request delivery information for the final time
       if(parsedRequestPayload === null || parsedRequestPayload.pickUpData === null || parsedRequestPayload.dropOffData === null){
-        this.unsuccessfulBookingModal = true;
+        this.unsuccessfulBookingModal = true
       }else{
-        const dropoffs = [];
+        const dropoffs = []
         for (let i = 0; i < parsedRequestPayload.dropOffData.length; i++) {
           const d_o = {
             name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
@@ -306,8 +224,8 @@ export default {
               phone: parsedRequestPayload.dropOffData[i].phoneNumber
             },
             additionalInformation: parsedRequestPayload.dropOffData[i].details
-          };
-          dropoffs.push(d_o);
+          }
+          dropoffs.push(d_o)
         }
         // quick fix to get
         const payload = {
@@ -326,52 +244,48 @@ export default {
           deliveryDate: JSON.parse(this.$cookie.get(this.$cookeys.DELIVERY_TIME)),
           modeOfDelivery: this.deliveryMode,
           fee: this.amount
-        };
-        // post to the API of the confirm Order
+        }
+
         return this.$store
           .dispatch("confirmOrder", payload)
           .then(resp => {
-            // redirect to courier search loader
-            this.$router.push({ name: "SearchingCourier" });
+            this.$router.push({ name: "SearchingCourier" })
           })
           .catch(error => {
-            this.unsuccessfulBookingModal = true;
-          });
+            this.unsuccessfulBookingModal = true
+          })
       }
 
     }
   },
-  computed: {},
-  mounted(){
+  mounted () {
     let user = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY))
-    // allow prepaid options based on user registration type
     if(user.type.toLowerCase() == "individual"){
-      this.disablePrepaidOption = true;
+      this.disablePrepaidOption = true
     }else if(user.type.toLowerCase() == "business"){
       if(user.verification_code){
-        this.companyCode = user.verification_code;
-        this.paymentOption = "prepaid";
-	this.disablePrepaidOption = false;
+        this.companyCode = user.verification_code
+        this.paymentOption = "prepaid"
+	this.disablePrepaidOption = false
       }else{
-         this.disablePrepaidOption = true;
+         this.disablePrepaidOption = true
        }
     }
   },
-  created() {
+  created () {
     if (this.$store.state.search == true) {
-      this.$router.push({ name: "SearchingCourier" });
+      this.$router.push({ name: "SearchingCourier" })
     }
     // check for pricing availability and value
-    let option = this.deliveryMode;
+    let option = this.deliveryMode
     // if no option, redirect back to request delivery
     if(!option){
-      this.$router.push({name: 'RequestDelivery'});
+      this.$router.push({name: 'RequestDelivery'})
     }else{
-    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option];
+    this.amount = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))[option]
     }
-  },
-  beforeDestroy() {}
-};
+  }
+}
 </script>
 
 <style lang="css" scoped>

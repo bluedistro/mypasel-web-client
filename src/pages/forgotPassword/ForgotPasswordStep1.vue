@@ -68,25 +68,24 @@
 import axios from "axios"
 export default {
   name: "resetPassword",
-  data() {
+  data () {
     return {
       emailAddress: '',
       errorMessage: '',
       errorClass: '',
       unableToSendEmail: false,
       showConfirmPage: false,
-    };
+    }
   },
   methods: {
-    requestPasswordReset(evt) {
-      evt.preventDefault();
-      // show loader
+    requestPasswordReset (evt) {
+      evt.preventDefault()
       let loader = this.$loading.show({
         loader: "bars",
         color: "#00bcd4",
         height: 80,
         width: 80
-      });
+      })
 
       this.errorClass = ''
       this.unableToSendEmail = false
@@ -96,33 +95,33 @@ export default {
       return this.$store.dispatch('requestPasswordReset', payload)
                         .then((resp) => {
                           loader.hide()
-                          this.$router.push({name: 'ForgotPasswordConfirm'});
+                          this.$router.push({name: 'ForgotPasswordConfirm'})
                         })
                         .catch((error) => {
-                          loader.hide();
+                          loader.hide()
                           if (error.response.status) {
                             if (error.response.status == 400) {
-                              this.errorMessage = "Email address may be invalid. Please make sure the email address is valid and try again";
+                              this.errorMessage = "Email address may be invalid. Please make sure the email address is valid and try again"
                             } else if (error.response.status == 503) {
                               this.errorMessage =
-                                "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
+                                "Service temporarily unavailable. We are working very hard to get it back as soon as possible"
                             } else if (error.response.status == 404) {
-                              this.errorMessage = "A problem occured while trying to verify email. Please make sure the provided email is valid";
+                              this.errorMessage = "A problem occured while trying to verify email. Please make sure the provided email is valid"
                             } else {
-                              this.errorMessage = "Unable send verification code to email.";
+                              this.errorMessage = "Unable send verification code to email."
                             }
                           } else {
                             this.errorMessage =
-                              "Unable to send verification code. Kindly try again later.";
+                              "Unable to send verification code. Kindly try again later."
                           }
-                          this.unableToSendEmail = true;
+                          this.unableToSendEmail = true
                           this.errorClass = 'verify-email-error'
 
                         })
 
     }
   }
-};
+}
 </script>
 
 <style lang="css" scoped>

@@ -116,8 +116,6 @@
                   ></delivery-date>
                 </div>
               </div> -->
-
-              <!-- proceed to payment button -->
               <div>
                 <button
                   type="button"
@@ -181,16 +179,16 @@
 <script>
 
 // lazy load imports
-import axios from "axios";
-import { ContentLoader } from 'vue-content-loader';
+import axios from "axios"
+import { ContentLoader } from 'vue-content-loader'
 
-const GoogleMaps = () => import("./RequestDeliveryGoogleMaps");
-const PickupForm = () => import("./RequestDeliveryPickupForm");
-const DropOffForm = () => import("./RequestDeliveryDropOffForm");
-const PricingResults = () => import("./RequestDeliveryPricingResults");
-const InternetConnectivity = () => import("../InternetConnection");
-const DeliveryDate = () => import("./RequestDeliveryDate");
-const Navbar = () => import("./RequestDeliveryNavbar");
+const GoogleMaps = () => import("./RequestDeliveryGoogleMaps")
+const PickupForm = () => import("./RequestDeliveryPickupForm")
+const DropOffForm = () => import("./RequestDeliveryDropOffForm")
+const PricingResults = () => import("./RequestDeliveryPricingResults")
+const InternetConnectivity = () => import("../InternetConnection")
+const DeliveryDate = () => import("./RequestDeliveryDate")
+const Navbar = () => import("./RequestDeliveryNavbar")
 
 export default {
   name: "RequestDelivery",
@@ -204,7 +202,7 @@ export default {
     "internet-connection-check": InternetConnectivity,
     "delivery-date": DeliveryDate
   },
-  data() {
+  data () {
     return {
       // child component initializers
       pickupInit: null,
@@ -296,109 +294,109 @@ export default {
           }
         }
       ]
-    };
+    }
   },
   methods: {
     // control error with booking details
     // TODO: Disable scheduling for now
     // get_selected_delivery_option(deliveryTime) {
-    //   this.selectedDeliveryOption = deliveryTime;
+    //   this.selectedDeliveryOption = deliveryTime
     // },
-    RequestDeliveryErrorModalHide() {
-      this.$refs["request-delivery-error-modal"].hide();
+    RequestDeliveryErrorModalHide () {
+      this.$refs["request-delivery-error-modal"].hide()
     },
-    getSelectedPricingChoice(evt) {
-      this.selectedPricingOption = evt;
+    getSelectedPricingChoice (evt) {
+      this.selectedPricingOption = evt
     },
-    getDropOffInfo(evt) {
+    getDropOffInfo (evt) {
       // reset pricing options after each location address change
-      this.pricingDetails = {};
-      this.emittedFormData.dropOffData = evt;
+      this.pricingDetails = {}
+      this.emittedFormData.dropOffData = evt
     },
     // get emitted pickup info
-    getPickupInfo(evt) {
+    getPickupInfo (evt) {
       // reset pricing options after each location address change
-      this.pricingDetails = {};
+      this.pricingDetails = {}
       // store pickup searchAddress info temporarily
-      this.savedPickUpData = evt;
-      this.emittedFormData.pickupData = evt;
+      this.savedPickUpData = evt
+      this.emittedFormData.pickupData = evt
     },
     // get the emitted pickup marker point and set them to the corresponding data variable
-    getPickupMarker(pickupMarker, data) {
+    getPickupMarker (pickupMarker, data) {
       // store pickup searchAddress info temporarily
-      this.savedPickUpData = data;
+      this.savedPickUpData = data
       // updating the pick up data for redundancy'
-      this.emittedFormData.pickupData = data;
-      this.pickupMarker = pickupMarker;
+      this.emittedFormData.pickupData = data
+      this.pickupMarker = pickupMarker
     },
     // get the emitted drop off marker points and set them to the corresponding data variable
-    getDropOffMarkers(dropOffMarkers, data) {
+    getDropOffMarkers (dropOffMarkers, data) {
       // updating the dropoff data for redundancy
-      this.emittedFormData.dropOffData = data;
-      this.dropOffMarkers = dropOffMarkers;
+      this.emittedFormData.dropOffData = data
+      this.dropOffMarkers = dropOffMarkers
     },
-    checkPricing(evt) {
-      evt.preventDefault();
+    checkPricing (evt) {
+      evt.preventDefault()
       if (this.emittedFormData.pickupData.searchAddress == null || this.emittedFormData.dropOffData == null) {
-        this.errorModalMessage = "Please provide both pickup and dropoff addresses in order to check pricing";
-        this.incompleteRequestDelivery = true;
+        this.errorModalMessage = "Please provide both pickup and dropoff addresses in order to check pricing"
+        this.incompleteRequestDelivery = true
       } else {
         return this.$store
           .dispatch("getPricing", this.emittedFormData)
           .then(response => {
-            this.pricingDetails = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY));
-            this.pricingDetails.walking = "N/A";
+            this.pricingDetails = JSON.parse(this.$cookie.get(this.$cookeys.PRICING_KEY))
+            this.pricingDetails.walking = "N/A"
           })
           .catch(error => {
             if (error) {
               if (error.response.status == 503 || error.response.status == 500) {
                 this.errorModalMessage =
-                  "Unable to fetch pricing due to a technical glitch. Please try again";
+                  "Unable to fetch pricing due to a technical glitch. Please try again"
               } else {
-                this.errorModalMessage = "Please complete pick up and dropoff information";
+                this.errorModalMessage = "Please complete pick up and dropoff information"
               }
             } else {
-              this.errorModalMessage = "Unable to get pricing";
+              this.errorModalMessage = "Unable to get pricing"
             }
-            this.incompleteRequestDelivery = true;
-          });
+            this.incompleteRequestDelivery = true
+          })
       }
     },
 
-    proceedToPayment(evt) {
+    proceedToPayment (evt) {
       // disable scheduling option and set to now for the moment
-      let now = new Date();
-      this.selectedDeliveryOption = Date.parse(now);
-      let item = this.selectedPricingOption;
-      let price_validator = this.pricingDetails[item];
+      let now = new Date()
+      this.selectedDeliveryOption = Date.parse(now)
+      let item = this.selectedPricingOption
+      let price_validator = this.pricingDetails[item]
       // disable date checking for now
       if (!isNaN(price_validator) /*&& this.selectedDeliveryOption*/) {
         this.$cookie.set(this.$cookeys.DELIVERY_MODE, item, {
           expires: this.$cookeys.cookie_expire
-        });
+        })
         this.$cookie.set(this.$cookeys.DELIVERY_TIME, this.selectedDeliveryOption, {
           expires: this.$cookeys.cookie_expire
-        });
-        this.$router.push({ name: "RequestPayment" });
+        })
+        this.$router.push({ name: "RequestPayment" })
       } else {
         this.errorModalMessage =
-          "Please complete pick up and dropoff information and select a delivery mode and time to proceed";
-        this.incompleteRequestDelivery = true;
-        this.$router.push({ name: "RequestDelivery" });
+          "Please complete pick up and dropoff information and select a delivery mode and time to proceed"
+        this.incompleteRequestDelivery = true
+        this.$router.push({ name: "RequestDelivery" })
       }
     },
     // child components initialization
-    pricing_init(message){
-      this.pricingInit = message;
+    pricing_init (message) {
+      this.pricingInit = message
     },
-    pickup_init(message){
-      this.pickupInit = message;
+    pickup_init (message) {
+      this.pickupInit = message
     },
-    dropOff_init(message){
-      this.dropOffInit = message;
+    dropOff_init (message) {
+      this.dropOffInit = message
     },
-    googleMaps_init(message){
-      this.googleMapsInit = message;
+    googleMaps_init (message) {
+      this.googleMapsInit = message
     }
   },
   // watch for changes in selected pricing choice
@@ -406,48 +404,48 @@ export default {
     // save the pick up address if opted to do so
     savePickup: function(choice) {
       if (choice) {
-        this.$cookie.set(this.$cookeys.SAVED_ADDRESS_KEY, JSON.stringify(this.savedPickUpData));
+        this.$cookie.set(this.$cookeys.SAVED_ADDRESS_KEY, JSON.stringify(this.savedPickUpData))
       } else if (!choice) {
-        this.savedPickUpData = null;
-        this.$cookie.delete(this.$cookeys.SAVED_ADDRESS_KEY);
+        this.savedPickUpData = null
+        this.$cookie.delete(this.$cookeys.SAVED_ADDRESS_KEY)
       }
     },
     // watch emitted form pickup data to determine its source and act on sending it accordingly
-    emittedFormData(evt){
-       const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
+    emittedFormData (evt){
+       const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY))
        if(savedData != null){
          this.emittedFormData.pickupData.searchAddress = savedData.searchAddress
        }
     }
   },
-  created() {
+  created () {
     if (this.$cookie.get(this.$cookeys.TOKEN_KEY == null)) {
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: "Login" })
     }
   },
-  mounted() {
+  mounted () {
     // watch for saved pickup data first
-    const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
+    const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY))
     if(savedData != null){
-      this.emittedFormData.pickupData.searchAddress = savedData.searchAddress;
+      this.emittedFormData.pickupData.searchAddress = savedData.searchAddress
     }
 
     // start tour
     // this.$tours['myTour'].start()
 
     // update the FCM token
-    const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY);
+    const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
     const updatePayload = {
       id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
       fcmToken: token
-    };
+    }
 
     this.$store
       .dispatch("updateFCMToken", updatePayload)
       .then(resp => {})
-      .catch(err => {});
+      .catch(err => {})
   }
-};
+}
 </script>
 
 <style media="screen" scoped>
@@ -457,7 +455,6 @@ export default {
 
 .formSide {
   background-color: #f2faff;
-  /* height: 100%; */
 }
 
 .c-loader-pickup {
@@ -486,11 +483,9 @@ export default {
 }
 
 .courierNeedTimeHeader {
-  /* text-align: right; */
   margin-bottom: 5px;
   font-size: 80%;
   color: #4286f4;
-  /* font-weight: bold; */
 }
 
 .checkPricingBtn {
@@ -533,15 +528,12 @@ export default {
 .googleMapsDiv {
   position: fixed;
   left: 41%;
-  /* border: solid black 1px; */
 }
 
 .courierNeedDiv {
   text-align: center;
   margin-bottom: 10px;
 }
-
-/* save pickup info switch */
 
 .switch input {
   display: none;
@@ -550,7 +542,6 @@ export default {
   display: inline-block;
   width: 40px;
   height: 20px;
-  /* margin-left:2px; */
   transform: translateY(50%);
   position: relative;
 }
@@ -592,7 +583,6 @@ input:checked + .slider {
 .pickupSave {
   margin-bottom: 10px;
   margin-right: 10px;
-  /* background-color: #fff; */
 }
 
 .pickupSave.text {

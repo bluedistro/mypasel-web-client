@@ -1,7 +1,5 @@
 <template lang="html">
   <div class="googleMapsDiv">
-    <!-- welcome to the light of the world, let no one deceive you in any way because you are the chosen one.
-    Behold to the one who deny this fate. -->
       <Gmap-Map
         class="mapHeightStyle"
         :center="{lat:5.622200, lng:-0.175963}"
@@ -12,7 +10,6 @@
                    fullscreenControl: false}"
         map-type-id="roadmap"
       >
-
         <Gmap-Marker v-for="(marker, index) in pickupMarkerAlt"
           @click="center=m.position"
           :clickable="true"
@@ -39,7 +36,6 @@ export default {
   },
   data(){
     return {
-      // 565 is the actual one
       mapSize: 'width: 800px; height: 1366px',
       pickupMarkerAlt: [],
      }

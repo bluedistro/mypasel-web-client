@@ -77,13 +77,9 @@
                         <span v-if="i.isTimeStamp" class="timeStamp"> {{ i.timeStamp }}</span>
                       </div>
                     </div>
-
-                    <!-- <div class="details-text">Delivery Update: {{ i.update }}</div> -->
                   </div>
               </div>
               <div class="col-md-3 col-lg-3 col-3 col-sm-3 courierDetailsImage">
-                <!-- <img src="../assets/tc.jpeg" class="cImage" height="148px"
-                               width="209px" alt="courier image"> -->
                     <div class="row">
                         <div class="col-md-12 col-lg-12 col-12 col-sm-12">
                           <b-img-lazy
@@ -97,12 +93,6 @@
                             alt="Right image"
                           ></b-img-lazy>
                         </div>
-                        <!-- TODO: Visual display of timaway - not completed -->
-                        <!-- <div class="col-md-12 col-lg-12 col-12 col-sm-12">
-                          <div class="timeAwayIndicator">
-                            <div class="awayMonitor" v-bind:style="{width: 100 + '%'}"></div>
-                          </div>
-                        </div> -->
                     </div>
               </div>
             </div>
@@ -114,12 +104,12 @@
 </template>
 
 <script>
-import firebase from "firebase";
-import VueCookie from "vue-cookie";
-import cookeys from "../../cookeys";
+import firebase from "firebase"
+import VueCookie from "vue-cookie"
+import cookeys from "../../cookeys"
 
-const NoActivity = () => import("./RequestDeliveryNoActivity");
-const ProgressSteps = () => import("./RequestDeliveryOngoingProgressComponent");
+const NoActivity = () => import("./RequestDeliveryNoActivity")
+const ProgressSteps = () => import("./RequestDeliveryOngoingProgressComponent")
 
 export default {
   name: "Ongoing",
@@ -127,56 +117,55 @@ export default {
     "no-activity": NoActivity,
     "progress-steps": ProgressSteps
   },
-  data() {
+  data () {
     return {
       showMore: null,
       showIndex: false,
       ongoingTransactions: "",
       ongoingTransactionsPolling: null,
-      // test data, to be deleted soon
       message: "Loading...",
-      // set to true if no transaction is going on
       noTransaction: false,
-      // transaction updates
-      minutesRemaining: '',
-    };
+      minutesRemaining: ''
+    }
   },
   methods: {
-    showMoreFunc(evt) {
+    showMoreFunc (evt) {
       // control the show details function
       if (this.showMore == evt) {
-        this.showIndex = !this.showIndex;
+        this.showIndex = !this.showIndex
       } else {
-        this.showIndex = true;
+        this.showIndex = true
       }
-      this.showMore = evt;
+      this.showMore = evt
+    },
+    updateOngoingTransactions () {
+      const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+      this.$store.dispatch('getOngoingTransactions', user_id)
+                        .then((resp) => {
+                          // get updated ongoingTransactions data from cookie and assign to the data object
+                          this.ongoingTransactions = resp.data
+                          if(this.ongoingTransactions.length > 0){
+                            this.ongoingTransactions.forEach(function(txns, index){
+                              for (let i = 0; i < txns.step; i++) {
+                                let step = `step${i}`
+                                txns[step] = "active"
+                              }
+                              txns.journeyUpdate = txns.status
+                            })
+                          }else if(this.ongoingTransactions <= 0){
+                            // reset to empty array
+                            this.ongoingTransactions = []
+                            this.message = 'No ongoing transactions'
+                          }
+                          // sync cookie info
+                          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions))
+                        })
+                        .catch((err) => {})
     },
     // refresh ongoing transactions data every 3 seconds
-    pollOngoingTransactionsData(){
+    pollOngoingTransactionsData () {
       this.ongoingTransactionsPolling = setInterval(() => {
-        // update ongoing transactions data in cookie
-        const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
-        this.$store.dispatch('getOngoingTransactions', user_id)
-                          .then((resp) => {
-                            // get updated ongoingTransactions data from cookie and assign to the data object
-                            this.ongoingTransactions = resp.data
-                            if(this.ongoingTransactions.length > 0){
-                              this.ongoingTransactions.forEach(function(txns, index){
-                                for (let i = 0; i < txns.step; i++) {
-                                  let step = `step${i}`;
-                                  txns[step] = "active";
-                                }
-                                txns.journeyUpdate = txns.status;
-                              })
-                            }else if(this.ongoingTransactions <= 0){
-                              // reset to empty array
-                              this.ongoingTransactions = []
-                              this.message = 'No ongoing transactions'
-                            }
-                            // sync cookie info
-                            VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
-                          })
-                          .catch((err) => {})
+        this.updateOngoingTransactions()
       }, 10000)
     },
   },
@@ -187,65 +176,44 @@ export default {
     return value.charAt(0).toUpperCase() + value.slice(1)
   }
 },
-  beforeDestroy(){
-    clearInterval(this.ongoingTransactionsPolling);
+  beforeDestroy () {
+    clearInterval(this.ongoingTransactionsPolling)
   },
-  created() {
+  created () {
     // prevent user from going back to courier Found after ongoing is loaded and instead redirect them to request delivery page
     window.onpopstate = event => {
       if (this.$store.state.courierFoundPage == true) {
-        this.$router.push("/");
+        this.$router.push("/")
       }
-    };
+    }
   },
-  mounted() {
+  mounted () {
     window.onpopstate = event => {
       if (this.$store.state.courierFoundPage == true) {
-        this.$router.push("/");
+        this.$router.push("/")
       }
-    };
+    }
     // instantiate ongoing transactions before polling
-    const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
-    this.$store.dispatch('getOngoingTransactions', user_id)
-                      .then((resp) => {
-                        // get updated ongoingTransactions data from cookie and assign to the data object
-                        this.ongoingTransactions = resp.data
-                        if(this.ongoingTransactions.length > 0){
-                          this.ongoingTransactions.forEach(function(txns, index){
-                            for(let i = 0; i < txns.step; i++) {
-                              let step = `step${i}`;
-                              txns[step] = "active";
-                            }
-                            txns.journeyUpdate = txns.status;
-                          })
-                        }else if(this.ongoingTransactions <= 0){
-                          // reset to empty array
-                          this.ongoingTransactions = []
-                          this.message = 'No ongoing transactions'
-                        }
-                        // sync cookie info
-                        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions));
-                      })
-                      .catch((err) => {})
+    this.updateOngoingTransactions()
     //Begin continuous polling
-    this.pollOngoingTransactionsData();
+    this.pollOngoingTransactionsData()
 
 
     this.$messaging.onMessage(payload => {
       if(payload.data.activity == 'Navigation started'){
-        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index){
           if(txns.sendID == parseInt(payload.data.sendID)){
-            txns.journeyUpdate = payload.data.status;
-            txns.timeAway = payload.data.timeAway;
+            txns.journeyUpdate = payload.data.status
+            txns.timeAway = payload.data.timeAway
           }
         })
-        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
-        this.ongoingTransactions = ongoing_txns_data;
+        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+        this.ongoingTransactions = ongoing_txns_data
       }
       // for multiple delivery updates
       if(payload.data.activity == "Delivery complete"){
-          const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+          const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
           ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.data.sendID)){
               txns.journeyUpdate = payload.data.update
@@ -253,62 +221,53 @@ export default {
             }
           })
           // sync cookie info
-          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
-          this.ongoingTransactions = ongoing_txns_data;
+          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+          this.ongoingTransactions = ongoing_txns_data
       }
       // for parcel location time update
       if(payload.data.activity == "Parcel location"){
-         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
          ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.data.sendID)){
               let message = " ride away from headed destination"
-              txns.timeAway = payload.data.timeAway + message;
+              txns.timeAway = payload.data.timeAway + message
             }
          })
          // sync cookie info
-         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
-         this.ongoingTransactions = ongoing_txns_data;
+         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+         this.ongoingTransactions = ongoing_txns_data
       }
       // for courier progress
       if (payload.data.activity == "Courier progress") {
         // get the sendID of the payload, compare with the send id of the ongoingTransactions data list, and update the
         // location, status, step, update,
-        const time = payload.data.timeStamp;
-        const isoDate = new Date(parseInt(time));
-        const timeData = isoDate.toGMTString();
-        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY));
+        const time = payload.data.timeStamp
+        const isoDate = new Date(parseInt(time))
+        const timeData = isoDate.toGMTString()
+        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index) {
           if (txns.sendID == parseInt(payload.data.sendID)) {
-            txns.step = payload.data.step;
-            txns.lastKnownLocation = payload.data.location;
-            txns.update = payload.data.update;
-            txns.status = payload.data.status;
-            txns.timeStamp = timeData;
-            // set data to true to indicate data presence;
-            txns.isTimeStamp = true;
+            txns.step = payload.data.step
+            txns.lastKnownLocation = payload.data.location
+            txns.update = payload.data.update
+            txns.status = payload.data.status
+            txns.timeStamp = timeData
+            // set data to true to indicate data presence
+            txns.isTimeStamp = true
             // iterate over step and set step<step> values in ongoing trasaction data to active to update progress
             for (let i = 0; i < parseInt(txns.step); i++) {
-              const step = `step${i}`;
-              txns[step] = "active";
+              const step = `step${i}`
+              txns[step] = "active"
             }
           }
-
-          // NOTE: This code is potetially irrelevant and might be removed in the nearby future
-          // remove completed transactions
-          // if(txns.status == 'Parcel Delivered'){
-          //   console.log('finished alert....')
-          //     ongoing_txns_data.splice(index, 1);
-          //     console.log('ongoing is ', cookeys.ONGOING_TRANSACTIONS_DATA_KEY);
-          //     VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
-          // }
-        });
+        })
         // // sync cookie info
-        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data));
-        this.ongoingTransactions = ongoing_txns_data;
+        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+        this.ongoingTransactions = ongoing_txns_data
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <style lang="css" scoped>
@@ -317,7 +276,6 @@ export default {
   }
 
   .status {
-    /* font-weight: bold; */
     color: #3aac5d;
     margin-top: 30px;
     white-space: nowrap;
@@ -367,7 +325,6 @@ export default {
   .ongoing-header-alt {
     text-align: left;
     margin-left: 2px;
-    /* margin-top: 20px; */
     border-bottom: solid #ccc 1px;
   }
 
@@ -389,7 +346,6 @@ export default {
   }
 
 .details-header {
-  /* color: black; */
   line-height: 20px;
   font-size: 20px;
 }
@@ -416,13 +372,11 @@ export default {
 /* mobile display of progress component */
 @media screen and (max-width: 700px){
   .transaction {
-    /* margin-bottom: 10px; */
     margin-top: 10px;
     margin-left: -35px;
   }
 
   .status {
-    /* font-weight: bold; */
     color: #3aac5d;
     margin-top: 0px;
     white-space: nowrap;
@@ -432,8 +386,6 @@ export default {
 
   .moreBtn {
     vertical-align: middle;
-    /* margin-top: 25px; */
-    /* margin-bottom: 20px; */
   }
 
 }

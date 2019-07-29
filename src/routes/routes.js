@@ -1,4 +1,4 @@
-import NotFound from "../pages/NotFound.vue";
+import NotFound from "../pages/NotFound.vue"
 const routes = [
   {
     path: "/",
@@ -109,6 +109,6 @@ const routes = [
   },
   { path: "/404", component: NotFound, name: "NotFound" },
   { path: "*", redirect: "/404" },
-];
+]
 
-export default routes;
+export default routes

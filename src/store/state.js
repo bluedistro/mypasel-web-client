@@ -1,5 +1,5 @@
-import VueCookie from "vue-cookie";
-import cookeys from "../cookeys";
+import VueCookie from "vue-cookie"
+import cookeys from "../cookeys"
 
 const state =  {
     status: "",
@@ -13,4 +13,4 @@ const state =  {
     booking_return_data: {}
 }
 
-export default state;
+export default state

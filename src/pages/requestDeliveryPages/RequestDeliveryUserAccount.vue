@@ -298,214 +298,202 @@ export default {
       sex: "",
       file: '',
       aviImage: "https://picsum.photos/150/150?blur=1&grayscale"
-      // https://picsum.photos/150/150?blur=1&grayscale
-    };
+    }
   },
   methods: {
-    onChangeFileUpload(){
-      // display image
-       this.file = this.$refs.file.files[0];
-       var file = this.file;
+    onChangeFileUpload () {
+       this.file = this.$refs.file.files[0]
+       var file = this.file
        if (this.file) {
-         var reader = new FileReader();
+         var reader = new FileReader()
          reader.onload = e => {
-           var image = new Image();
+           var image = new Image()
            image.onLoad = function(imageEvent) {
-             // resize image to at least 150px before being submitted
-             var max_size = 150;
-             var w = image.width;
-             var h = image.height;
+             var max_size = 150
+             var w = image.width
+             var h = image.height
              if (w > h) {
                if (w > max_size) {
-                 h *= max_size / w;
-                 w = max_size;
+                 h *= max_size / w
+                 w = max_size
                }
              } else {
                if (h > max_size) {
-                 w *= max_size / h;
-                 h = max_size;
+                 w *= max_size / h
+                 h = max_size
                }
              }
-             var canvas = document.createElement("canvas");
-             canvas.width = w;
-             canvas.height = h;
-             canvas.getContext("2d").drawImage(image, 0, 0, w, h);
-             var resizedImage = canvas.toDataURL("image/jpeg");
-           };
-           this.aviImage = e.target.result;
-         };
-         reader.readAsDataURL(file);
+             var canvas = document.createElement("canvas")
+             canvas.width = w
+             canvas.height = h
+             canvas.getContext("2d").drawImage(image, 0, 0, w, h)
+             var resizedImage = canvas.toDataURL("image/jpeg")
+           }
+           this.aviImage = e.target.result
+         }
+         reader.readAsDataURL(file)
        }
 
        // save file
-       let formData = new FormData();
+       let formData = new FormData()
        formData.append('file', this.file)
-       console.log('uploading');
        const payload = {
          avatar: formData
        }
         return this.$store.dispatch('saveImage', payload)
-                       .then((resp) => {
-                          // passed image upload success
-                          console.log(resp);
-                          console.log('update success');
-                       })
+                       .then((resp) => {})
                        .catch((error) => {
                          if(error.response.status == 503){
                            this.info_change_status_message = "Unable to upload profile image due to technical glitch. Please try again later"
                          }else{
                            this.info_change_status_message = "Failed to upload profile image. Please try again"
                          }
-                         this.infoChangeStatusModal = true;
+                         this.infoChangeStatusModal = true
                        })
 
     },
-    // // preview image
-    previewImage(event) {
-      var input = event.target;
-      var file = input.files[0];
+    previewImage (event) {
+      var input = event.target
+      var file = input.files[0]
       // set file data to file object
       if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        var reader = new FileReader()
         reader.onload = e => {
-          var image = new Image();
+          var image = new Image()
           image.onLoad = function(imageEvent) {
-            var max_size = 150;
-            var w = image.width;
-            var h = image.height;
+            var max_size = 150
+            var w = image.width
+            var h = image.height
             if (w > h) {
               if (w > max_size) {
-                h *= max_size / w;
-                w = max_size;
+                h *= max_size / w
+                w = max_size
               }
             } else {
               if (h > max_size) {
-                w *= max_size / h;
-                h = max_size;
+                w *= max_size / h
+                h = max_size
               }
             }
-
-            var canvas = document.createElement("canvas");
-            canvas.width = w;
-            canvas.height = h;
-            canvas.getContext("2d").drawImage(image, 0, 0, w, h);
-            var resizedImage = canvas.toDataURL("image/jpeg");
-          };
-          this.aviImage = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            var canvas = document.createElement("canvas")
+            canvas.width = w
+            canvas.height = h
+            canvas.getContext("2d").drawImage(image, 0, 0, w, h)
+            var resizedImage = canvas.toDataURL("image/jpeg")
+          }
+          this.aviImage = e.target.result
+        }
+        reader.readAsDataURL(file)
       }
     },
-    infoChangeStatusFunction(evt) {
-      this.$refs["info-change-status-modal"].hide();
+    infoChangeStatusFunction (evt) {
+      this.$refs["info-change-status-modal"].hide()
     },
-    updateInfo(evt) {
-      evt.preventDefault();
-      const user_data = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY));
+    updateInfo (evt) {
+      evt.preventDefault()
+      const user_data = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY))
       const payload = {
         id: user_data.id,
         email: this.emailAddress
-      };
+      }
       // check for email differences
       if (this.emailAddress == user_data.emailAddress) {
         this.info_change_status_message =
-          "Unable to update information. No change in data was detected";
-        this.infoChangeStatusModal = true;
+          "Unable to update information. No change in data was detected"
+        this.infoChangeStatusModal = true
       } else {
         return this.$store
           .dispatch("changeEmail", payload)
           .then(resp => {
             // update the email in the cookie storage too
-            user_data.emailAddress = this.emailAddress;
+            user_data.emailAddress = this.emailAddress
             this.$cookie.set(this.$cookeys.USER_DATA_KEY, JSON.stringify(user_data), {
               expires: this.$cookeys.cookie_expire
-            });
+            })
             // trigger modal
-            this.info_change_status_message = "Data updated successfully";
-            this.infoChangeStatusModal = true;
+            this.info_change_status_message = "Data updated successfully"
+            this.infoChangeStatusModal = true
           })
           .catch(error => {
             if (error.response.status == 503) {
               this.info_change_status_message =
-                "Unable to update email. It looks like our servers are temporarily down. Please try again later";
+                "Unable to update email. It looks like our servers are temporarily down. Please try again later"
             } else {
               this.info_change_status_message =
-                "Unable to update email due to a technical glitch. Please try again later";
+                "Unable to update email due to a technical glitch. Please try again later"
             }
 
             // this.info_change_status_message = 'Data update failed'
-            this.infoChangeStatusModal = true;
-          });
+            this.infoChangeStatusModal = true
+          })
       }
     },
-    updatePassword(evt) {
-      evt.preventDefault();
+    updatePassword (evt) {
+      evt.preventDefault()
       return this.$validator.validateAll().then(result => {
         if (result) {
           const payload = {
             id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
             old_password: this.currentPassword,
             new_password: this.newPassword
-          };
+          }
           // ensure that new password is different from old pasword
           if (this.currentPassword == this.newPassword) {
             this.info_change_status_message =
-              "Unable to change password. Please make sure new password is different from current password";
-            this.infoChangeStatusModal = true;
+              "Unable to change password. Please make sure new password is different from current password"
+            this.infoChangeStatusModal = true
           } else {
             return this.$store
               .dispatch("changePassword", payload)
               .then(resp => {
-                this.info_change_status_message = "Password has been updated successfully";
-                this.infoChangeStatusModal = true;
+                this.info_change_status_message = "Password has been updated successfully"
+                this.infoChangeStatusModal = true
                 // reset form fields
-                this.currentPassword = "";
-                this.newPassword = "";
-                this.confirmNewPassword = "";
+                this.currentPassword = ""
+                this.newPassword = ""
+                this.confirmNewPassword = ""
               })
               .catch(error => {
                 if (error.response.status == 503) {
                   this.info_change_status_message =
-                    "Unable to update password. It looks like our servers are temporarily down. Please try again later";
+                    "Unable to update password. It looks like our servers are temporarily down. Please try again later"
                 } else if (error.response.status == 400) {
-                  this.info_change_status_message = error.response.data.message;
+                  this.info_change_status_message = error.response.data.message
                 } else {
                   this.info_change_status_message =
-                    "Unable to update password due to a technical glitch. Please try again later";
+                    "Unable to update password due to a technical glitch. Please try again later"
                 }
-
-                // this.info_change_status_message = "Unable to change password";
-                this.infoChangeStatusModal = true;
+                this.infoChangeStatusModal = true
                 // reset form fields
-                this.currentPassword = "";
-                this.newPassword = "";
-                this.confirmNewPassword = "";
-              });
+                this.currentPassword = ""
+                this.newPassword = ""
+                this.confirmNewPassword = ""
+              })
           }
         } else {
           // just flag errors in form field
         }
-      });
+      })
     }
   },
-  mounted() {
+  mounted () {
     // set data
-    const user_data = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY));
-    this.phoneNumber = user_data.phoneNumber;
-    this.emailAddress = user_data.emailAddress;
-    this.fullName = user_data.name;
-    this.country = user_data.country;
-    this.sex = user_data.sex;
-    this.username = user_data.username;
+    const user_data = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY))
+    this.phoneNumber = user_data.phoneNumber
+    this.emailAddress = user_data.emailAddress
+    this.fullName = user_data.name
+    this.country = user_data.country
+    this.sex = user_data.sex
+    this.username = user_data.username
 
     // get user profile image || TODO: Change image under development. This will be enabled if completed
     return this.$store.dispatch('getProfileImage')
                       .then((resp) => {
-                        // console.log('user image ', resp);
-                        // this.aviImage = resp.data.image_url;
+                        // console.log('user image ', resp)
+                        // this.aviImage = resp.data.image_url
                       })
   },
-  created() {
+  created () {
     // create a strong password validator on validate
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
@@ -514,19 +502,19 @@ export default {
         var strongRegex = new RegExp(
           // (?=.*[!@#\$%\^&\*])
           "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
-        );
-        return strongRegex.test(value);
+        )
+        return strongRegex.test(value)
       }
-    });
+    })
 
     // retrieve prfile image
-    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
     return this.$store
       .dispatch("getProfileImage", id)
       .then(resp => {})
-      .catch(error => {});
+      .catch(error => {})
   }
-};
+}
 </script>
 
 <style lang="css" scoped>

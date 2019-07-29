@@ -31,18 +31,18 @@ COURIER_DETAILS_KEY: Contains the information about the courier which responded
 to a particular delivery request
 */
 
-const user = "MPSL140GH";
-const token_key = "MPSL250GH";
-const request_delivery_payload = "MPSL3140GH";
-const pricing = "MPSL470GH";
-const booking_success_payload = "MPSL5190GH";
-const ongoing_transactions_payload = "MPSL6200GH";
-const fcm_token = "MPSL790GH";
-const delivery_time = "MPSL8130GH";
-const delivery_mode = "MPSL9130GH";
-const courier_details_key = "MPSL10150GH";
-const saved_address_key = 'MPSL11190GH';
-const resetEmailAddress = 'MPSLXXZY200GH';
+const user = "MPSL140GH"
+const token_key = "MPSL250GH"
+const request_delivery_payload = "MPSL3140GH"
+const pricing = "MPSL470GH"
+const booking_success_payload = "MPSL5190GH"
+const ongoing_transactions_payload = "MPSL6200GH"
+const fcm_token = "MPSL790GH"
+const delivery_time = "MPSL8130GH"
+const delivery_mode = "MPSL9130GH"
+const courier_details_key = "MPSL10150GH"
+const saved_address_key = 'MPSL11190GH'
+const resetEmailAddress = 'MPSLXXZY200GH'
 
 const cookeys = {
   USER_DATA_KEY: user,
@@ -58,6 +58,6 @@ const cookeys = {
   SAVED_ADDRESS_KEY: saved_address_key,
   RESET_EMAIL_ADDRESS: resetEmailAddress,
   cookie_expire: 30 // 30 days duration for cookie
-};
+}
 
-export default cookeys;
+export default cookeys

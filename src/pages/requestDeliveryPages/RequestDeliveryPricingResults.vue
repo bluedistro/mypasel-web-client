@@ -129,7 +129,6 @@ export default {
     },
     // watch the pricing results and enable and disable accordingly
     pricingDetails: function(val) {
-      // check the length of the object
       if (Object.entries(val).length !== 0 && val.constructor === Object) {
         this.disabled = false;
         this.activeColor = "#5b89d3";
@@ -154,7 +153,6 @@ text-align: left;
 
 .v-pricing-row{
   margin-bottom: 12px;
-  /* border-bottom: solid #d4d8dd 1px; */
 }
 
 .v-button-container{
@@ -180,7 +178,6 @@ text-align: left;
   text-align: left;
   color: #4286f4;
   font-size: 110%;
-  /* font-weight: bold; */
 }
 
 .pricing-div {
@@ -194,8 +191,6 @@ text-align: left;
 
   /* input radio */
   input[type=radio] + label {
-    /* border: 1px dashed #444; */
-    /* width: 130px; */
     height: 60px;
     border: solid #ccc 1px;
     border-radius: 1px;

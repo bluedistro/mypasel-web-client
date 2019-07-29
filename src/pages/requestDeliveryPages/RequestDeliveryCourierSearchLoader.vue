@@ -11,19 +11,6 @@
          </div>
        </div>
      </div>
-    <!-- <div class="loader-icon">
-      <div class="ds">
-        <div class="ds">
-          <div class="ds">
-            <div class="ds">
-              <div class="ds">
-                <div class="ds"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="loader">
       <div class="loader--text"></div>
       <div class="timer-display">
@@ -49,7 +36,6 @@
         v-model="bookingCancellationFormModal"
         title="Order Cancellation Form"
       >
-        <!-- <p class="booking-cancellation-error-modal-text">Transaction cancellation unsuccessful</p> -->
         <form ref="form" @submit.stop.prevent="handleSubmit">
           <b-form-group
             label="Can you please let us know your reason for cancelling?"
@@ -155,15 +141,15 @@
 </template>
 
 <script>
-const Navbar = () => import("./RequestDeliveryNavbar");
-const firebase = () => import("firebase");
+const Navbar = () => import("./RequestDeliveryNavbar")
+const firebase = () => import("firebase")
 
 export default {
   name: "CourierSearchLoader",
   components: {
     navbar: Navbar
   },
-  data() {
+  data () {
     return {
       cancellationReason: "",
       hideTabs: true,
@@ -173,102 +159,68 @@ export default {
       unsuccessfulBookingModal: false,
       bookingCancellationFormModal: false,
       search: this.$store.state.search,
-      //
       deliveryMode: null,
       fcm: this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY),
       courierFoundStatus: false,
-      // countdown timer
       countdownMinutes: null,
       countdownSeconds: null,
       countDownTextColor: '#48f542'
-    };
+    }
   },
   methods: {
-    //courier details
-    courierDetails() {
-      this.$refs["courier-found-modal"].hide();
-      this.$router.push({ name: "CourierFound" });
+    courierDetails () {
+      this.$refs["courier-found-modal"].hide()
+      this.$router.push({ name: "CourierFound" })
     },
-    timedOutController(){
-      this.$refs["courier-search-timeout-modal"].hide();
-      this.$router.push({name: 'RequestDelivery'});
+    timedOutController () {
+      this.$refs["courier-search-timeout-modal"].hide()
+      this.$router.push({name: 'RequestDelivery'})
     },
-    // stop the cancellation process
-    stopCancellationProcess() {
+    stopCancellationProcess () {
       this.bookingCancellationFormModal = false;
     },
     // modal control message display for successful order cancellation
-    bookingErrorCancellationSuccessModalHide() {
-      this.$refs["booking-cancellation-success-modal"].hide();
-      // redirect back
-      this.$router.push({ name: "RequestDelivery" });
+    bookingErrorCancellationSuccessModalHide () {
+      this.$refs["booking-cancellation-success-modal"].hide()
+      this.$router.push({ name: "RequestDelivery" })
     },
     // form collection for order cancellation
-    bookingErrorModalHide() {
-      this.$refs["booking-cancellation-error-modal"].hide();
+    bookingErrorModalHide () {
+      this.$refs["booking-cancellation-error-modal"].hide()
     },
     // Whole control operation for booking cancellation
-    bookingCancellationErrorModalTry() {
-      const id = JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId;
+    bookingCancellationErrorModalTry () {
+      const id = JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId
       const payload = {
         cancelId: id,
         reason: this.cancellationReason
-      };
-      // hide form
-      this.$refs["booking-cancellation-error-form-modal"].hide();
+      }
+      this.$refs["booking-cancellation-error-form-modal"].hide()
       // make a call to the order cancellation action in store
       return this.$store
         .dispatch("cancelTransaction", payload)
         .then(resp => {
-          this.successfulBookingModal = true;
+          this.successfulBookingModal = true
         })
         .catch(err => {
-          this.unsuccessfulBookingModal = true;
-        });
+          this.unsuccessfulBookingModal = true
+        })
     },
     // kick starter function for order cancellation procedure
-    cancelOrder(evt) {
-      this.bookingCancellationFormModal = true;
+    cancelOrder (evt) {
+      this.bookingCancellationFormModal = true
     }
   },
-  created() {
+  created () {
     // if routed before due time, initiate forceful redirect to payment page
     if (!this.search) {
-      this.$router.push({ name: "RequestPayment" });
+      this.$router.push({ name: "RequestPayment" })
     }
-
-    // this.deliveryMode = this.$cookie.get(this.$cookeys.DELIVERY_MODE);
-    // // prepare payload for courier search api
-    // const requestPayload = this.$cookie.get(this.$cookeys.REQUEST_DELIVERY_PAYLOAD_KEY);
-    // const parsedRequestPayload = JSON.parse(requestPayload);
-    // const payload = {
-    //   senderID: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store
-    //   senderPhone: parsedRequestPayload.pickupData.phoneNumber,
-    //   senderName: parsedRequestPayload.pickupData.fullName,
-    //   recipientName: parsedRequestPayload.dropOffData[0].fullName,
-    //   recipientPhone: parsedRequestPayload.dropOffData[0].phoneNumber,
-    //   FCM: this.fcm,
-    //   modeOfDelivery: this.deliveryMode,
-    //   startingPoint: parsedRequestPayload.pickupData.searchAddress.formatted_address,
-    //   cityOfDelivery: parsedRequestPayload.dropOffData[0].searchAddress.formatted_address,
-    //   pickUpCoordinates:
-    //     parsedRequestPayload.pickupData.searchAddress.location.lat +
-    //     "," +
-    //     parsedRequestPayload.pickupData.searchAddress.location.lng,
-    //   destinationCoordinates:
-    //     parsedRequestPayload.dropOffData[0].searchAddress.location.lat +
-    //     "," +
-    //     parsedRequestPayload.dropOffData[0].searchAddress.location.lng,
-    //   sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId,
-    //   distance: ""
-    // };
 
     const payload = {
       sendID: JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId
     }
 
-
-    // console.log(payload)
     // test firebase
     this.$store
       .dispatch("getCourier", payload)
@@ -276,58 +228,46 @@ export default {
         // nothing is returned
       })
       .catch(err => {
-        console.log(err);
-        console.log("Searching courier error");
-      });
+        console.log(err)
+        console.log("Searching courier error")
+      })
 
-    // this.$messaging.onMessage(payload => {
-    //   if (payload.data.activity == "Courier found") {
-    //     this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
-    //       expires: this.$cookeys.cookie_expire
-    //     });
-    //     this.courierFoundModal = true;
-    //   }
-    // });
-
-    // soclket try
+    // socket try
     this.$ioSocket.on('events', (payload) => {
       if (payload.data.activity == "Courier found") {
         this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
           expires: this.$cookeys.cookie_expire
-        });
-        this.courierFoundModal = true;
-      }
-    });
-
-  },
-  mounted() {
-    // countdown from 5 minutes
-    var start = new Date().getTime()
-    var countdown = new Date(start + 5*60000);
-    // set countdown
-    var x = setInterval(() => {
-      var now = new Date().getTime();
-      var distance = countdown - now;
-      this.countdownMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      this.countdownSeconds = Math.floor((distance % (1000 * 60)) / 1000);
-      if(distance < 60000){
-        this.countDownTextColor = '#c43d14';
-      }
-
-      if(distance < 1000){
-        this.courierSearchTimeoutModal = true;
-        clearInterval(x);
+        })
+        this.courierFoundModal = true
       }
     })
   },
-  beforeDestroy() {}
-};
+  mounted () {
+    var start = new Date().getTime()
+    // countdown from 5 minutes
+    var countdown = new Date(start + 5*60000)
+    var x = setInterval(() => {
+      var now = new Date().getTime()
+      var distance = countdown - now
+      this.countdownMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+      this.countdownSeconds = Math.floor((distance % (1000 * 60)) / 1000)
+      if(distance < 60000){
+        this.countDownTextColor = '#c43d14'
+      }
+
+      if(distance < 1000){
+        this.courierSearchTimeoutModal = true
+        clearInterval(x)
+      }
+    })
+  }
+}
+
 </script>
 
 <style lang="css" scoped>
 
 .search-animate {
-  /* border: solid black 1px; */
   margin-top: 100px;
   text-align: center;
 }
@@ -499,29 +439,6 @@ export default {
     }
 }
 
-
-/* .ds {
-display: table-cell;
-border-radius: 999px;
-border: 24px inset #42f4d1;
-animation: spin 10s alternate-reverse ease-in-out infinite both;
-}
-
-.loader-icon {
-top: 40%;
-left: 50%;
-margin-left: -140px;
-margin-top: -120px;
-position: fixed;
-height: 350px;
-width: 280px;
-}
-
-@keyframes spin {
-0% { transform: rotate(0deg); border: 24px inset #42f4d1; }
-100% { transform: rotate(90deg); border: 24px inset #41f4d6; }
-} */
-
 .cancel-order{
   height: 50px;
   width: 300px;
@@ -582,12 +499,9 @@ width: 280px;
 .loader {
 height: 90px;
 width: 300px;
-/* position: absolute; */
 position: fixed;
 top: 40%;
-/* bottom: 0; */
 left: 50%;
-/* right: 0; */
 margin-left: -160px;
 margin-top: -10px;
 color: white;

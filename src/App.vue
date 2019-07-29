@@ -7,14 +7,13 @@
 </template>
 
 <script>
-import Navbar from "./pages/requestDeliveryPages/RequestDeliveryNavbar.vue";
+import Navbar from "./pages/requestDeliveryPages/RequestDeliveryNavbar.vue"
 
 export default {
   components: {
     navbar: Navbar
   },
-  mounted() {},
-  created() {
+  created () {
     // token refresh
     this.$messaging.onTokenRefresh(() => {
       firebase
@@ -22,22 +21,22 @@ export default {
         .getToken()
         .then(refreshToken => {
           // const id = this.$store.state.user.id
-          console.log("token refreshed...");
-          const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+          console.log("token refreshed...")
+          const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
           // save the refreshed fcm token
           const payload = {
             id: id,
             fcmToken: refreshToken
-          };
+          }
           this.$store
             .dispatch("updateFCMToken", payload)
             .then(resp => {})
-            .catch(err => {});
+            .catch(err => {})
         })
-        .catch(err => {});
-    });
+        .catch(err => {})
+    })
   }
-};
+}
 </script>
 
 <style>

@@ -57,7 +57,6 @@
               role="tabpanel"
               aria-labelledby="applicant-tab"
             >
-              <!-- <h3 class="register-heading">Welcome onboard to MyPasel</h3> -->
               <form
                 class="individualForm"
                 v-promise-btn="{ action: 'submit' }"
@@ -148,26 +147,6 @@
                         >*{{ errors.first("userForm.username") }}</span
                       >
                     </div>
-                    <!-- <div class="form-group">
-                      <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Confirm Password *"
-                        value=""
-                        v-model="userData.confirmUserPassword"
-                        v-validate="'required|confirmed:userPassword'"
-                        :class="{
-                          input: true,
-                          'is-danger': errors.has('userForm.confirmUserPassword')
-                        }"
-                        name="confirmUserPassword"
-                      />
-                      <span
-                        v-show="errors.first('userForm.confirmUserPassword')"
-                        class="help is-danger"
-                        >*{{ errors.first("userForm.confirmUserPassword") }}</span
-                      >
-                    </div> -->
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -256,7 +235,6 @@
               role="tabpanel"
               aria-labelledby="company-tab"
             >
-              <!-- <h3 class="register-heading">Welcome onboard to MyPasel</h3> -->
               <form
                 v-promise-btn="{ action: 'submit' }"
                 @submit.prevent="validateRegisterForm('companyForm')"
@@ -352,26 +330,6 @@
                         >*{{ errors.first("companyForm.companyEmployeeUsername") }}</span
                       >
                     </div>
-                    <!-- <div class="form-group">
-                      <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Confirm password *"
-                        value=""
-                        v-model="companyData.confirmCompanyEmployeePassword"
-                        v-validate="'required|confirmed:companyEmployeePassword'"
-                        :class="{
-                          input: true,
-                          'is-danger': errors.has('companyForm.confirmCompanyEmployeePassword')
-                        }"
-                        name="confirmCompanyEmployeePassword"
-                      />
-                      <span
-                        v-show="errors.first('companyForm.confirmCompanyEmployeePassword')"
-                        class="help is-danger"
-                        >*{{ errors.first("companyForm.confirmCompanyEmployeePassword") }}</span
-                      >
-                    </div> -->
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -520,7 +478,6 @@ export default {
       eyeIcon: 'eye',
       unsuccessfulRegistrationModal: false,
       successfulRegistrationModal: false,
-      // user registering data
       userData: {
         firstName: "",
         lastName: "",
@@ -531,13 +488,11 @@ export default {
         sex: '',
         userCountry: 'Ghana'
       },
-      // control the phone number field of the user data
       userPhoneField: {
         defaultCode: "GH",
         preferred: ["GH"],
         clearable: true
       },
-      // company registering data
       companyData: {
         companyEmployeeName: "",
         companyEmployeeEmail: "",
@@ -548,15 +503,12 @@ export default {
         companyEmployeeReferenceNumber: "",
         companyEmployeeSex: '',
       },
-      // control the phone number field of the company data
       companyPhoneField: {
         defaultCode: "GH",
         preferred: ["GH"],
         clearable: true
       },
-      // transmittable
       sendableInfo: null,
-      // control the hide and show of the company and applicant forms
       paneControl: {
         individualClass: "nav-link active",
         individualAria: true,
@@ -565,161 +517,149 @@ export default {
         employeeClass: "nav-link",
         employeeTabPane: "tab-pane fade show"
       }
-    };
+    }
   },
   methods: {
-    errorModalHide() {
-      this.$refs["error-modal"].hide();
+    errorModalHide () {
+      this.$refs["error-modal"].hide()
     },
-    successModalHide() {
-      this.$refs["success-modal"].hide();
+    successModalHide () {
+      this.$refs["success-modal"].hide()
       //  redirect to Login page
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: "Login" })
     },
-    goToLogin(){
+    goToLogin () {
       this.$router.push({name: 'Login'})
     },
-    togglePasswordVisiblityController(type){
+    togglePasswordVisiblityController (type) {
       if(type === 'user'){
-        var fieldType = document.getElementById("userPassword");
+        var fieldType = document.getElementById("userPassword")
       }else if(type === 'company'){
-        var fieldType = document.getElementById("companyEmployeePassword");
+        var fieldType = document.getElementById("companyEmployeePassword")
       }
       if(fieldType.type === "password"){
-        fieldType.type = "text";
-        this.eyeIcon = 'eye-slash';
+        fieldType.type = "text"
+        this.eyeIcon = 'eye-slash'
       }else{
-        fieldType.type = "password";
-        this.eyeIcon = 'eye';
+        fieldType.type = "password"
+        this.eyeIcon = 'eye'
       }
     },
     // reset company form field
-    onCompanyFormReset(evt) {
-      evt.preventDefault();
-      this.companyData.companyEmployeeName = null;
-      this.companyData.companyEmployeeEmail = null;
-      this.companyData.companyEmployeePassword = null;
-      this.companyData.companyEmployeeUsername = null;
-      this.companyData.companyEmployeePhone = null;
-      this.companyData.companyEmployeeCountry = null;
-      this.companyData.companyEmployeeReferenceNumber = null;
-      this.companyEmployeeSex = null;
+    onCompanyFormReset (evt) {
+      evt.preventDefault()
+      this.companyData.companyEmployeeName = null
+      this.companyData.companyEmployeeEmail = null
+      this.companyData.companyEmployeePassword = null
+      this.companyData.companyEmployeeUsername = null
+      this.companyData.companyEmployeePhone = null
+      this.companyData.companyEmployeeCountry = null
+      this.companyData.companyEmployeeReferenceNumber = null
+      this.companyEmployeeSex = null
     },
     // reset the user form field
-    onUserFormReset(evt) {
-      evt.preventDefault();
-      this.userData.firstName = null;
-      this.userData.lastName = null;
-      this.userData.userPassword = null;
-      this.userData.username = null;
-      this.userData.userEmail = null;
-      this.userData.userPhone = null;
-      this.userData.sex = [];
-      this.userData.userCountry = [];
+    onUserFormReset (evt) {
+      evt.preventDefault()
+      this.userData.firstName = null
+      this.userData.lastName = null
+      this.userData.userPassword = null
+      this.userData.username = null
+      this.userData.userEmail = null
+      this.userData.userPhone = null
+      this.userData.sex = []
+      this.userData.userCountry = []
     },
 
     // controls the Individual Registration forms
     // sets the Individual Registration form to visible
-    setIndividualTrue(evt) {
-      this.paneControl.individualClass = "nav-link active";
-      this.paneControl.individualAria = true;
-      this.paneControl.individualTabPane = "tab-pane fade show active";
-      this.paneControl.employeeAria = false;
-      this.paneControl.employeeClass = "nav-link";
-      this.paneControl.employeeTabPane = "tab-pane fade show";
+    setIndividualTrue (evt) {
+      this.paneControl.individualClass = "nav-link active"
+      this.paneControl.individualAria = true
+      this.paneControl.individualTabPane = "tab-pane fade show active"
+      this.paneControl.employeeAria = false
+      this.paneControl.employeeClass = "nav-link"
+      this.paneControl.employeeTabPane = "tab-pane fade show"
     },
     // controls the employee Registration forms
     // sets the employee Registration form to visible
-    setEmployeeTrue(evt) {
-      this.paneControl.individualClass = "nav-link";
-      this.paneControl.individualAria = false;
-      this.paneControl.individualTabPane = "tab-pane fade show";
-      this.paneControl.employeeAria = true;
-      this.paneControl.employeeClass = "nav-link active";
-      this.paneControl.employeeTabPane = "tab-pane fade show active";
+    setEmployeeTrue (evt) {
+      this.paneControl.individualClass = "nav-link"
+      this.paneControl.individualAria = false
+      this.paneControl.individualTabPane = "tab-pane fade show"
+      this.paneControl.employeeAria = true
+      this.paneControl.employeeClass = "nav-link active"
+      this.paneControl.employeeTabPane = "tab-pane fade show active"
     },
     // validate and register form
-    validateRegisterForm(scope) {
+    validateRegisterForm (scope) {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          // show loader first
           let loader = this.$loading.show({
             loader: "bars",
             color: "#00bcd4",
             height: 80,
             width: 80
-          });
-          // all validations complete for company forms
+          })
           if (scope == "companyForm") {
-            this.companyData.type = "business";
-            this.companyData.companyEmployeePhone = this.companyData.companyEmployeePhone.replace(/\s/g, "");
-            this.sendableInfo = this.companyData;
+            this.companyData.type = "business"
+            this.companyData.companyEmployeePhone = this.companyData.companyEmployeePhone.replace(/\s/g, "")
+            this.sendableInfo = this.companyData
           }
-          // all validation complete for user forms
           if (scope == "userForm") {
-            this.userData.type = "individual";
-            this.userData.userPhone = this.userData.userPhone.replace(/\s/g, "");
-            this.userData.userFullName = this.userData.firstName + " " + this.userData.lastName;
-            this.sendableInfo = this.userData;
+            this.userData.type = "individual"
+            this.userData.userPhone = this.userData.userPhone.replace(/\s/g, "")
+            this.userData.userFullName = this.userData.firstName + " " + this.userData.lastName
+            this.sendableInfo = this.userData
           }
-          // post register information
           return this.$store
             .dispatch("register", this.sendableInfo)
             .then(response => {
-              loader.hide();
-              this.successfulRegistrationModal = true;
+              loader.hide()
+              this.successfulRegistrationModal = true
             })
             .catch(err => {
               if (err.response.status == 400) {
-                this.errorMessage = err.response.data.message;
+                this.errorMessage = err.response.data.message
               } else if ((err.response.status = 503)) {
                 this.errorMessage =
-                  "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
+                  "Service temporarily unavailable. We are working very hard to get it back as soon as possible"
               } else {
                 this.errorMessage =
-                  "Unable to complete registration due to a technical glitch. Please try again later";
+                  "Unable to complete registration due to a technical glitch. Please try again later"
               }
 
-              // this.errorMessage = 'Unable to complete registration'
-              loader.hide();
-              this.unsuccessfulRegistrationModal = true;
-            });
-          // return;
+              loader.hide()
+              this.unsuccessfulRegistrationModal = true
+            })
         }
-        // else errors throw up upon validation failure
-      });
+      })
     }
   },
-  mounted() {
-    let cRightYear = new Date();
-    cRightYear = cRightYear.getUTCFullYear();
-    this.copyrightYear = cRightYear;
-    // create a strong password validator on validate
+  mounted () {
+    let cRightYear = new Date()
+    cRightYear = cRightYear.getUTCFullYear()
+    this.copyrightYear = cRightYear
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
                   1 lowercase letter and 1 number.`,
       validate: value => {
         var strongRegex = new RegExp(
-          // (?=.*[!@#\$%\^&\*])
           "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
-        );
-        return strongRegex.test(value);
+        )
+        return strongRegex.test(value)
       }
-    });
-    // verify user name
+    })
     this.$validator.extend("verify_username", {
       getMessage: field => `The username should contain at least a letter and be between 5 to 20 characters`,
       validate: value => {
         var strongRegex = new RegExp(
-          // "^[A-Za-z][A-Za-z0-9]*$", "i"
           "^(?=.*[a-z])(?=.{5,20})", "i"
-        );
-        return strongRegex.test(value);
+        )
+        return strongRegex.test(value)
       }
-    });
-  },
-  created() {}
-};
+    })
+  }
+}
 </script>
 
 <style lang="css" scoped>

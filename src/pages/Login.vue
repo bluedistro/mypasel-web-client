@@ -1,6 +1,5 @@
 <template lang="html">
   <div class="container-fluid">
-    <!-- square floats in login -->
     <ul class="circles">
          <li></li>
          <li></li>
@@ -32,7 +31,6 @@
                 </h1>
               </div>
               <div class="col-md-3 col-sm-6 col-lg-3 col-4">
-                <!-- <p>Don't have an account!</p>  -->
                   <button
                     class="btn btn-dark btn-sm btn-block"
                     type="button"
@@ -46,17 +44,6 @@
             <div v-bind:class="errorClass" id="login-error-id">
               <span v-if="unsuccessfulLogin">{{ errorMessage }}</span>
             </div>
-            <!-- <vue-phone-number-input
-              v-model="loginData.phoneNumber"
-              autofocus
-              :default-country-code="phoneField.defaultCode"
-              :clearable="phoneField.clearable"
-              required
-              :preferred-countries="phoneField.preferred"
-              name="inputPhoneNumber"
-              id="inputPhoneNumber"
-            /> -->
-
             <input
               type="text"
               v-model="loginData.emailOrPhoneNumber"
@@ -65,7 +52,6 @@
               placeholder="username or phone number"
               required
             />
-
             <input
               type="password"
               id="inputPassword"
@@ -74,7 +60,6 @@
               required
               v-model="loginData.password"
             />
-
             <button id="login"
               class="btn btn-outline-dark btn-sm btn-block col-md-2 col-lg-2 col-4 col-sm-3"
               type="submit"
@@ -84,7 +69,6 @@
             <a href="#" id="forgot_pswd" v-bind:class="forgotPasswordAnimate">
               <router-link class="forgot-password-text" :to="{ name: 'resetPassword', params: {} }">Forgot password?</router-link>
             </a>
-            <!-- <hr /> -->
           </form>
           <div class="copyright-div">
             Copyright &copy; MyPasel {{ copyrightYear }} by Desymal Technologies. All Rights Reserved.
@@ -106,13 +90,11 @@ export default {
       errorMessage: "",
       errorClass: "",
       copyrightYear: "",
-      // loaderBarControl: false,
       loginData: {
         emailOrPhoneNumber: "",
         password: ""
       },
       unsuccessfulLogin: false,
-      // animate forgot password on credentials forgotten
       forgotPasswordAnimate: "",
       signupAnimate: "",
       phoneField: {
@@ -120,86 +102,69 @@ export default {
         preferred: ["GH"],
         clearable: true
       }
-    };
+    }
   },
   methods: {
     createNewAccount(evt) {
-      this.$router.push({ name: "Register" });
+      this.$router.push({ name: "Register" })
     },
     login(evt) {
-      evt.preventDefault();
-      // remove error class animations
-      this.errorClass = "";
-      this.forgotPasswordAnimate = "";
-      this.signupAnimate = "";
-      // this.loaderBarControl = true;
-      this.unsuccessfulLogin = false;
+      evt.preventDefault()
+      this.errorClass = ""
+      this.forgotPasswordAnimate = ""
+      this.signupAnimate = ""
+      this.unsuccessfulLogin = false
       let user = {
         emailOrPhoneNumber: this.loginData.emailOrPhoneNumber.replace(/\s/g, ""),
         password: this.loginData.password
-      };
+      }
 
-      // access Vuex to perform login transaction
       return this.$store
         .dispatch("login", user)
         .then(response => {
-          this.$router.push({ name: "SystemSetup" });
+          this.$router.push({ name: "SystemSetup" })
         })
         .catch(error => {
-          // console.log(error.response.status)
           if (error.response.status) {
             if (error.response.status == 400) {
-              this.errorMessage = "Incorrect phone number or password. Please try again";
+              this.errorMessage = "Incorrect phone number or password. Please try again"
             } else if (error.response.status == 503) {
               this.errorMessage =
-                "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
+                "Service temporarily unavailable. We are working very hard to get it back as soon as possible"
             } else if (error.response.status == 404) {
-              this.errorMessage = error.response.data.message;
+              this.errorMessage = error.response.data.message
             } else {
-              this.errorMessage = "Unable to login. Please check credentials and try again";
+              this.errorMessage = "Unable to login. Please check credentials and try again"
             }
           } else {
             this.errorMessage =
-              "Unable to login due to a technical error. Kindly try again later.";
+              "Unable to login due to a technical error. Kindly try again later."
           }
 
-          this.unsuccessfulLogin = true;
-          // append error class
-          this.errorClass = "login-error";
-          // handle forgot password animate bounce
+          this.unsuccessfulLogin = true
+          this.errorClass = "login-error"
           if(this.errorMessage.includes("credentials")){
             setTimeout(() => {
-              this.forgotPasswordAnimate = "forgot-password-animate";
-            }, 3000);
+              this.forgotPasswordAnimate = "forgot-password-animate"
+            }, 3000)
           }else if(this.errorMessage.includes("found")){
             setTimeout(() => {
-              this.signupAnimate = "signup-animate";
-            }, 3000);
+              this.signupAnimate = "signup-animate"
+            }, 3000)
           }
-        });
+        })
     }
   },
-  created() {
-    // this.loaderBarControl = false;
-    // if (this.$cookie.get(this.$cookeys.TOKEN_KEY != null)) {
-    //   this.$router.push({ name: "RequestDelivery" });
-    // }
-  },
   mounted(){
-    let cRightYear = new Date();
-    cRightYear = cRightYear.getUTCFullYear();
-    this.copyrightYear = cRightYear;
+    let cRightYear = new Date()
+    cRightYear = cRightYear.getUTCFullYear()
+    this.copyrightYear = cRightYear
   }
-};
+}
 </script>
 
 <style lang="css" scoped>
 /* sign in FORM */
-
-.login-container {
- /* height: 100vh; */
-}
-
 .copyright-div {
   margin-top: 40px;
   font-size: 80%;
@@ -207,7 +172,6 @@ export default {
 }
 
 .terms-div {
-  /* margin-top: 5px; */
   text-align: center;
   font-size: 80%;
   color: #a2acbd;
@@ -360,9 +324,7 @@ export default {
 }
 
 .login-error{
-  /* float: left; */
   font-size: 90%;
-  /* margin-bottom: 2px; */
   color: #f57242;
   -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 	        animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;

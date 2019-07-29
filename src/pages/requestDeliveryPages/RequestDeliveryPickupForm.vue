@@ -1,5 +1,4 @@
 <template lang="html">
-  <!-- position to the left of the parent component -->
   <div class="card pickup-card">
     <div class="row">
       <div class="col-md-9 col-9 col-sm-9 col-lg-9">
@@ -32,6 +31,9 @@
           v-on:focus="addressSearchLoader"
         >
         </gmap-autocomplete>
+        <div class="place_warning">
+          <small v-if="invalidPlace == true">Invalid place selected. Please choose a place from the suggested locations</small>
+        </div>
       </b-form-group>
 
       <b-form-group id="input-group-2">
@@ -39,6 +41,7 @@
           required
           id="input-2"
           v-model="fullName"
+          class="search-slt"
           :disabled="disableFullName"
           v-on:blur="sendInfo"
           placeholder="Sender full name"
@@ -67,6 +70,7 @@
           v-model="details"
           rows="3"
           max-rows="6"
+          class="search-slt"
           v-on:blur="sendInfo"
           placeholder="Extra information or comments"
         >
@@ -79,18 +83,17 @@
 <script>
 export default {
   name: "PickupForm",
-  components: {
-    // 'vue-google-autocomplete': VueGoogleAutocomplete,
-  },
   props: {
     disablePickupAddress: Boolean,
     disableFullName: Boolean,
-    disablePhoneField: Boolean,
+    disablePhoneField: Boolean
   },
-  data() {
+  data () {
     return {
       senderAddressPlaceholder: "Sender address",
       searchingAddressLoader: false,
+      invalidPlace: false,
+      place: null,
       phoneField: {
         defaultCode: "GH",
         preferred: ["GH"],
@@ -109,117 +112,127 @@ export default {
     };
   },
   methods: {
-    addressSearchLoader() {
-      this.searchingAddressLoader = true;
+    addressSearchLoader () {
+      this.searchingAddressLoader = true
     },
-    sendInfo() {
+    sendInfo () {
+      this.searchingAddressLoader = null
       let data = {
         phoneNumber: this.phoneNumber.replace(/\s/g, ""),
         details: this.details,
         searchAddress: this.searchAddress,
         fullName: this.fullName
-      };
+      }
       // to enable the getPickupAddressData to fire
       if (JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)) != null) {
-        this.getPickupAddressData(JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)));
+        this.getPickupAddressData(JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY)))
       }
-      this.$emit("pickup_details", data);
+      this.$emit("pickup_details", data)
     },
-    getPickupAddressData(place) {
-      // gather needed information from maps
-
-      // handle information from two different sources
-      var infoToReturn;
-      var lat;
-      var lng;
-      // search data straight from google autocomplete
-      if (place.geometry) {
-        infoToReturn = place.geometry;
-        infoToReturn["source"] = "saved";
+    getPickupAddressData (place) {
+      if(place.place_id){
+        this.invalidPlace = false
+        this.place = place
+        // handle information from two different sources
+        var infoToReturn
+        var lat
+        var lng
+        // search data straight from google autocomplete
+        // if (place.geometry) {
+        infoToReturn = this.place.geometry
+        infoToReturn["source"] = "saved"
         infoToReturn["location"] = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
         }
-        // search data coming from localStorage saved data
-      } else {
-        infoToReturn = place;
-        infoToReturn["source"] = "direct";
-        lat = infoToReturn.location.lat;
-        lng = infoToReturn.location.lng;
+        // }
+        // else {
+        //   console.log('here 2')
+        //   infoToReturn = place
+        //   infoToReturn["source"] = "direct"
+        //   lat = infoToReturn.location.lat
+        //   lng = infoToReturn.location.lng
+        // }
+        // let infoToReturn = place.geometry
+        infoToReturn["place_id"] = this.place.place_id
+        infoToReturn["formatted_address"] = this.place.name
+        infoToReturn["reference"] = this.place.reference
+        infoToReturn["vicinity"] = this.place.vicinity
+        // return needed information
+        this.searchAddress = infoToReturn
+        if (this.searchAddress) {
+          this.searchingAddressLoader = false
+          this.markers = []
+          this.markers.push({
+            position: infoToReturn["location"]
+          })
+        }
+        let data = {
+          phoneNumber: this.phoneNumber.replace(/\s/g, ""),
+          details: this.details,
+          searchAddress: this.searchAddress,
+          fullName: this.fullName
+        }
+        this.$emit("set_markers", this.markers, data)
+      }else{
+        this.data = null
+        this.markers = []
+        this.invalidPlace = true
+        this.$emit("set_markers", this.markers, this.data)
       }
-      // let infoToReturn = place.geometry;
-      infoToReturn["place_id"] = place.place_id;
-      infoToReturn["formatted_address"] = place.name;
-      infoToReturn["reference"] = place.reference;
-      infoToReturn["vicinity"] = place.vicinity;
-      // return needed information
-      this.searchAddress = infoToReturn;
-      if (this.searchAddress) {
-        this.searchingAddressLoader = false;
-        this.markers = [];
-        this.markers.push({
-          position: infoToReturn["location"]
-        });
-      }
-      // emit data once again (for redundancy)
-      let data = {
-        phoneNumber: this.phoneNumber.replace(/\s/g, ""),
-        details: this.details,
-        searchAddress: this.searchAddress,
-        fullName: this.fullName
-      };
-      this.$emit("set_markers", this.markers, data);
-    },
-    displaySpinner() {},
-    noResultsFound() {}
-  },
-  created() {
-    // controls the display and hiding of the saved data in the form fields on page created
-    const savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
-    if(this.disablePickupAddress === true){
-      if (savedPickupData != null) {
-        this.searchAddress = savedPickupData.searchAddress;
-        this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address;
-        this.phoneNumber = savedPickupData.phoneNumber;
-        this.fullName = savedPickupData.fullName;
-      }
-    }else{
-      this.searchAddress = null;
-      this.senderAddressPlaceholder = 'Sender address';
-      this.phoneNumber = '';
-      this.fullName = '';
     }
   },
-  mounted(){
-    this.$emit('pickup_init', 'pickup_ready');
+  created () {
+    // controls the display and hiding of the saved data in the form fields on page created
+    const savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY))
+    if(this.disablePickupAddress === true){
+      if (savedPickupData != null) {
+        this.searchAddress = savedPickupData.searchAddress
+        this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address
+        this.phoneNumber = savedPickupData.phoneNumber
+        this.fullName = savedPickupData.fullName
+      }
+    }else{
+      this.searchAddress = null
+      this.senderAddressPlaceholder = 'Sender address'
+      this.phoneNumber = ''
+      this.fullName = ''
+    }
+  },
+  mounted () {
+    this.$emit('pickup_init', 'pickup_ready')
   },
 // controls the display and hiding of the saved data in the form fields on address form value change
   watch: {
-    disablePickupAddress(status){
-      let savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY));
+    disablePickupAddress (status) {
+      let savedPickupData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY))
       if(status === true){
         if (savedPickupData != null) {
-          this.searchAddress = savedPickupData.searchAddress;
-          this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address;
-          this.phoneNumber = savedPickupData.phoneNumber;
-          this.fullName = savedPickupData.fullName;
+          this.searchAddress = savedPickupData.searchAddress
+          this.senderAddressPlaceholder = savedPickupData.searchAddress.formatted_address
+          this.phoneNumber = savedPickupData.phoneNumber
+          this.fullName = savedPickupData.fullName
         }
       }else{
-        this.searchAddress = null;
-        this.senderAddressPlaceholder = 'Sender address';
-        this.phoneNumber = '';
-        this.fullName = '';
+        this.searchAddress = null
+        this.senderAddressPlaceholder = 'Sender address'
+        this.phoneNumber = ''
+        this.fullName = ''
       }
     }
   }
-};
+}
 </script>
 
 <style lang="css" scoped>
 
 .searchPinger {
-  /* float: right; */
   text-align: right;
+}
+
+.place_warning {
+  text-align: left;
+  color: orange;
 }
 
 .pickupForm-header{
@@ -237,73 +250,28 @@ export default {
   border-radius: 2px;
 }
 
-#pickupMap {
-  outline: none;
-  border-color: #ccc;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
+/* for autocomplete search input field */
+  .search-slt {
+    outline: none;
+    border-color: #ccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
 
-#pickupMap:focus {
-  border-color: #00bcd4;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
+/* for autocomplete search input field */
+  .search-slt:focus {
+    border-color: #00bcd4;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
 
-textarea:focus {
-  border-color: #00bcd4;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
-
-textarea {
-  border-color: #ccc;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
-
-input[type="text"]:focus {
-  border-color: #00bcd4;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
-
-input[type="text"] {
-  border-color: #ccc;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
-
-.form-control.search-slt {
-  content: "\1F50E";
-}
 </style>

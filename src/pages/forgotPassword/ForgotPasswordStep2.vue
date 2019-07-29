@@ -119,10 +119,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
 export default {
   name: "confirmPassword",
-  data() {
+  data () {
     return {
       emailAddress: this.$cookie.get(this.$cookeys.RESET_EMAIL_ADDRESS),
       verificatonCode: '',
@@ -132,17 +132,17 @@ export default {
       resetSuccessful: false,
       errorMessage: '',
       errorClass: '',
-    };
+    }
   },
   methods: {
-    resetPasswordSuccessModalControl(){
-      this.$refs["reset-successful-modal"].hide();
+    resetPasswordSuccessModalControl () {
+      this.$refs["reset-successful-modal"].hide()
       this.$router.push({name: 'Login'})
     },
-    getNewPassword(evt) {
-      evt.preventDefault();
-      this.errorClass = '';
-      this.unableToResetPassword = false;
+    getNewPassword (evt) {
+      evt.preventDefault()
+      this.errorClass = ''
+      this.unableToResetPassword = false
       return this.$validator.validateAll().then(result => {
         if(result){
           const payload = {
@@ -155,51 +155,51 @@ export default {
             color: "#00bcd4",
             height: 80,
             width: 80
-          });
+          })
         return this.$store.dispatch('resetPassword', payload)
-                          .then((resp) => {
-                            loader.hide();
-                              this.resetSuccessful = true;
-                          })
-                          .catch((error) => {
-                            loader.hide();
-                            console.log('error here');
-                            if (error.response.status) {
-                              if (error.response.status == 400) {
-                                this.errorMessage = "Unable to reset password. Please check verification code and try again";
-                              } else if (error.response.status == 503) {
-                                this.errorMessage =
-                                  "Service temporarily unavailable. We are working very hard to get it back as soon as possible";
-                              } else if (error.response.status == 404) {
-                                this.errorMessage = "A problem occured while trying to reset password. Please make sure the confirmation code is valid";
-                              } else {
-                                this.errorMessage = "Unable reset password.";
-                              }
-                            } else {
-                              this.errorMessage =
-                                "Unable to reset password. Kindly try again later.";
-                            }
-                            this.unableToResetPassword = true;
-                            this.errorClass = "reset-password-error";
-                          })
-        }
+            .then((resp) => {
+              loader.hide()
+                this.resetSuccessful = true
+            })
+            .catch((error) => {
+              loader.hide()
+              console.log('error here')
+              if (error.response.status) {
+                if (error.response.status == 400) {
+                  this.errorMessage = "Unable to reset password. Please check verification code and try again"
+                } else if (error.response.status == 503) {
+                  this.errorMessage =
+                    "Service temporarily unavailable. We are working very hard to get it back as soon as possible"
+                } else if (error.response.status == 404) {
+                  this.errorMessage = "A problem occured while trying to reset password. Please make sure the confirmation code is valid"
+                } else {
+                  this.errorMessage = "Unable reset password."
+                }
+              } else {
+                this.errorMessage =
+                  "Unable to reset password. Kindly try again later."
+              }
+              this.unableToResetPassword = true
+              this.errorClass = "reset-password-error"
+            })
+         }
       })
 
     }
   },
-  mounted(){
+  mounted () {
     this.$validator.extend("verify_password", {
       getMessage: field => `The password must be at least eight characters long and contain at least: 1 uppercase letter
                   1 lowercase letter and 1 number`,
       validate: value => {
         var strongRegex = new RegExp(
           "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,20})"
-        );
-        return strongRegex.test(value);
+        )
+        return strongRegex.test(value)
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <style lang="css" scoped>

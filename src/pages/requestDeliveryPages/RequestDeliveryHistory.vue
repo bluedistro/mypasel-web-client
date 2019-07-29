@@ -5,41 +5,17 @@
     </div>
     <div class="row">
       <transition name="historyChange" mode="in-out">
-        <!--  if no history -->
         <div
           class="col-md-12 col-12 col-lg-12 col-sm-12"
           v-if="historyContent.length <= 0"
           key="no-history">
           <no-activity v-bind:message="message"></no-activity>
         </div>
-        <!-- else -->
 
         <div
           class="col-md-10 col-10 col-lg-10 col-sm-11 col-11 general-container"
           v-if="historyContent.length > 0"
           key="history">
-          <!-- NOTE: The commented section is for the search filter. Might activate it someday -->
-
-          <!-- search filter -->
-          <!-- <div class="row search-filter">
-            <div class="col-md-9 col-sm-9 col-9 col-lg-9 search-input">
-              <input
-                class="form-control"
-                v-model="txnsHistorySearch"
-                placeholder="filter transaction history with pickup search"
-              />
-            </div>
-            <div
-              class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-message"
-              v-if="txnsHistorySearch != ''"
-            >
-              Showing filtered results with pickup
-              <span class="search-slot">{{ txnsHistorySearch }}</span>
-            </div>
-            <div class="col-md-10 col-sm-12 col-12 col-10 col-lg-10 search-border"></div>
-          </div> -->
-
-          <!-- history data -->
           <transition-group name="sortList" tag="ul">
             <li
               v-for="(txns, index) in lists"
@@ -72,7 +48,6 @@
               </div>
             </li>
           </transition-group>
-          <!-- pagination -->
           <div class="row pagination">
             <b-pagination
               v-model="currentPage"
@@ -81,7 +56,6 @@
               aria-controls="historyDataId"
             >
             </b-pagination>
-            <!-- sorts -->
             <div class="col-md-3 col-sm-3 col-3 col-lg-3 tickers" id="tickers">
               <a @click="sortDateAscending"><font-awesome-icon icon="angle-up"/></a> <br />
               <a @click="sortDateDescending"><font-awesome-icon icon="angle-down"/></a>
@@ -116,16 +90,15 @@
 </template>
 
 <script>
-import { ContentLoader } from 'vue-content-loader';
-// import NoActivity from './RequestDeliveryNoActivity.vue';
-const NoActivity = () => import("./RequestDeliveryNoActivity");
+import { ContentLoader } from 'vue-content-loader'
+const NoActivity = () => import("./RequestDeliveryNoActivity")
 export default {
   name: "History",
   components: {
     ContentLoader,
     "no-activity": NoActivity
   },
-  data() {
+  data () {
     return {
       perPage: 10,
       currentPage: 1,
@@ -135,73 +108,71 @@ export default {
       errorMessage:
         "Unable to fetch history due to a technical failure. Please refresh page to try again",
       historyFetchErrorModal: false
-    };
+    }
   },
   methods: {
-    historyFetchError() {
-      this.$refs["history-fetch-error-modal"].hide();
+    historyFetchError () {
+      this.$refs["history-fetch-error-modal"].hide()
     },
-    sortDateAscending() {
-      this.historyContent = this.historyContent.sort((a, b) => a.rawTime - b.rawTime);
+    sortDateAscending () {
+      this.historyContent = this.historyContent.sort((a, b) => a.rawTime - b.rawTime)
     },
-    sortDateDescending() {
-      this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
+    sortDateDescending () {
+      this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime)
     }
   },
   computed: {
     // filter history data using pickup location
-    filteredHistory: function() {
+    filteredHistory: function () {
       return this.historyContent.filter(txns => {
-        return txns.pickup.toLowerCase().match(this.txnsHistorySearch.toLowerCase());
-      });
+        return txns.pickup.toLowerCase().match(this.txnsHistorySearch.toLowerCase())
+      })
     },
 
-    lists() {
-      const items = this.historyContent;
+    lists () {
+      const items = this.historyContent
       // Return just page of items needed
-      return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      return items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
     },
 
-    rows() {
-      return this.historyContent.length;
+    rows () {
+      return this.historyContent.length
     }
   },
-  mounted() {
+  mounted () {
     // GET transaction history
-    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id;
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
     this.$store
       .dispatch("getTransactionsHistory", id)
       .then(resp => {
         // alter data a bit to get dropOff and timeStamp easily
         resp.data.forEach((txns, index) => {
           for (let i = 0; i < txns.destinations.length; i++) {
-            const dateItem = new Date(txns.destinations[i].updatedAt);
-            txns.timeStamp = dateItem.toGMTString();
-            txns.dropOff = JSON.parse(txns.destinations[i].targetLocation).name;
-            txns.rawTime = txns.destinations[i].updatedAt;
+            const dateItem = new Date(txns.destinations[i].updatedAt)
+            txns.timeStamp = dateItem.toGMTString()
+            txns.dropOff = JSON.parse(txns.destinations[i].targetLocation).name
+            txns.rawTime = txns.destinations[i].updatedAt
           }
-        });
-        this.historyContent = resp.data;
-        // check if history is unavailable
+        })
+        this.historyContent = resp.data
         if (this.historyContent.length <= 0){
           this.message = "You have no transaction history"
         }else{
-          // sort the data
-          this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime);
+          this.historyContent = this.historyContent.sort((a, b) => b.rawTime - a.rawTime)
         }
       })
       .catch(error => {
         if (error.response.status == 503) {
           this.errorMessage =
-            "Our servers failed while retrieving your history. Kindly refresh page to try again";
+            "Our servers failed while retrieving your history. Kindly refresh page to try again"
         } else if (error.response.status == 500) {
           this.errorMessage =
-            "Sorry, we experienced a technical glitch while fetching your history data. Please refresh page to try again";
+            "Sorry, we experienced a technical glitch while fetching your history data. Please refresh page to try again"
         }
-        this.historyFetchErrorModal = true;
-      });
+        this.historyFetchErrorModal = true
+      })
   }
-};
+}
 </script>
 
 <style lang="css" scoped>

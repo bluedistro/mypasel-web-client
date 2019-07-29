@@ -83,7 +83,7 @@ export default {
     'navbar' : Navbar,
     'star-rating': StarRating,
   },
-  data(){
+  data () {
     return {
       hideTabs: true,
       returnBack: false,
@@ -91,7 +91,6 @@ export default {
       name: '',
       phone: '',
       rating: '',
-      // rating: 4,
       ratingTrue: false,
       timeAway: '',
       vehicleInfo: '',
@@ -103,17 +102,17 @@ export default {
   },
   methods: {
 
-    trackParcel(){
-      this.returnBack = true;
+    trackParcel () {
+      this.returnBack = true
 
       // and ugly hack to prevent user from going back to the courier found page
-      this.$store.dispatch('redirectToOngoing');
-      this.$router.push({name: 'Ongoing'});
+      this.$store.dispatch('redirectToOngoing')
+      this.$router.push({name: 'Ongoing'})
     }
 
   },
-  mounted(){
-    localStorage.setItem('courierFoundPage', 'passed');
+  mounted () {
+    localStorage.setItem('courierFoundPage', 'passed')
     const courier_details = JSON.parse(this.$cookie.get(this.$cookeys.COURIER_DETAILS_KEY))
     this.name = courier_details.name
     this.phone = courier_details.phone
@@ -124,37 +123,30 @@ export default {
     this.latitude = parseFloat(courier_details.latitude)
     this.longitude = parseFloat(courier_details.longitude)
   },
-  created(){
-
+  created () {
     if(this.rating < 0 ||  this.rating > 5){
-       // this.rating = 'Not available';
-       this.rating = 0;
-       this.ratingTrue = true;
+       this.rating = 0
+       this.ratingTrue = true
     }
-
-    // Save ongoing transaction info in localstorage before page redirect
-    // set ongoing transactions to localStorage before navigating to the ongoings page to prepare data before the ongoing page load
     const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
     this.$store.dispatch('getOngoingTransactions', user_id)
                .then((resp) => {
                  // set another variable to track set Timestamp and use to show and hide timestamp appropriately in tracking page
                  resp.data.forEach(function(txns, index){
-                   txns.timeStamp = false;
+                   txns.timeStamp = false
                  })
                   this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(resp.data), {expires: this.$cookeys.cookie_expire})
                })
-               .catch((err) => {
-
-               })
+               .catch((err) => {})
 
   },
-  beforeDestroy(){
+  beforeDestroy () {
     if(!this.returnBack){
       this.$router.push({name: 'CourierFound'})
     }
-
   }
 }
+
 </script>
 
 <style lang="css" scoped>
