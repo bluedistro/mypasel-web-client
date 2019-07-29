@@ -133,27 +133,15 @@ export default {
       if(place.place_id){
         this.invalidPlace = false
         this.place = place
-        // handle information from two different sources
         var infoToReturn
         var lat
         var lng
-        // search data straight from google autocomplete
-        // if (place.geometry) {
         infoToReturn = this.place.geometry
         infoToReturn["source"] = "saved"
         infoToReturn["location"] = {
           lat: this.place.geometry.location.lat(),
           lng: this.place.geometry.location.lng()
         }
-        // }
-        // else {
-        //   console.log('here 2')
-        //   infoToReturn = place
-        //   infoToReturn["source"] = "direct"
-        //   lat = infoToReturn.location.lat
-        //   lng = infoToReturn.location.lng
-        // }
-        // let infoToReturn = place.geometry
         infoToReturn["place_id"] = this.place.place_id
         infoToReturn["formatted_address"] = this.place.name
         infoToReturn["reference"] = this.place.reference
