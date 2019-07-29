@@ -174,7 +174,6 @@ export default {
         })
       }
     },
-    // remove one drop off form and update drop off markers array.
     // Emit these values to the parent component
     removeDropOff () {
       if (this.dropOffData.length > this.minimumDropOffs) {
