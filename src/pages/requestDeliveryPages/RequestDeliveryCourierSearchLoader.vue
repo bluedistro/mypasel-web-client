@@ -141,8 +141,12 @@
 </template>
 
 <script>
+var socketIOClient = require('socket.io-client')
+var sailsIOClient = require('sails.io.js')
+var io = sailsIOClient(socketIOClient)
+
 const Navbar = () => import("./RequestDeliveryNavbar")
-const firebase = () => import("firebase")
+// const firebase = () => import("firebase")
 
 export default {
   name: "CourierSearchLoader",
@@ -228,19 +232,43 @@ export default {
         // nothing is returned
       })
       .catch(err => {
-        console.log(err)
-        console.log("Searching courier error")
+        // console.log(err)
+        // console.log("Searching courier error")
       })
 
-    // socket try
-    this.$ioSocket.on('events', (payload) => {
-      if (payload.data.activity == "Courier found") {
-        this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
-          expires: this.$cookeys.cookie_expire
-        })
-        this.courierFoundModal = true
-      }
-    })
+      const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+      io.sails.url = "https://api.mypasel.com"
+      io.socket.request({
+            method: 'get',
+            url: '/user/subscribe?id='+id,
+            headers: {
+              'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
+            }
+          },
+          (responseData, jwres)=>{
+              console.log(responseData);
+          });
+
+      io.socket.on('events', (payload) => {
+            console.log('success')
+            console.log(payload)
+            if (payload.activity == "Courier found") {
+              this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload), {
+                expires: this.$cookeys.cookie_expire
+              })
+              this.courierFoundModal = true
+            }
+        });
+
+    // this.$messaging.onMessage(payload => {
+    //   if (payload.data.activity == "Courier found") {
+    //     this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
+    //       expires: this.$cookeys.cookie_expire
+    //     })
+    //     this.courierFoundModal = true
+    //   }
+    // })
+
   },
   mounted () {
     var start = new Date().getTime()
@@ -254,7 +282,6 @@ export default {
       if(distance < 60000){
         this.countDownTextColor = '#c43d14'
       }
-
       if(distance < 1000){
         this.courierSearchTimeoutModal = true
         clearInterval(x)

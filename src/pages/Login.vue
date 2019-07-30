@@ -122,7 +122,7 @@ export default {
       return this.$store
         .dispatch("login", user)
         .then(response => {
-          this.$router.push({ name: "SystemSetup" })
+          this.$router.push({ name: "RequestDelivery" })
         })
         .catch(error => {
           if (error.response.status) {

@@ -104,9 +104,13 @@
 </template>
 
 <script>
-import firebase from "firebase"
+// import firebase from "firebase"
 import VueCookie from "vue-cookie"
 import cookeys from "../../cookeys"
+
+var socketIOClient = require('socket.io-client')
+var sailsIOClient = require('sails.io.js')
+var io = sailsIOClient(socketIOClient)
 
 const NoActivity = () => import("./RequestDeliveryNoActivity")
 const ProgressSteps = () => import("./RequestDeliveryOngoingProgressComponent")
@@ -198,25 +202,37 @@ export default {
     //Begin continuous polling
     this.pollOngoingTransactionsData()
 
+    const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+    io.sails.url = "https://api.mypasel.com"
+    io.socket.request({
+          method: 'get',
+          url: '/user/subscribe?id='+id,
+          headers: {
+            'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
+          }
+        },
+        (responseData, jwres)=>{
+            console.log(responseData)
+        })
 
-    this.$messaging.onMessage(payload => {
-      if(payload.data.activity == 'Navigation started'){
+    io.socket.on('events', (payload) => {
+      if(payload.activity == 'Navigation started'){
         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index){
-          if(txns.sendID == parseInt(payload.data.sendID)){
-            txns.journeyUpdate = payload.data.status
-            txns.timeAway = payload.data.timeAway
+          if(txns.sendID == parseInt(payload.sendID)){
+            txns.journeyUpdate = payload.status
+            txns.timeAway = payload.timeAway
           }
         })
         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
         this.ongoingTransactions = ongoing_txns_data
       }
       // for multiple delivery updates
-      if(payload.data.activity == "Delivery complete"){
+      if(payload.activity == "Delivery complete"){
           const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
           ongoing_txns_data.forEach(function(txns, index){
-            if(txns.sendID == parseInt(payload.data.sendID)){
-              txns.journeyUpdate = payload.data.update
+            if(txns.sendID == parseInt(payload.sendID)){
+              txns.journeyUpdate = payload.update
 
             }
           })
@@ -225,12 +241,12 @@ export default {
           this.ongoingTransactions = ongoing_txns_data
       }
       // for parcel location time update
-      if(payload.data.activity == "Parcel location"){
+      if(payload.activity == "Parcel location"){
          const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
          ongoing_txns_data.forEach(function(txns, index){
-            if(txns.sendID == parseInt(payload.data.sendID)){
+            if(txns.sendID == parseInt(payload.sendID)){
               let message = " ride away from headed destination"
-              txns.timeAway = payload.data.timeAway + message
+              txns.timeAway = payload.timeAway + message
             }
          })
          // sync cookie info
@@ -238,19 +254,19 @@ export default {
          this.ongoingTransactions = ongoing_txns_data
       }
       // for courier progress
-      if (payload.data.activity == "Courier progress") {
+      if (payload.activity == "Courier progress") {
         // get the sendID of the payload, compare with the send id of the ongoingTransactions data list, and update the
         // location, status, step, update,
-        const time = payload.data.timeStamp
+        const time = payload.timeStamp
         const isoDate = new Date(parseInt(time))
         const timeData = isoDate.toGMTString()
         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index) {
-          if (txns.sendID == parseInt(payload.data.sendID)) {
-            txns.step = payload.data.step
-            txns.lastKnownLocation = payload.data.location
-            txns.update = payload.data.update
-            txns.status = payload.data.status
+          if (txns.sendID == parseInt(payload.sendID)) {
+            txns.step = payload.step
+            txns.lastKnownLocation = payload.location
+            txns.update = payload.update
+            txns.status = payload.status
             txns.timeStamp = timeData
             // set data to true to indicate data presence
             txns.isTimeStamp = true
@@ -266,6 +282,76 @@ export default {
         this.ongoingTransactions = ongoing_txns_data
       }
     })
+
+
+    // this.$messaging.onMessage(payload => {
+    //   if(payload.data.activity == 'Navigation started'){
+    //     const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+    //     ongoing_txns_data.forEach(function(txns, index){
+    //       if(txns.sendID == parseInt(payload.data.sendID)){
+    //         txns.journeyUpdate = payload.data.status
+    //         txns.timeAway = payload.data.timeAway
+    //       }
+    //     })
+    //     VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+    //     this.ongoingTransactions = ongoing_txns_data
+    //   }
+    //   // for multiple delivery updates
+    //   if(payload.data.activity == "Delivery complete"){
+    //       const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+    //       ongoing_txns_data.forEach(function(txns, index){
+    //         if(txns.sendID == parseInt(payload.data.sendID)){
+    //           txns.journeyUpdate = payload.data.update
+    //
+    //         }
+    //       })
+    //       // sync cookie info
+    //       VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+    //       this.ongoingTransactions = ongoing_txns_data
+    //   }
+    //   // for parcel location time update
+    //   if(payload.data.activity == "Parcel location"){
+    //      const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+    //      ongoing_txns_data.forEach(function(txns, index){
+    //         if(txns.sendID == parseInt(payload.data.sendID)){
+    //           let message = " ride away from headed destination"
+    //           txns.timeAway = payload.data.timeAway + message
+    //         }
+    //      })
+    //      // sync cookie info
+    //      VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+    //      this.ongoingTransactions = ongoing_txns_data
+    //   }
+    //   // for courier progress
+    //   if (payload.data.activity == "Courier progress") {
+    //     // get the sendID of the payload, compare with the send id of the ongoingTransactions data list, and update the
+    //     // location, status, step, update,
+    //     const time = payload.data.timeStamp
+    //     const isoDate = new Date(parseInt(time))
+    //     const timeData = isoDate.toGMTString()
+    //     const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+    //     ongoing_txns_data.forEach(function(txns, index) {
+    //       if (txns.sendID == parseInt(payload.data.sendID)) {
+    //         txns.step = payload.data.step
+    //         txns.lastKnownLocation = payload.data.location
+    //         txns.update = payload.data.update
+    //         txns.status = payload.data.status
+    //         txns.timeStamp = timeData
+    //         // set data to true to indicate data presence
+    //         txns.isTimeStamp = true
+    //         // iterate over step and set step<step> values in ongoing trasaction data to active to update progress
+    //         for (let i = 0; i < parseInt(txns.step); i++) {
+    //           const step = `step${i}`
+    //           txns[step] = "active"
+    //         }
+    //       }
+    //     })
+    //     // // sync cookie info
+    //     VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+    //     this.ongoingTransactions = ongoing_txns_data
+    //   }
+    // })
+
   }
 }
 </script>

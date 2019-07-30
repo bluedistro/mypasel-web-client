@@ -190,7 +190,8 @@ export default {
       targetCountry: "Ghana",
       disablePromoCodeFeature: true,
       bookingData: null,
-      fcm: this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
+      fcm: 'null'
+      // this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
     }
   },
   methods: {
