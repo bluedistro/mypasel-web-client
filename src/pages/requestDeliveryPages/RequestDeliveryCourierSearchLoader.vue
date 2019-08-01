@@ -143,10 +143,8 @@
 <script>
 var socketIOClient = require('socket.io-client')
 var sailsIOClient = require('sails.io.js')
-// var io = sailsIOClient(socketIOClient)
 
 const Navbar = () => import("./RequestDeliveryNavbar")
-// const firebase = () => import("firebase")
 
 export default {
   name: "CourierSearchLoader",

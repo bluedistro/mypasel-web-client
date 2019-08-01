@@ -104,13 +104,9 @@
 </template>
 
 <script>
-// import firebase from "firebase"
-import VueCookie from "vue-cookie"
-import cookeys from "../../cookeys"
 
 var socketIOClient = require('socket.io-client')
 var sailsIOClient = require('sails.io.js')
-// var io = sailsIOClient(socketIOClient)
 
 const NoActivity = () => import("./RequestDeliveryNoActivity")
 const ProgressSteps = () => import("./RequestDeliveryOngoingProgressComponent")
@@ -162,7 +158,7 @@ export default {
                             this.message = 'No ongoing transactions'
                           }
                           // sync cookie info
-                          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions))
+                          this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(this.ongoingTransactions))
                         })
                         .catch((err) => {})
     },
@@ -221,19 +217,19 @@ export default {
 
     io.socket.on('events', (payload) => {
       if(payload.activity == 'Navigation started'){
-        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+        const ongoing_txns_data = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index){
           if(txns.sendID == parseInt(payload.sendID)){
             txns.journeyUpdate = payload.status
             txns.timeAway = payload.timeAway
           }
         })
-        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+        this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
         this.ongoingTransactions = ongoing_txns_data
       }
       // for multiple delivery updates
       if(payload.activity == "Delivery complete"){
-          const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+          const ongoing_txns_data = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
           ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.sendID)){
               txns.journeyUpdate = payload.update
@@ -241,12 +237,12 @@ export default {
             }
           })
           // sync cookie info
-          VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+          this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
           this.ongoingTransactions = ongoing_txns_data
       }
       // for parcel location time update
       if(payload.activity == "Parcel location"){
-         const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+         const ongoing_txns_data = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
          ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.sendID)){
               let message = " ride away from headed destination"
@@ -254,7 +250,7 @@ export default {
             }
          })
          // sync cookie info
-         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+         this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
          this.ongoingTransactions = ongoing_txns_data
       }
       // for courier progress
@@ -264,7 +260,7 @@ export default {
         const time = payload.timeStamp
         const isoDate = new Date(parseInt(time))
         const timeData = isoDate.toGMTString()
-        const ongoing_txns_data = JSON.parse(VueCookie.get(cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
+        const ongoing_txns_data = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
         ongoing_txns_data.forEach(function(txns, index) {
           if (txns.sendID == parseInt(payload.sendID)) {
             txns.step = payload.step
@@ -282,11 +278,11 @@ export default {
           }
         })
         // // sync cookie info
-        VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
+        this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
         this.ongoingTransactions = ongoing_txns_data
       }
     })
-    
+
   }
 }
 </script>

@@ -114,13 +114,6 @@ Vue.use(VeeValidate)
 Vue.use(VueRouter)
 Vue.use(Loading)
 
-Vue.prototype.$http = axios
-const token = VueCookie.get(cookeys.TOKEN_KEY)
-
-if (token) {
-  Vue.prototype.$http.defaults.headers.common["Authorization"] = token
-  }
-
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 Vue.component("font-awesome-layers", FontAwesomeLayers)
 Vue.component("font-awesome-layers-text", FontAwesomeLayersText)
@@ -129,6 +122,13 @@ Vue.component("vue-ctk-date-time-picker", VueCtkDateTimePicker)
 Vue.use(VuePromiseBtn)
 Vue.use(BootstrapVue)
 Vue.use(VueTour)
+
+Vue.prototype.$http = axios
+const token = VueCookie.get(cookeys.TOKEN_KEY)
+
+if (token) {
+  Vue.prototype.$http.defaults.headers.common["Authorization"] = token
+  }
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
