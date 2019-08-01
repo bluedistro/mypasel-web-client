@@ -432,18 +432,7 @@ export default {
 
     // start tour
     // this.$tours['myTour'].start()
-
-    // update the FCM token
-    // const token = this.$cookie.get(this.$cookeys.FCM_TOKEN_KEY)
-    // const updatePayload = {
-    //   id: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id,
-    //   fcmToken: token
-    // }
-    //
-    // this.$store
-    //   .dispatch("updateFCMToken", updatePayload)
-    //   .then(resp => {})
-    //   .catch(err => {})
+    
   }
 }
 </script>
