@@ -228,13 +228,8 @@ export default {
     // test firebase
     this.$store
       .dispatch("getCourier", payload)
-      .then(resp => {
-        // nothing is returned
-      })
-      .catch(err => {
-        // console.log(err)
-        console.log("Searching courier error")
-      })
+      .then(resp => {} )
+      .catch(err => {} )
 
       const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
       let io
@@ -251,29 +246,16 @@ export default {
               'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
             }
           },
-          (responseData, jwres)=>{
-              console.log(responseData);
-          });
+          (responseData, jwres)=>{})
 
       io.socket.on('events', (payload) => {
-            console.log('success')
-            console.log(payload)
             if (payload.activity == "Courier found") {
               this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload), {
                 expires: this.$cookeys.cookie_expire
               })
               this.courierFoundModal = true
             }
-        });
-
-    // this.$messaging.onMessage(payload => {
-    //   if (payload.data.activity == "Courier found") {
-    //     this.$cookie.set(this.$cookeys.COURIER_DETAILS_KEY, JSON.stringify(payload.data), {
-    //       expires: this.$cookeys.cookie_expire
-    //     })
-    //     this.courierFoundModal = true
-    //   }
-    // })
+        })
 
   },
   mounted () {
