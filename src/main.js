@@ -11,8 +11,6 @@ import VuePhoneNumberInput from "vue-phone-number-input"
 import "vue-phone-number-input/dist/vue-phone-number-input.css"
 import VuePromiseBtn from "vue-promise-btn"
 import "vue-promise-btn/dist/vue-promise-btn.css"
-// import firebase from "firebase/app"
-// import "firebase/messaging"
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker"
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css"
 import VueTour from "vue-tour"
@@ -119,41 +117,9 @@ Vue.use(Loading)
 Vue.prototype.$http = axios
 const token = VueCookie.get(cookeys.TOKEN_KEY)
 
-// socket subscription
-// var socketIOClient = require('socket.io-client')
-// var sailsIOClient = require('sails.io.js')
-
 if (token) {
   Vue.prototype.$http.defaults.headers.common["Authorization"] = token
-
-  // const id = JSON.parse(VueCookie.get(cookeys.USER_DATA_KEY)).id
-  // let io
-  // if(socketIOClient.sails){
-  //   io = socketIOClient
-  // }else{
-  //   io = sailsIOClient(socketIOClient)
-  // }
-  //
-  // io.sails.url = "https://api.mypasel.com"
-  // // subscribe to socket
-  // io.socket.request({
-  //     method: 'get',
-  //     url: '/user/subscribe?id=' + id,
-  //     headers: {
-  //       'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
-  //     }
-  //   },
-  //   (responseData, jwres) => {
-  //     console.log('response data ', responseData)
-  //   })
-  //
-  //   io.socket.on('parcel', (event) => {
-  //     console.log('picked payload', event)
-  //   })
-
-  // Vue.prototype.$ioSocket = io.socket
-
-}
+  }
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)
 Vue.component("font-awesome-layers", FontAwesomeLayers)
@@ -167,34 +133,7 @@ Vue.use(VueTour)
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
-// const config = {
-//   apiKey: "AIzaSyActd9Uo9vznMtsin3ufh-ONaeuwziNmnc",
-//   authDomain: "macro-incline-164306.firebaseapp.com",
-//   databaseURL: "https://macro-incline-164306.firebaseio.com",
-//   projectId: "macro-incline-164306",
-//   storageBucket: "macro-incline-164306.appspot.com",
-//   messagingSenderId: "296173793992"
-// }
-
 Vue.prototype.$cookeys = cookeys
-
-// firebase.initializeApp(config)
-// Vue.prototype.$messaging = firebase.messaging()
-//
-// navigator.serviceWorker.register("firebase-messaging-sw.js")
-//   .then(registration => {
-//     Vue.prototype.$messaging.useServiceWorker(registration)
-//   })
-//   .catch(err => {
-//     console.log(err)
-//   })
-//
-// firebase.messaging().requestPermission()
-//   .then(() => firebase.messaging().getToken())
-//   .then(token => {
-//     VueCookie.set(cookeys.FCM_TOKEN_KEY, token, { expires: cookeys.cookie_expire })
-//   })
-//   .catch(err => {})
 
 Vue.directive("click-outside", {
   bind: function(el, binding, vnode) {

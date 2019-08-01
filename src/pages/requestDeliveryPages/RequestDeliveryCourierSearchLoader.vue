@@ -143,7 +143,7 @@
 <script>
 var socketIOClient = require('socket.io-client')
 var sailsIOClient = require('sails.io.js')
-var io = sailsIOClient(socketIOClient)
+// var io = sailsIOClient(socketIOClient)
 
 const Navbar = () => import("./RequestDeliveryNavbar")
 // const firebase = () => import("firebase")
@@ -233,10 +233,16 @@ export default {
       })
       .catch(err => {
         // console.log(err)
-        // console.log("Searching courier error")
+        console.log("Searching courier error")
       })
 
       const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
+      let io
+      if(socketIOClient.sails){
+        io = socketIOClient
+      }else{
+        io = sailsIOClient(socketIOClient)
+      }
       io.sails.url = "https://api.mypasel.com"
       io.socket.request({
             method: 'get',

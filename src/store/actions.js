@@ -2,18 +2,6 @@ import axios from "axios"
 import VueCookie from "vue-cookie"
 import cookeys from "../cookeys"
 
-const checkFCMTokenPresence = ({ commit }) => {
-  return new Promise((resolve, reject) => {
-    const fcm_token = VueCookie.get(cookeys.FCM_TOKEN_KEY)
-    if (fcm_token != null) {
-      resolve(fcm_token)
-    } else {
-      const error = "Unable to retrieve FCM token"
-      reject(error)
-    }
-  })
-}
-
 const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
     const params = user.emailOrPhoneNumber.match(/[a-z]/i) ? {username: user.emailOrPhoneNumber, password: user.password} : {phoneNumber: user.emailOrPhoneNumber, password: user.password}
@@ -222,22 +210,6 @@ const getCourier = ({ commit }, payload) => {
   })
 }
 
-const updateFCMToken = ({ commit }, payload) => {
-  return new Promise((resolve, reject) => {
-    const path = "https://api.desymal.com/user/fcmtoken"
-    axios
-      .post(path, payload)
-      .then(resp => {
-        commit("token_refresh_success")
-        resolve(resp)
-      })
-      .catch(err => {
-        commit("token_refresh_error")
-        reject(err)
-      })
-  })
-}
-
 const getOngoingTransactions = ({ commit }, id) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.desymal.com/user/" + String(id) + "/ongoingtransactions"
@@ -396,7 +368,6 @@ const resetPassword = ({commit}, payload) => {
 }
 
 export default {
-  checkFCMTokenPresence,
   login,
   redirectToOngoing,
   register,
@@ -405,7 +376,6 @@ export default {
   getPricing,
   confirmOrder,
   getCourier,
-  updateFCMToken,
   getOngoingTransactions,
   changeEmail,
   changePassword,

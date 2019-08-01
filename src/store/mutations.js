@@ -88,16 +88,6 @@ const courier_searching_failure = (state) => {
   state.search = false
 }
 
-const token_refresh_success = (state) => {
-  state.status = "token_refresh_success"
-  state.search = false
-}
-
-const token_refresh_error = (state) => {
-  state.status = "token_refresh_error"
-  state.search = false
-}
-
 const ongoing_transactions_success = (state) => {
   state.status = "ongoing_transactions_success"
   state.search = false
@@ -194,8 +184,6 @@ export default {
   cancellation_error,
   courier_searching_success,
   courier_searching_failure,
-  token_refresh_success,
-  token_refresh_error,
   ongoing_transactions_success,
   ongoing_transactions_error,
   setRawRouteGuards,
