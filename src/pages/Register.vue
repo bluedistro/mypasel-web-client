@@ -144,7 +144,7 @@
                       <span
                         v-show="errors.first('userForm.username')"
                         class="help is-danger"
-                        >*{{ errors.first("userForm.username") }}</span
+                        >* {{ errors.first("userForm.username") }}</span
                       >
                     </div>
                   </div>
@@ -212,9 +212,9 @@
                         <option class="hidden" disabled>Please select your country</option>
                         <option>Ghana</option>
                       </select>
-                      <span v-show="errors.has('userForm.userCountry')" class="help is-danger">{{
-                        errors.first("userForm.userCountry")
-                      }}</span>
+                      <span v-show="errors.has('userForm.userCountry')" class="help is-danger">
+                        * {{ errors.first("userForm.userCountry") }}
+                      </span>
                     </div>
                   </div>
                   <div class="col-md-12 individual-terms-accept">
@@ -260,7 +260,7 @@
                         >* {{ errors.first("companyForm.companyEmployeeName") }}</span
                       >
                     </div>
-                    <div class="form-group">
+                    <div class="form-group reference-code">
                       <input
                         type="text"
                         class="form-control"
@@ -273,7 +273,7 @@
                         v-model="companyData.companyEmployeeReferenceNumber"
                       />
                       <span v-show="errors.has('companyForm.companyEmployeeReferenceNumber')" class="help is-danger"
-                        >* {{ errors.first("companyForm.companyEmployeeReferenceNumber") }}</span
+                        >* Reference code field required</span
                       >
                     </div>
                     <div class="form-group">
@@ -327,7 +327,7 @@
                       <span
                         v-show="errors.first('companyForm.companyEmployeeUsername')"
                         class="help is-danger"
-                        >*{{ errors.first("companyForm.companyEmployeeUsername") }}</span
+                        >* {{ errors.first("companyForm.companyEmployeeUsername") }}</span
                       >
                     </div>
                   </div>
@@ -388,7 +388,7 @@
                       <span
                         v-show="errors.has('companyForm.companyEmployeeCountry')"
                         class="help is-danger"
-                        >{{ errors.first("companyForm.companyEmployeeCountry") }}</span
+                        >* {{ errors.first("companyForm.companyEmployeeCountry") }}</span
                       >
                     </div>
                     <div class="form-group">
@@ -682,6 +682,10 @@ export default {
 
 .company-register-btns {
 
+}
+
+.reference-code {
+  margin-bottom: 10px;
 }
 
 #userPassword {
@@ -1155,4 +1159,5 @@ input[type="text"], input[type="password"], select {
 .form-group {
   margin-bottom: 20px;
 }
+
 </style>
