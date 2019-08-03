@@ -150,7 +150,7 @@ export default {
                                 let step = `step${i}`
                                 txns[step] = "active"
                               }
-                              txns.journeyUpdate = txns.status
+                              // txns.journeyUpdate = txns.status
                             })
                           }else if(this.ongoingTransactions <= 0){
                             // reset to empty array
@@ -196,7 +196,7 @@ export default {
     // instantiate ongoing transactions before polling
     this.updateOngoingTransactions()
     //Begin continuous polling
-    this.pollOngoingTransactionsData()
+    // this.pollOngoingTransactionsData()
 
     const id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
     let io
@@ -221,6 +221,7 @@ export default {
         ongoing_txns_data.forEach(function(txns, index){
           if(txns.sendID == parseInt(payload.sendID)){
             txns.journeyUpdate = payload.status
+            txns.status = payload.status
             txns.timeAway = payload.timeAway
           }
         })
@@ -233,7 +234,7 @@ export default {
           ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.sendID)){
               txns.journeyUpdate = payload.update
-
+              txns.status = payload.update
             }
           })
           // sync cookie info
@@ -265,7 +266,7 @@ export default {
           if (txns.sendID == parseInt(payload.sendID)) {
             txns.step = payload.step
             txns.lastKnownLocation = payload.location
-            txns.update = payload.update
+            txns.journeyUpdate = payload.update
             txns.status = payload.status
             txns.timeStamp = timeData
             // set data to true to indicate data presence
