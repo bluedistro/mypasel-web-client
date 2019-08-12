@@ -137,7 +137,7 @@ export default {
         var lat
         var lng
         infoToReturn = this.place.geometry
-        infoToReturn["source"] = "saved"
+        infoToReturn["source"] = "saved" // redundant and might be obsolete
         infoToReturn["location"] = {
           lat: this.place.geometry.location.lat(),
           lng: this.place.geometry.location.lng()

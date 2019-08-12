@@ -127,18 +127,7 @@ const getPricing = ({ commit }, requestPayload) => {
     }
 
     const path = "https://api.mypasel.com/v2/route/get"
-    var source;
-    if (requestPayload.pickupData.searchAddress.source == "saved") {
-      source =
-        requestPayload.pickupData.searchAddress.location.lat +
-        "," +
-        requestPayload.pickupData.searchAddress.location.lng
-    } else if (requestPayload.pickupData.searchAddress.source == "direct") {
-      source =
-        requestPayload.pickupData.searchAddress.location.lat +
-        "," +
-        requestPayload.pickupData.searchAddress.location.lng
-    }
+    var source = requestPayload.pickupData.searchAddress.location.lat + "," + requestPayload.pickupData.searchAddress.location.lng
     const params = {
       source: source,
       destinations: destinations,

@@ -192,6 +192,13 @@ export default {
     },
     // Whole control operation for booking cancellation
     bookingCancellationErrorModalTry () {
+      let loader = this.$loading.show({
+        loader: "bars",
+        color: "#00bcd4",
+        opacity: 0.7,
+        height: 80,
+        width: 80
+      })
       const id = JSON.parse(this.$cookie.get(this.$cookeys.BOOKING_SUCCESS_PAYLOAD_KEY)).webId
       const payload = {
         cancelId: id,
@@ -202,9 +209,11 @@ export default {
       return this.$store
         .dispatch("cancelTransaction", payload)
         .then(resp => {
+          loader.hide()
           this.successfulBookingModal = true
         })
         .catch(err => {
+          loader.hide()
           this.unsuccessfulBookingModal = true
         })
     },
@@ -530,23 +539,23 @@ margin: auto;
 }
 
 .loader--text:after {
-content: "Contacting Nearest Available Courier";
+content: "Searching for courier";
 color: #333;
-animation: loading-text 10s alternate-reverse ease-in-out infinite both;
+animation: loading-text 10s ease-in-out infinite both;
 }
 
 @keyframes loading-text {
   0% {
-    content: "Contacting Nearest Available Courier";
+    content: "Searching for courier";
   }
   25% {
-    content: "Contacting Nearest Available Courier.";
+    content: "Searching for courier.";
   }
   50% {
-    content: "Contacting Nearest Available Courier..";
+    content: "Searching for courier..";
   }
   75% {
-    content: "Contacting Nearest Available Courier...";
+    content: "Searching for courier...";
   }
 }
 </style>
