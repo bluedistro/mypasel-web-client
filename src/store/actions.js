@@ -142,11 +142,6 @@ const getPricing = ({ commit }, requestPayload) => {
       destinations: destinations,
       sourceID: requestPayload.pickupData.searchAddress.place_id
     }
-<<<<<<< HEAD
-    const path = "https://api.mypasel.com/v2/route/get"
-    // const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
-=======
->>>>>>> web-client-development
     commit("request_payload_mutation", requestPayload)
     VueCookie.set(cookeys.REQUEST_DELIVERY_PAYLOAD_KEY, JSON.stringify(requestPayload), {
       expires: cookeys.cookie_expire
@@ -200,12 +195,9 @@ const confirmOrder = ({ commit }, payload) => {
 const getCourier = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/v3/assigncourier?sendID=" + payload
-<<<<<<< HEAD
     // prevent user from going back to the courier found page
     commit("setRawRouteGuards", false)
-    axios
-      .get(path, { headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
-=======
+    axios.get(path, { headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
     let config = {
       headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
       params: payload
@@ -213,7 +205,6 @@ const getCourier = ({ commit }, payload) => {
     // prevent user from going back to the courier found page
     commit("setRawRouteGuards", false)
     axios.get(path, config)
->>>>>>> web-client-development
       .then(resp => {
         commit("courier_searching_success")
         resolve(resp)
