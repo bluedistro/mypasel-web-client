@@ -126,21 +126,37 @@ const getPricing = ({ commit }, requestPayload) => {
       destinations.push(dest_loc)
     }
 
-    const path = "https://api.mypasel.com/v2/route/get"
-    // const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
+    var source;
+    if (requestPayload.pickupData.searchAddress.source == "saved") {
+      source =
+        requestPayload.pickupData.searchAddress.location.lat +
+        "," +
+        requestPayload.pickupData.searchAddress.location.lng
+    // feels redundant; might delete later, idk
+    } else if (requestPayload.pickupData.searchAddress.source == "direct") {
+      source =
+        requestPayload.pickupData.searchAddress.location.lat +
+        "," +
+        requestPayload.pickupData.searchAddress.location.lng
+    }
     var source = requestPayload.pickupData.searchAddress.location.lat + "," + requestPayload.pickupData.searchAddress.location.lng
     const params = {
       source: source,
       destinations: destinations,
       sourceID: requestPayload.pickupData.searchAddress.place_id
     }
-
     commit("request_payload_mutation", requestPayload)
     VueCookie.set(cookeys.REQUEST_DELIVERY_PAYLOAD_KEY, JSON.stringify(requestPayload), {
       expires: cookeys.cookie_expire
     })
-    axios
-      .get(path, { params: params }, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    const path = "https://api.mypasel.com/v2/route/get"
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
+      params: params
+    }
+    axios.get(path, config)
+    // axios
+      // .get(path, { params: params }, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         const pricing = resp.data.pricing
         pricing.currency = "GHS"
@@ -184,11 +200,16 @@ const confirmOrder = ({ commit }, payload) => {
 
 const getCourier = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
-    const path = "https://api.mypasel.com/v3/assigncourier"
+    const path = "https://api.mypasel.com/v3/assigncourier?sendID=" + payload
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
+      params: payload
+    }
     // prevent user from going back to the courier found page
     commit("setRawRouteGuards", false)
-    axios
-      .get(path, { params: payload }, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.get(path, config)
+    // axios
+      // .get(path, { headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         commit("courier_searching_success")
         resolve(resp)
@@ -324,7 +345,7 @@ const getProfileImage = ({ commit }) => {
   })
 }
 
-const requestPasswordReset = ({commit }, emailAddress) => {
+const requestPasswordReset = ({ commit }, emailAddress) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/password/forgot"
     axios.post(path, emailAddress, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
