@@ -127,6 +127,8 @@ const getPricing = ({ commit }, requestPayload) => {
     }
 
     const path = "https://api.mypasel.com/v2/route/get"
+    // const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
+    alert('path ' + path)
     var source = requestPayload.pickupData.searchAddress.location.lat + "," + requestPayload.pickupData.searchAddress.location.lng
     const params = {
       source: source,
