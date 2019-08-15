@@ -6,8 +6,7 @@ const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
     const params = user.emailOrPhoneNumber.match(/[a-z]/i) ? {username: user.emailOrPhoneNumber, password: user.password} : {phoneNumber: user.emailOrPhoneNumber, password: user.password}
     const path = "https://api.mypasel.com/user/account/verify"
-    axios
-      .post(path, params, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, params, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         const token = resp.data.token
         const user = resp.data
@@ -65,8 +64,7 @@ const register = ({ commit }, registerData) => {
         referenceNumber: registerData.companyEmployeeReferenceNumber,
       }
     }
-    axios
-      .post(path, params, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, params, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         const returnStatus = resp.data
         commit("register_success")
@@ -101,8 +99,7 @@ const cancelTransaction = ({ commit }, payload) => {
     const param = {
       reason: payload.reason
     }
-    axios
-      .post(path, param, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, param, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         commit("cancellation_success")
         resolve(resp)
@@ -145,14 +142,21 @@ const getPricing = ({ commit }, requestPayload) => {
       destinations: destinations,
       sourceID: requestPayload.pickupData.searchAddress.place_id
     }
+<<<<<<< HEAD
     const path = "https://api.mypasel.com/v2/route/get"
     // const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
+=======
+>>>>>>> web-client-development
     commit("request_payload_mutation", requestPayload)
     VueCookie.set(cookeys.REQUEST_DELIVERY_PAYLOAD_KEY, JSON.stringify(requestPayload), {
       expires: cookeys.cookie_expire
     })
-    axios
-      .get(path, { params: params }, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    const path = "https://api.mypasel.com/v2/route/get"
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
+      params: params
+    }
+    axios.get(path, config)
       .then(resp => {
         const pricing = resp.data.pricing
         pricing.currency = "GHS"
@@ -177,8 +181,7 @@ const getPricing = ({ commit }, requestPayload) => {
 const confirmOrder = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/v3/user/sends/create"
-    axios
-      .post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         const bookingInfo = resp.data
         VueCookie.set(cookeys.BOOKING_SUCCESS_PAYLOAD_KEY, JSON.stringify(bookingInfo), {
@@ -197,10 +200,20 @@ const confirmOrder = ({ commit }, payload) => {
 const getCourier = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/v3/assigncourier?sendID=" + payload
+<<<<<<< HEAD
     // prevent user from going back to the courier found page
     commit("setRawRouteGuards", false)
     axios
       .get(path, { headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+=======
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
+      params: payload
+    }
+    // prevent user from going back to the courier found page
+    commit("setRawRouteGuards", false)
+    axios.get(path, config)
+>>>>>>> web-client-development
       .then(resp => {
         commit("courier_searching_success")
         resolve(resp)
@@ -215,8 +228,10 @@ const getCourier = ({ commit }, payload) => {
 const getOngoingTransactions = ({ commit }, id) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/" + String(id) + "/ongoingtransactions"
-    axios
-      .get(path, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }
+    }
+    axios.get(path, config)
       .then(resp => {
         const data = resp.data
         VueCookie.set(cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(data), {
@@ -235,8 +250,7 @@ const getOngoingTransactions = ({ commit }, id) => {
 const changeEmail = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/email/change"
-    axios
-      .post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         commit("email_change_success")
         resolve(resp)
@@ -251,8 +265,7 @@ const changeEmail = ({ commit }, payload) => {
 const changePassword = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/password/change"
-    axios
-      .post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    axios.post(path, payload, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         commit("password_change_success")
         resolve(resp)
@@ -267,8 +280,10 @@ const changePassword = ({ commit }, payload) => {
 const getScheduledTransactions = ({ commit }, id) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/" + String(id) + "/scheduledtransactions"
-    axios
-      .get(path, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }
+    }
+    axios.get(path, config)
       .then(resp => {
         const scheduledData = resp.data
         commit("scheduled_data_return_success")
@@ -284,8 +299,10 @@ const getScheduledTransactions = ({ commit }, id) => {
 const getTransactionsHistory = ({ commit }, id) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/" + String(id) + "/finishedtransactions"
-    axios
-      .get(path, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }
+    }
+    axios.get(path, config)
       .then(resp => {
         const historyData = resp.data
         commit("transactions_history_success")
@@ -323,8 +340,10 @@ const getProfileImage = ({ commit }) => {
   return new Promise((resolve, reject) => {
     const id = JSON.parse(VueCookie.get(cookeys.USER_DATA_KEY)).id
     const path = "https://api.mypasel.com/user/" + String(id) + "/avatarpath"
-    axios
-      .get(path, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+    let config = {
+      headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }
+    }
+    axios.get(path, config)
       .then(resp => {
         commit("profile_image_retrieve_success")
         resolve(resp)
