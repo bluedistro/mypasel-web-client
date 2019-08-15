@@ -144,13 +144,15 @@ const getPricing = ({ commit }, requestPayload) => {
       destinations: destinations,
       sourceID: requestPayload.pickupData.searchAddress.place_id
     }
-    const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
+    const path = "https://api.mypasel.com/v2/route/get"
+    // const path = "https://api.mypasel.com/v2/route/get?source=" + source + "&destinations=" + destinations + "&sourceID=" + requestPayload.pickupData.searchAddress.place_id
+    alert('path ' + path)
     commit("request_payload_mutation", requestPayload)
     VueCookie.set(cookeys.REQUEST_DELIVERY_PAYLOAD_KEY, JSON.stringify(requestPayload), {
       expires: cookeys.cookie_expire
     })
     axios
-      .get(path, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
+      .get(path, { params: params }, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
       .then(resp => {
         const pricing = resp.data.pricing
         pricing.currency = "GHS"
