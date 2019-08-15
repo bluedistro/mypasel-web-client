@@ -194,7 +194,7 @@ const confirmOrder = ({ commit }, payload) => {
 
 const getCourier = ({ commit }, payload) => {
   return new Promise((resolve, reject) => {
-    const path = "https://api.mypasel.com/v3/assigncourier?sendID=" + payload
+    const path = "https://api.mypasel.com/v3/assigncourier"
     let config = {
       headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' },
       params: payload
