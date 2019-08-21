@@ -264,6 +264,19 @@ export default {
             }
         })
 
+
+      io.socket.on('disconnect', () => {
+        // try reconnecting
+        io.socket.request({
+              method: 'get',
+              url: '/user/subscribe?id='+id,
+              headers: {
+                'Authorization': 'key=EA9559850E60F62854CBB543791D5141'
+              }
+            },
+            (responseData, jwres)=> {} )
+      })
+
   },
   mounted () {
     var start = new Date().getTime()
