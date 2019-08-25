@@ -513,7 +513,7 @@ export default {
     width: 300px;
     background-color: #e0dfd7;
     position: fixed;
-    top: 86%;
+    top: 90%;
     left: 50%;
     margin-left: -150px;
     margin-top: -10px;
