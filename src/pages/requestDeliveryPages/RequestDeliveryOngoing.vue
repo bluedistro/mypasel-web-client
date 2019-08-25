@@ -104,7 +104,7 @@
 </template>
 
 <script>
-
+// TODO: Reaccess the progress steps update procedure
 var socketIOClient = require('socket.io-client')
 var sailsIOClient = require('sails.io.js')
 
@@ -235,6 +235,7 @@ export default {
             if(txns.sendID == parseInt(payload.sendID)){
               txns.journeyUpdate = payload.update
               txns.status = payload.update
+              txns["step3"] = "active"
             }
           })
           // sync cookie info
@@ -268,6 +269,7 @@ export default {
             txns.lastKnownLocation = payload.location
             txns.journeyUpdate = payload.update
             txns.status = payload.status
+            txns.timeAway = payload.timeAway + " ride away from headed destination"
             txns.timeStamp = timeData
             // set data to true to indicate data presence
             txns.isTimeStamp = true

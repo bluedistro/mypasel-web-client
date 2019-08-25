@@ -1,3 +1,4 @@
+// TODO: Handle vuex cookie key efficiently instead of this quickfix
 import state from './state'
 
 const auth_request = (state) => {
@@ -8,7 +9,8 @@ const auth_success = (state, data) => {
   state.status = "success"
   state.token = data.token
   state.search = false
-  state.user = data.user
+  // state.user = data.user
+  state.user = ""
 }
 
 const auth_error = (state) => {
@@ -35,7 +37,8 @@ const register_error = (state) => {
 const pricing_success = (state, data) => {
   state.search = false
   state.status = "pricing_success"
-  state.pricing = data
+  // state.pricing = data
+  state.pricing = ""
 }
 
 const pricing_error = (state) => {
@@ -43,7 +46,8 @@ const pricing_error = (state) => {
   state.status = "pricing_error"
 }
 const request_payload_mutation = (state, data) => {
-  state.request_payload = data
+  // state.request_payload = data
+  state.request_payload = ""
   state.search = false
 }
 
@@ -59,7 +63,8 @@ const promo_code_authentication_error = (state) =>  {
 }
 const booking_success = (state, data) => {
   state.status = "booking_success"
-  state.booking_return_data = data
+  state.booking_return_data = ""
+  // state.booking_return_data = data
   state.search = true
 }
 
