@@ -285,8 +285,8 @@ export default {
     var x = setInterval(() => {
       var now = new Date().getTime()
       var distance = countdown - now
-      this.countdownMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      this.countdownSeconds = Math.floor((distance % (1000 * 60)) / 1000)
+      this.countdownMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)) < 10 ? String("0"+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))) : String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)))
+      this.countdownSeconds = Math.floor((distance % (1000 * 60)) / 1000) < 10 ? String("0"+Math.floor((distance % (1000 * 60)) / 1000)) : String(Math.floor((distance % (1000 * 60)) / 1000))
       if(distance < 60000){
         this.countDownTextColor = '#c43d14'
       }

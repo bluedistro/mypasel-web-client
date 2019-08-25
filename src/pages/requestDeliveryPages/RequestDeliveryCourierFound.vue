@@ -116,7 +116,7 @@ export default {
     const courier_details = JSON.parse(this.$cookie.get(this.$cookeys.COURIER_DETAILS_KEY))
     this.name = courier_details.name
     this.phone = courier_details.phone
-    this.rating = courier_details.rating
+    this.rating = parseInt(courier_details.rating)
     this.timeAway = courier_details.timeAway
     this.vehicleInfo = courier_details.vehicleInfo
     this.image = courier_details.image

@@ -432,7 +432,7 @@ export default {
 
     // start tour
     // this.$tours['myTour'].start()
-    
+
   }
 }
 </script>
