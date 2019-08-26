@@ -151,6 +151,9 @@ Vue.directive("click-outside", {
   }
 })
 
+// persistent token refresh
+store.dispatch('refreshTokenStatus')
+
 const router = new VueRouter({
   routes,
   mode: "history",

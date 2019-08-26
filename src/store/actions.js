@@ -2,6 +2,14 @@ import axios from "axios"
 import VueCookie from "vue-cookie"
 import cookeys from "../cookeys"
 
+const refreshTokenStatus = ({ commit }) => {
+  return new Promise((resolve, reject) => {
+    const token = VueCookie.get(cookeys.TOKEN_KEY)
+    commit('refreshToken', token)
+    resolve()
+  })
+}
+
 const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
     const params = user.emailOrPhoneNumber.match(/[a-z]/i) ? {username: user.emailOrPhoneNumber, password: user.password} : {phoneNumber: user.emailOrPhoneNumber, password: user.password}
@@ -381,6 +389,7 @@ const resetPassword = ({commit}, payload) => {
 }
 
 export default {
+  refreshTokenStatus,
   login,
   redirectToOngoing,
   register,

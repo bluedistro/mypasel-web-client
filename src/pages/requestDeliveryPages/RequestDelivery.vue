@@ -418,11 +418,6 @@ export default {
        }
     }
   },
-  created () {
-    if (this.$cookie.get(this.$cookeys.TOKEN_KEY == null)) {
-      this.$router.push({ name: "Login" })
-    }
-  },
   mounted () {
     // watch for saved pickup data first
     const savedData = JSON.parse(this.$cookie.get(this.$cookeys.SAVED_ADDRESS_KEY))

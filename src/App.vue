@@ -13,7 +13,12 @@ export default {
   components: {
     navbar: Navbar
   },
-  created () {}
+  created () {
+    // redirect back to login if token not found
+    if (this.$store.state.token == null) {
+      this.$router.push({ name: "Login" })
+    }
+  }
 }
 </script>
 

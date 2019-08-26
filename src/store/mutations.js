@@ -1,6 +1,11 @@
 // TODO: Handle vuex cookie key efficiently instead of this quickfix
 import state from './state'
 
+const refreshToken = (state, token) => {
+  state.token = token
+  state.status = 'token status refreshed'
+}
+
 const auth_request = (state) => {
   state.status = "loading"
 }
@@ -21,7 +26,7 @@ const auth_error = (state) => {
 const logout = (state) => {
   state.search = false
   state.status = ""
-  state.token = ""
+  state.token = null
 }
 
 const register_success = (state) => {
@@ -172,6 +177,7 @@ const reset_password_error = (state) => {
 }
 
 export default {
+  refreshToken,
   auth_request,
   auth_success,
   auth_error,
