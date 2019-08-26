@@ -17,7 +17,7 @@
           <form class="form-signin" v-promise-btn="{ action: 'submit' }" @submit.prevent="login">
             <div class="row">
               <div class="col-md-9 col-8">
-                <h1 class="h3 mb-3 font-weight-normal login-header">
+                <h3 class="h4 mb-3 font-weight-normal login-header">
                   <b-img-lazy
                     fluid
                     rounded="circle"
@@ -27,12 +27,12 @@
                   >
 
                   </b-img-lazy>
-                  MyPasel
-                </h1>
+                    MyPasel
+                </h3>
               </div>
               <div class="col-md-3 col-sm-6 col-lg-3 col-4">
                   <button
-                    class="btn btn-dark btn-sm btn-block"
+                    class="btn btn-dark btn-sm btn-block btn-text"
                     type="button"
                     v-bind:id="signupAnimate"
                     v-on:click="createNewAccount"
@@ -61,10 +61,10 @@
               v-model="loginData.password"
             />
             <button id="login"
-              class="btn btn-outline-dark btn-sm btn-block col-md-2 col-lg-2 col-4 col-sm-3"
+              class="btn btn-outline-dark btn-sm btn-block col-md-2 col-lg-2 col-4 col-sm-3 btn-text"
               type="submit"
             >
-              Log in
+              Login
             </button>
             <a href="#" id="forgot_pswd" v-bind:class="forgotPasswordAnimate">
               <router-link class="forgot-password-text" :to="{ name: 'resetPassword', params: {} }">Forgot password?</router-link>
@@ -168,18 +168,17 @@ export default {
 .copyright-div {
   margin-top: 40px;
   font-size: 80%;
-  color: #a2acbd;
+  color: #4f5250;
 }
 
 .terms-div {
   text-align: center;
   font-size: 80%;
-  color: #a2acbd;
   word-spacing: 5px;
 }
 
 .terms-div a{
-  color: black;
+  color: #515753;
 }
 
 .login-brand {
@@ -205,8 +204,9 @@ export default {
 }
 
 .area{
-    background: #4e54c8;
-    background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+    background: #005AA7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #FFFDE4, #005AA7); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     width: 100vw;
     height:100vh;
 
@@ -600,34 +600,11 @@ export default {
    }
  }
 
-
-
-
-
 .login-header{
   float: left;
   text-align: center;
-  color: #fff;
+  color: #565957;
 }
-
-/* .emailPhoneField{
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  background-color: #4e54c8;
-  color: #fff;
-}
-
-.passwordField{
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 5px;
-  background-color: #4e54c8;
-  color: #fff;
-} */
 
 #forgot_pswd a{
   border: none;
@@ -636,7 +613,7 @@ export default {
 }
 
 .forgot-password-text {
-  color: #fff;
+  color: #202422;
 }
 
 
@@ -644,8 +621,9 @@ export default {
     width:612px;
     margin:10vh auto;
     height: 360px;
-    border-radius: 1px;
-    border: solid #5bc0de 2px;
+    border-radius: 2px;
+    background-color: #fff;
+    /* border: solid #5bc0de 2px; */
     -webkit-animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
@@ -693,14 +671,6 @@ export default {
   }
 }
 
-
-
-
-/* #inputPhoneNumber{
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px
-} */
-
 #logreg-forms form {
     width: 100%;
     max-width: 610px;
@@ -724,16 +694,16 @@ export default {
 }
 
 ::placeholder { /*  Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #5bc0de;
+  color: #515753;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* IE 10-11 */
-  color: #5bc0de;
+  color: #515753;
 }
 
 ::ms-input-placeholder { /* Edge */
-  color: #5bc0de;
+  color: #515753;
 }
 
 
@@ -749,8 +719,7 @@ input[type="password"], input[type="text"] {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   margin-bottom: 10px;
-  background-color: #4e54c8;
-  color: #fff;
+  color: #313633;
 }
 
 
@@ -763,19 +732,8 @@ input[type="password"]:focus, input[type="text"]:focus {
   border-left: none;
   border-right: none;
   margin-bottom: 10px;
-  background-color: #4e54c8;
-  color: #fff;
+  color: #313633;
 }
-
-/* forgot password controller */
-/* #logreg-forms a{
-    display: block;
-    padding-top:10px;
-    color: #fff;
-    text-decoration: none;
-} */
-
-
 
 #logreg-forms button[type="submit"]{ margin-top:10px; }
 
@@ -789,6 +747,9 @@ input[type="password"]:focus, input[type="text"]:focus {
     #logreg-forms{
         width:100%;
         border: none;
+        height: 420px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .login-brand {
