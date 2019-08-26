@@ -56,7 +56,7 @@
               type="password"
               id="inputPassword"
               class="form-control passwordField"
-              placeholder="Password"
+              placeholder="password"
               required
               v-model="loginData.password"
             />
