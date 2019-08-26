@@ -177,6 +177,7 @@ const reset_password_error = (state) => {
 }
 
 export default {
+  refreshToken,
   auth_request,
   auth_success,
   auth_error,

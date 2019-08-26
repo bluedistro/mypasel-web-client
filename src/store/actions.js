@@ -386,6 +386,7 @@ const resetPassword = ({commit}, payload) => {
 }
 
 export default {
+  refreshTokenStatus,
   login,
   redirectToOngoing,
   register,
