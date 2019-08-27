@@ -48,6 +48,18 @@
                 More
               </button>
             </div>
+
+            <div class="col-md-2 col-sm-2 col-3 col-lg-1 moreBtn">
+              <button
+                type="button"
+                class="btn-sm btn-warning form-control"
+                @click="cancelTransaction(index)"
+                name="button"
+              >
+                Cancel
+              </button>
+            </div>
+
             <div class="row courierFullDetailsDiv" v-if="showMore == index && showIndex">
               <div class="courierTextDetailsDiv col-md-9 col-lg-9 col-9 col-sm-9" :id="index">
                   <div class="row">
@@ -100,6 +112,60 @@
         </div>
       </transition>
     </div>
+    <!-- cancel transaction -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="cancel-transaction"
+        id="cancel-transaction"
+        v-model="transactionCancellationFormModal"
+        title="Transaction cancellation form"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group
+            label="Can you please let us know your reason for cancelling?"
+            label-for="name-input"
+          >
+            <b-form-textarea
+              id="name-input"
+              v-model="cancellationReason"
+              rows="4"
+              max-rows="8"
+              placeholder="Reason is optional"
+            ></b-form-textarea>
+          </b-form-group>
+        </form>
+        <template slot="modal-footer" slot-scope="{ ok, cancel }">
+          <b-button v-promise-btn variant="outline-danger" @click="proceedCancelTransaction"
+            >Cancel transaction</b-button
+          >
+          <b-button variant="outline-info" @click="stopCancellationProcess">Ignore</b-button>
+        </template>
+      </b-modal>
+    </div>
+    <!-- Unable to cancel booking -->
+    <div>
+      <b-modal
+        no-close-on-backdrop
+        hide-header-close
+        no-close-on-esc
+        ref="transaction-cancellation-error-modal"
+        size="sm"
+        id="transaction-cancellation-error-modal"
+        v-model="unsuccessfulTransactionCancellationModal"
+        title="Transaction cancellation failure"
+      >
+        <p class="transaction-cancellation-error-modal-text">Sorry, we were unable to cancel your order.</p>
+        <template slot="modal-footer" slot-scope="{ ok }">
+          <b-button size="sm" variant="outline-danger" @click="transactionCancellationErrorModalHide"
+            >Okay</b-button
+          >
+        </template>
+      </b-modal>
+    </div>
+
   </div>
 </template>
 
@@ -125,7 +191,11 @@ export default {
       ongoingTransactionsPolling: null,
       message: "Loading...",
       noTransaction: false,
-      minutesRemaining: ''
+      minutesRemaining: '',
+      transactionCancellationFormModal: false,
+      unsuccessfulTransactionCancellationModal: false,
+      cancellationReason: '',
+      transactionID: ''
     }
   },
   methods: {
@@ -138,6 +208,43 @@ export default {
       }
       this.showMore = evt
     },
+    cancelTransaction (index) {
+      this.transactionCancellationFormModal = true
+      let transactionID = this.ongoingTransactions[index].sendID
+      this.transactionID = transactionID
+    },
+    proceedCancelTransaction () {
+      let loader = this.$loading.show({
+        loader: "bars",
+        color: "#00bcd4",
+        opacity: 0.7,
+        height: 80,
+        width: 80
+      })
+      this.transactionCancellationFormModal = false
+      let cancellationPayload = {
+        cancelId: this.transactionID,
+        reason: this.cancellationReason
+      }
+      return this.$store.dispatch('cancelTransaction', cancellationPayload)
+                 .then(resp => {
+                   this.updateOngoingTransactions()
+                   loader.hide()
+                   // notify user of cancellation status
+                 })
+                 .catch(err => {
+                   loader.hide()
+                   this.unsuccessfulTransactionCancellationModal = true
+                   // same here
+                 })
+
+    },
+    stopCancellationProcess () {
+      this.transactionCancellationFormModal = false
+    },
+    transactionCancellationErrorModalHide () {
+      this.unsuccessfulTransactionCancellationModal = false
+    },
     updateOngoingTransactions () {
       const user_id = JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id
       this.$store.dispatch('getOngoingTransactions', user_id)
@@ -149,6 +256,8 @@ export default {
                               for (let i = 0; i < txns.step; i++) {
                                 let step = `step${i}`
                                 txns[step] = "active"
+                                txns.journeyUpdate = txns.status
+                                txns.timeAway = 'N/A mins ride away from headed destination'
                               }
                               // txns.journeyUpdate = txns.status
                             })
@@ -222,7 +331,7 @@ export default {
           if(txns.sendID == parseInt(payload.sendID)){
             txns.journeyUpdate = payload.status
             txns.status = payload.status
-            txns.timeAway = payload.timeAway
+            txns.timeAway = payload.timeAway + ' ride away from headed destination'
           }
         })
         this.$cookie.set(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY, JSON.stringify(ongoing_txns_data))
@@ -257,6 +366,7 @@ export default {
       }
       // for courier progress
       if (payload.activity == "Courier progress") {
+        console.log('cp ', payload)
         // get the sendID of the payload, compare with the send id of the ongoingTransactions data list, and update the
         // location, status, step, update,
         const time = payload.timeStamp
