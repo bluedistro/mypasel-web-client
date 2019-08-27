@@ -60,7 +60,7 @@
                           </div>
                           <small v-show="ratingTrue">Rating is not yet available for this driver</small>
                         </div>
-                        <button type="button" @click="trackParcel" class="btn-sm btn-info">
+                        <button type="button" @click="trackParcel" class="form-control btn-sm btn-info">
                             Track
                         </button>
                     </div>

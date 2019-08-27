@@ -49,14 +49,14 @@
               </button>
             </div>
 
-            <div class="col-md-2 col-sm-2 col-3 col-lg-1 moreBtn">
+            <div class="col-md-2 col-sm-3 col-9 col-lg-2 moreBtn">
               <button
                 type="button"
                 class="btn-sm btn-warning form-control"
                 @click="cancelTransaction(index)"
                 name="button"
               >
-                Cancel
+                Cancel Transaction
               </button>
             </div>
 
