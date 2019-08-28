@@ -131,7 +131,7 @@ export default {
   background: -webkit-linear-gradient(to top, #FFFFFF, #6DD5FA, #2980B9);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to top, #FFFFFF, #6DD5FA, #2980B9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
  }
- 
+
  .form-body {
    float: none;
    margin: 0 auto;
@@ -267,7 +267,7 @@ export default {
  }
 
  .row{
-   margin-top: 90px;
+   padding-top: 90px;
  }
 
  .reset-btn {
