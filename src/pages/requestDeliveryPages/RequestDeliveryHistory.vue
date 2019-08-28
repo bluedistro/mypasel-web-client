@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container mb-2">
     <div class="row transaction-history-header">
-      <h4>Transaction History</h4>
+      <h4>Transactions History</h4>
     </div>
     <div class="row">
       <transition name="historyChange" mode="in-out">
@@ -25,11 +25,14 @@
             >
               <div class="row">
                 <div class="history-data col-md-10 col-10 col-lg-10 col-sm-12 col-12">
-                  <div class="row">
-                    <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-header">
+                  <div class="row history-card-header">
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-4 transaction-header">
                       {{ txns.transactionNumber }}
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm-6 col-6 transaction-timeStamp">
+                    <div class="col-md-2 col-lg-2 col-sm-2 col-3 fee-text">
+                      GHC {{ txns.fee }}
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-5 transaction-timeStamp">
                       {{ txns.timeStamp }}
                     </div>
                   </div>
@@ -37,11 +40,10 @@
                     <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
                       <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
                     </div>
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text" v-for="d_o in txns.dropOff">
-                      <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ JSON.parse(d_o.targetLocation).name }}
-                    </div>
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">
-                      GHS {{ txns.fee }}
+                    <div class="dropoff-text">
+                      <div class="col-md-12 col-lg-12 col-sm-12 col-12" v-for="d_o in txns.dropOff">
+                        <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ JSON.parse(d_o.targetLocation).name }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -147,7 +149,6 @@ export default {
       .then(resp => {
         // alter data a bit to get dropOff and timeStamp easily
         resp.data.forEach((txns, index) => {
-          // console.log('destttt ', txns.destinations)
           for (let i = 0; i < txns.destinations.length; i++) {
             const dateItem = new Date(txns.destinations[i].updatedAt)
             txns.timeStamp = dateItem.toGMTString()
@@ -182,13 +183,13 @@ export default {
 }
 
 .history-data {
-    border: solid #ccc 1px;
+    border: solid #8f9696 1px;
     border-radius: 1px;
     background: #f9fff9;
 }
 
 .historyDataContainer {
-  margin-bottom: 5px;
+  margin-bottom: 12px;
   /*  */
 
 }
@@ -203,21 +204,26 @@ export default {
   font-weight: bold;
 }
 
+.history-card-header {
+  padding-bottom: 4px;
+  padding-top: 4px;
+  border-bottom: solid #ccc 1px;
+}
+
 .transaction-timeStamp{
   text-align: right;
   padding: 5px;
 }
 
 .pickup-text {
-  margin-top: 5px;
   text-align: left;
-  padding-left: 5px;
+  padding: 10px 0 0 15px;
   /*  */
   /* font-family: "Lucida Console", Monaco, monospace; */
   font-size: 15px;
   letter-spacing: 1px;
   word-spacing: 0.5px;
-  color: #000000;
+  color: #222324;
   font-weight: normal;
   text-decoration: none;
   font-style: normal;
@@ -227,14 +233,15 @@ export default {
 
 .dropoff-text {
   text-align: left;
-  padding-left: 5px;
+  padding-left: 0;
+  padding-bottom: 10px;
   /*  */
   /*  */
   /* font-family: "Lucida Console", Monaco, monospace; */
   font-size: 15px;
   letter-spacing: 1px;
   word-spacing: 0.5px;
-  color: #000000;
+  color: #222324;
   font-weight: normal;
   text-decoration: none;
   font-style: normal;
@@ -243,19 +250,11 @@ export default {
 }
 
 .fee-text {
-  text-align: left;
-  padding-left: 5px;
-  /* ; */
-  font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 15px;
-  letter-spacing: 2px;
-  word-spacing: 2px;
-  color: #000000;
-  font-weight: normal;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
+  padding-top: 5px;
+  color: #27a344;
+  font-weight: 400;
+  background-color: #e4ebeb;
+  border-radius: 15px;
 }
 
 .pickup-pin {
