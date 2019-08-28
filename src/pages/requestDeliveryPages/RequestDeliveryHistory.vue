@@ -37,8 +37,8 @@
                     <div class="col-md-12 col-lg-12 col-sm-12 col-12 pickup-text">
                       <font-awesome-icon icon="map-pin" class="pickup-pin" /> {{ txns.pickup }}
                     </div>
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text">
-                      <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ txns.dropOff }}
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12 dropoff-text" v-for="d_o in txns.dropOff">
+                      <font-awesome-icon icon="map-pin" class="dropoff-pin" /> {{ JSON.parse(d_o.targetLocation).name }}
                     </div>
                     <div class="col-md-12 col-lg-12 col-sm-12 col-12 fee-text">
                       GHS {{ txns.fee }}
@@ -147,12 +147,13 @@ export default {
       .then(resp => {
         // alter data a bit to get dropOff and timeStamp easily
         resp.data.forEach((txns, index) => {
+          // console.log('destttt ', txns.destinations)
           for (let i = 0; i < txns.destinations.length; i++) {
             const dateItem = new Date(txns.destinations[i].updatedAt)
             txns.timeStamp = dateItem.toGMTString()
-            txns.dropOff = JSON.parse(txns.destinations[i].targetLocation).name
             txns.rawTime = txns.destinations[i].updatedAt
           }
+          txns.dropOff = txns.destinations
         })
         this.historyContent = resp.data
         if (this.historyContent.length <= 0){
