@@ -358,7 +358,7 @@ const requestPasswordReset = ({ commit }, emailAddress) => {
   return new Promise((resolve, reject) => {
     const path = "https://api.mypasel.com/user/password/forgot"
     axios.post(path, emailAddress, {headers: { 'Authorization': 'key=EA9559850E60F62854CBB543791D5141' }})
-         .then((resp) => {
+         .then((resp) => {           
            commit("forgot_password_request_success")
            const email = emailAddress.emailAddress
            VueCookie.set(cookeys.RESET_EMAIL_ADDRESS, email, {

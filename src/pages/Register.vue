@@ -711,6 +711,7 @@ export default {
 .sign-up-notice {
   margin-top: 20px;
   font-size: 90%;
+  color: #3f4540;
 }
 
 .sign-up-terms{
@@ -734,7 +735,10 @@ export default {
 }
 
 .register{
-    background: -webkit-linear-gradient(right, #743eca, #00ae91);
+    /* background: -webkit-linear-gradient(right, #743eca, #00ae91); */
+    background: #005AA7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #FFFDE4, #005AA7); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     padding-top: 39px;
     padding-bottom: 32px;
     height: 100vh;
