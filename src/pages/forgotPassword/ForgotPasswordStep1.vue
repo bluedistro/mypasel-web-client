@@ -95,7 +95,7 @@ export default {
       return this.$store.dispatch('requestPasswordReset', payload)
                         .then((resp) => {
                           loader.hide()
-                          this.$router.push({name: 'ForgotPasswordConfirm'})
+                          this.$router.push({name: 'confirmPassword'})
                         })
                         .catch((error) => {
                           loader.hide()
