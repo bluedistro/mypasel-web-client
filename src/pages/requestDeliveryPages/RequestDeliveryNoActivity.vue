@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="mb-2">
-    <span class="no-activity-text">{{ message }}</span>
+    <span class="no-activity-text" v-if="message !== 'Loading...'">{{ message }}</span>
+    <span class="no-activity-text" v-if="message === 'Loading...'">
+      <b-spinner :variant="'info'" class="spinner-decor"></b-spinner>
+    </span>
   </div>
 </template>
 
@@ -33,4 +36,10 @@ export default {
   font-variant: normal;
   text-transform: none;
 }
+
+.spinner-decor {
+  width: 4em;
+  height: 4em;
+}
+
 </style>

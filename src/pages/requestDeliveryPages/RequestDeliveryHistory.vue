@@ -332,7 +332,6 @@ export default {
 
 }
 
-
 .historyChange-enter-active {
   transition: all .2s ease;
 }
