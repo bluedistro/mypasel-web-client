@@ -52,6 +52,7 @@
             <div class="col-md-2 col-sm-3 col-9 col-lg-2 moreBtn">
               <button
                 type="button"
+                :disabled="i.transactionCompleted"
                 class="btn-sm btn-warning form-control"
                 @click="cancelTransaction(index)"
                 name="button"
@@ -342,6 +343,7 @@ export default {
           const ongoing_txns_data = JSON.parse(this.$cookie.get(this.$cookeys.ONGOING_TRANSACTIONS_DATA_KEY))
           ongoing_txns_data.forEach(function(txns, index){
             if(txns.sendID == parseInt(payload.sendID)){
+              txns.transactionCompleted = true
               txns.journeyUpdate = payload.update
               txns.status = payload.update
               txns["step3"] = "active"
@@ -434,6 +436,10 @@ export default {
 
   ul{
     list-style-type: none;
+  }
+
+  button:disabled {
+    opacity: 0.5;
   }
 
   .courierTextDetailsDiv {
