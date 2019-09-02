@@ -214,19 +214,20 @@ export default {
         this.unsuccessfulBookingModal = true
       }else{
         const dropoffs = []
-        for (let i = 0; i < parsedRequestPayload.dropOffData.length; i++) {
+        parsedRequestPayload.dropOffData.forEach((prp, index) => {
           const d_o = {
-            name: parsedRequestPayload.dropOffData[i].searchAddress.formatted_address,
-            latitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lat,
-            longitude: parsedRequestPayload.dropOffData[i].searchAddress.location.lng,
+            name: prp.searchAddress.formatted_address,
+            latitude: prp.searchAddress.location.lat,
+            longitude: prp.searchAddress.location.lng,
             contact: {
-              name: parsedRequestPayload.dropOffData[i].fullName,
-              phone: parsedRequestPayload.dropOffData[i].phoneNumber
+              name: prp.fullName,
+              phone: prp.phoneNumber
             },
-            additionalInformation: parsedRequestPayload.dropOffData[i].details
+            additionalInformation: prp.details
           }
           dropoffs.push(d_o)
-        }
+        })
+
         // quick fix to get
         const payload = {
           sender: JSON.parse(this.$cookie.get(this.$cookeys.USER_DATA_KEY)).id, // sender ID Is obtained from user store

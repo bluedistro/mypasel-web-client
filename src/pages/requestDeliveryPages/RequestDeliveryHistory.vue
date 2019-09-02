@@ -149,13 +149,14 @@ export default {
       .then(resp => {
         // alter data a bit to get dropOff and timeStamp easily
         resp.data.forEach((txns, index) => {
-          for (let i = 0; i < txns.destinations.length; i++) {
-            const dateItem = new Date(txns.destinations[i].updatedAt)
+          tnxs.destinations.forEach((txnDest, index) => {
+            const dateItem = new Date(txnsDest.updatedAt)
             txns.timeStamp = dateItem.toGMTString()
-            txns.rawTime = txns.destinations[i].updatedAt
-          }
+            txns.rawTime = txnsDest.updatedAt
+          })
           txns.dropOff = txns.destinations
         })
+        
         this.historyContent = resp.data
         if (this.historyContent.length <= 0){
           this.message = "You have no transaction history"

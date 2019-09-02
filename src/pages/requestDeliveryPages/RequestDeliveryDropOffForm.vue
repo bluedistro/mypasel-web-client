@@ -182,16 +182,16 @@ export default {
         --this.counter
       }
       this.markers = []
-      for (var i = 0; i < this.dropOffData.length; i++) {
-        if(this.dropOffData[i].searchAddress != null){
-          this.markers.push({
-            position: {
-              lat: this.dropOffData[i].searchAddress.location.lat,
-              lng: this.dropOffData[i].searchAddress.location.lng
-            }
-          })
-        }
-      }
+      let filteredDropOffData = this.dropOffData.filter((x) => x.searchAddress !== null)
+      filteredDropOffData.forEach((dropOffData, index) => {
+        this.markers.push({
+          position: {
+            lat: dropOffData.searchAddress.location.lat,
+            lng: dropOffData.searchAddress.location.lng
+          }
+        })
+      })
+
       // emit the data again for redundancy and prevent data loss
       let data = this.dropOffData
       this.$emit("set_markers", this.markers, data)
