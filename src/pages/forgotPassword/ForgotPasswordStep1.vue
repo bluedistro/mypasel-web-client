@@ -46,9 +46,7 @@
                 <div>
                   <div class="border-line"></div>
                   <a href="#">
-                    <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
-                      >Login</router-link
-                    >
+                    <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"><small>Back to login page</small></router-link>
                   </a>
                 </div>
               </div>
@@ -267,7 +265,7 @@ export default {
  }
 
  .row{
-   padding-top: 90px;
+   padding-top: 60px;
  }
 
  .reset-btn {
@@ -282,16 +280,9 @@ export default {
    padding: 10px;
  }
 
- .loginPageBtn {
+ .loginPageBtn{
+   text-decoration: none;
    float: left;
-   text-decoration: none;
-   color: #f47d42;
- }
-
- .createAccountBtn{
-   text-decoration: none;
-   float: right;
-   color: #309940;
  }
 
  input[type="email"] {

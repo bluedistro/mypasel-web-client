@@ -6,7 +6,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="text-center">
-              <h2 class="text-center">Reset Password</h2>
+              <h2 class="text-cent">Reset Password</h2>
               <p>A confirmation code was sent to the email provided. Please enter the confirmation code and a new password</p>
               <div v-bind:class="errorClass" id="reset-password-error-id">
                 <span v-if="unableToResetPassword">{{ errorMessage }}</span>
@@ -85,10 +85,18 @@
                 </form>
                 <div>
                   <div class="border-line"></div>
-                  <a href="#">
-                    <router-link class="createAccountBtn" :to="{ name: 'Login', params: {} }"
-                      >Login</router-link
+                  <div class="resend-email-div">
+                    <small>Did not receive any email? <a href="#" @click="resendEmail">Resend email</a></small>
+                    &nbsp;
+                    <b-spinner small v-if="resendEmailControl === true"
+                      id="resendEmail"
+                      variant="primary"
                     >
+                    </b-spinner>
+                    <b-badge v-if="resendEmailSent === true" variant="info">Email sent</b-badge>
+                  </div>
+                  <a href="#">
+                    <router-link class="loginPageBtn" :to="{ name: 'Login', params: {} }"><small>Back to login page</small></router-link>
                   </a>
                 </div>
               </div>
@@ -132,11 +140,33 @@ export default {
       confirmPassword: '',
       unableToResetPassword: false,
       resetSuccessful: false,
+      resendEmailControl: false,
+      resendEmailSent: false,
+      resendEmailMessage: '',
       errorMessage: '',
       errorClass: '',
     }
   },
   methods: {
+    resendEmail () {
+      this.resendEmailControl = true
+      this.resendEmailSent = false
+      const payload = {
+        emailAddress: this.emailAddress
+      }
+      return this.$store.dispatch('requestPasswordReset', payload)
+        .then(resp => {
+          this.resendEmailSent = true
+          this.resendEmailMessage = 'Email sent'
+          this.resendEmailControl = false
+        })
+        .catch(err => {
+          this.resendEmailSent = true
+          this.resendEmailMessage = 'Unable to send email'
+          this.resendEmailControl = false
+        })
+      alert(this.emailAddress)
+    },
     resetPasswordSuccessModalControl () {
       this.$refs["reset-successful-modal"].hide()
       this.$router.push({name: 'Login'})
@@ -211,6 +241,14 @@ export default {
   background: #2980B9;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to top, #FFFFFF, #6DD5FA, #2980B9);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to top, #FFFFFF, #6DD5FA, #2980B9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ }
+
+ .resend-email-div {
+   text-align: left;
+ }
+
+ #resendEmail {
+   font-size: 3px;
  }
 
  .form-body {
@@ -347,7 +385,7 @@ export default {
  }
 
  .row{
-   padding-top: 90px;
+   padding-top: 60px;
  }
 
  .reset-btn {
@@ -370,16 +408,9 @@ export default {
    float: left;
  }
 
- .loginPageBtn {
+ .loginPageBtn{
+   text-decoration: none;
    float: left;
-   text-decoration: none;
-   color: #f47d42;
- }
-
- .createAccountBtn{
-   text-decoration: none;
-   float: right;
-   color: #309940;
  }
 
  input[type="text"], input[type="password"] {
