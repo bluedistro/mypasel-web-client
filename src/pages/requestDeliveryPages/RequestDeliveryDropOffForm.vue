@@ -27,7 +27,7 @@
                 ref="searchData"
                 class="form-control search-slt"
                 required
-                placeholder="Recipient address"
+                placeholder="recipient's address"
                 :options="autoCompleteOptions"
                 v-on:focus="addressSearchLoader(dropOff.searchId)"
                 v-on:blur="sendInfo"
@@ -44,7 +44,7 @@
                 v-on:blur="sendInfo"
                 :id="dropOff.fullName"
                 class="search-slt"
-                placeholder="Recipient full name"
+                placeholder="recipient's name"
                 v-model="dropOff.fullName"
               >
               </b-form-input>
@@ -72,7 +72,7 @@
                 class="search-slt"
                 v-on:blur="sendInfo"
                 v-model="dropOff.details"
-                placeholder="Extra information or comments"
+                placeholder="extra information or comments for driver"
               >
               </b-form-textarea>
             </b-form-group>

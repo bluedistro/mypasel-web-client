@@ -44,7 +44,7 @@
           class="search-slt"
           :disabled="disableFullName"
           v-on:blur="sendInfo"
-          placeholder="Sender full name"
+          placeholder="sender's name"
         >
         </b-form-input>
       </b-form-group>
@@ -72,7 +72,7 @@
           max-rows="6"
           class="search-slt"
           v-on:blur="sendInfo"
-          placeholder="Extra information or comments"
+          placeholder="information or comments for driver"
         >
         </b-form-textarea>
       </b-form-group>
@@ -90,7 +90,7 @@ export default {
   },
   data () {
     return {
-      senderAddressPlaceholder: "Sender address",
+      senderAddressPlaceholder: "sender's address",
       searchingAddressLoader: false,
       invalidPlace: false,
       place: null,
@@ -182,7 +182,7 @@ export default {
       }
     }else{
       this.searchAddress = null
-      this.senderAddressPlaceholder = 'Sender address'
+      this.senderAddressPlaceholder = "sender's address"
       this.phoneNumber = ''
       this.fullName = ''
     }

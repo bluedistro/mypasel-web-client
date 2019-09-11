@@ -36,22 +36,12 @@
                     </label>
                     <span class="pickupSave text">Save to address book</span>
                   </div>
-                  <div class="col-md-6 col-sm-2 col-2 col-lg-6 save-help">
-                    <font-awesome-icon
-                      icon="question-circle"
-                      id="saveHelp"
-                      @click="$bvToast.show('example-toast')"
-                    />
-                  </div>
-                  <div class="save-help-note">
-                    <b-toast id="example-toast" title="Using address book" static no-auto-hide>
-                      This feature saves the <strong>pickup address, sender's full name
-                      and sender's phone number</strong> during the course of this session.
-                      However, do note that saved information will <strong> only and
-                      immediately be discarded </strong> when you log out or disable the switch.
-                    </b-toast>
-                  </div>
-                  <b-tooltip target="saveHelp" placement="left" title="Help"> </b-tooltip>
+                  <small class="save-help-note">
+                    This feature saves the <strong>pickup address, sender's full name
+                    and sender's phone number</strong> during the course of this session.
+                    However, do note that saved information will <strong> only and
+                    immediately be discarded </strong> when you log out or disable the switch.
+                  </small>
                 </div>
               </div>
               <div>
@@ -91,6 +81,9 @@
                   </div>
                 </div>
               </div>
+              <div class="pricing-error-div" v-if="pricingError === true">
+                <small>Please provide both pickup and dropoff addresses in order to check pricing</small>
+              </div>
               <div>
                 <content-loader v-if="pricingInit == null" class="c-loader-pricing"
                 :speed="2"
@@ -117,6 +110,9 @@
                 </div>
               </div> -->
               <div>
+                <div class="proceed-error-div" v-if="proceedError === true">
+                  <small>Please complete pick up and dropoff information and select a delivery mode and time to proceed</small>
+                </div>
                 <button
                   type="button"
                   @click="proceedToPayment"
@@ -151,26 +147,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <!-- trouble with request delivery -->
-    <div>
-      <b-modal
-        no-close-on-backdrop
-        hide-header-close
-        no-close-on-esc
-        ref="request-delivery-error-modal"
-        size="sm"
-        id="request-delivery-error-modal"
-        v-model="incompleteRequestDelivery"
-        title="Incomplete Information"
-      >
-        <p class="request-delivery-error-modal-text">{{ errorModalMessage }}</p>
-        <template slot="modal-footer" slot-scope="{ ok }">
-          <b-button size="sm" variant="info" @click="RequestDeliveryErrorModalHide"
-            >Okay.</b-button
-          >
-        </template>
-      </b-modal>
     </div>
     <v-tour name="myTour" :steps="steps"></v-tour>
   </div>
@@ -210,10 +186,6 @@ export default {
       pricingInit: null,
       googleMapsInit: null,
       loaderBarControl: true,
-      // control rd error
-      incompleteRequestDelivery: false,
-      errorModalMessage: "",
-
       minimumDropOffForm: 1,
       maximumDropOffForm: 3,
       componentRestrictions: {
@@ -232,6 +204,8 @@ export default {
         dropOffData: null
       },
       pricingDetails: {},
+      pricingError: false,
+      proceedError: false,
       selectedPricingOption: null,
       selectedDeliveryOption: null,
       // to save pickup address data
@@ -338,8 +312,10 @@ export default {
     checkPricing (evt) {
       evt.preventDefault()
       if (this.emittedFormData.pickupData.searchAddress == null || this.emittedFormData.dropOffData == null) {
-        this.errorModalMessage = "Please provide both pickup and dropoff addresses in order to check pricing"
-        this.incompleteRequestDelivery = true
+        this.pricingError = true
+        setTimeout(() => {
+          this.pricingError = false
+        }, 10000)
       } else {
         return this.$store
           .dispatch("getPricing", this.emittedFormData)
@@ -379,9 +355,10 @@ export default {
         })
         this.$router.push({ name: "RequestPayment" })
       } else {
-        this.errorModalMessage =
-          "Please complete pick up and dropoff information and select a delivery mode and time to proceed"
-        this.incompleteRequestDelivery = true
+        this.proceedError = true
+        setTimeout(() => {
+          this.proceedError = false
+        }, 10000)
         this.$router.push({ name: "RequestDelivery" })
       }
     },
@@ -439,6 +416,18 @@ export default {
 
 .formSide {
   background-color: #f2faff;
+}
+
+.pricing-error-div {
+  text-align: left;
+  margin-bottom: 5px;
+  color: #874e12;
+}
+
+.proceed-error-div {
+  text-align: left;
+  margin-bottom: 5px;
+  color: #874e12;
 }
 
 .c-loader-pickup {
@@ -588,8 +577,9 @@ input:checked + .slider {
 }
 
 .save-help-note {
-  justify-content: center;
-  margin-left: 20px;
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 25px;
 }
 
 /* courier urgency switch */
